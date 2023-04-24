@@ -9,7 +9,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import StyledRating from "./StyledRating";
 
-const SongCard = ({ artist = 'This is the Song Name', song = 'This is the Artist Name', imageUrl = '/logo192.png', renderImage = true }) => {
+const ArtistCard = ({ artist = 'This is the Song Name', song = 'This is the Artist Name', imageUrl = '/logo192.png', renderImage = true }) => {
     return (
         <Container>
             <Card sx={{ m: "1rem 1rem", background: "#2c2c2c" }}>
@@ -44,4 +44,4 @@ const SongCard = ({ artist = 'This is the Song Name', song = 'This is the Artist
     );
 }
 
-export default SongCard;
+export default ArtistCard;
