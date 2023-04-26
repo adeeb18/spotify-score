@@ -25,6 +25,10 @@ const NavBar = () => {
                                 Spotify Score
                             </Typography>
                         </Box>
+                        <ListItemButton href="/" 
+                            sx={{backgroundColor:"#151515", minHeight:60, minWidth:200, textAlign:"center", borderRadius:2, mt:1}}>
+                            <ListItemText primary={'Home'} />
+                        </ListItemButton>
                         <ListItemButton href="/search" 
                             sx={{backgroundColor:"#151515", minHeight:60, minWidth:200, textAlign:"center", borderRadius:2, mt:1}}>
                             <ListItemText primary={'Search'} />
@@ -33,7 +37,7 @@ const NavBar = () => {
                             sx={{backgroundColor:"#151515", minHeight:60, minWidth:200, textAlign:"center", borderRadius:2, mt:1}}>
                             <ListItemText primary={'Leaderboard'} />
                         </ListItemButton>
-                        <ListItemButton href="/abou"
+                        <ListItemButton href="/about"
                             sx={{backgroundColor:"#151515", minHeight:60, minWidth:200, textAlign:"center", borderRadius:2, mt:1}}>
                             <ListItemText primary={'About'} />
                         </ListItemButton>
