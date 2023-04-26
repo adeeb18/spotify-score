@@ -1,6 +1,6 @@
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-import NavBar from "./components/NavBar";
+import NavBar from "./components/NavBar/NavBar";
 
 const About = () => {
     return (

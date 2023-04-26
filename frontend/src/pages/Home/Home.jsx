@@ -1,5 +1,8 @@
+import './Home.css';
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import Box from '@mui/material/Box';
+
 import Carousel from "react-material-ui-carousel";
 import Paper from "@mui/material/Paper";
 import InputBase from "@mui/material/InputBase";
@@ -7,9 +10,11 @@ import IconButton from "@mui/material/IconButton";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import SearchIcon from "@mui/icons-material/Search";
-import NavBar from "./components/NavBar";
-import SongCard from "./components/SongCard";
-import ArtistCard from "./components/ArtistCard";
+import NavBar from "../components/NavBar/NavBar";
+import SongCard from "../components/SongCard";
+import ArtistCard from "../components/ArtistCard";
+import { height } from "@mui/system";
+
 
 const Home = () => {
     let [searchInput, setSearchInput] = useState("");
@@ -33,24 +38,10 @@ const Home = () => {
     };
 
     return (
-        <Container>
-            <NavBar />
-            <Container
-                sx={{
-                    position: "absolute",
-                    top: "50%",
-                    left: "50%",
-                    transform: "translate(-50%,-50%)",
-                }}
-            >
+        <Box className="main" sx={{ display: "flex" }}>
+            <NavBar/>
+            <Box sx={{flex:5}}>
                 <Container
-                    sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        marginBottom: "8rem",
-                        marginTop: "8rem"
-                    }}
                 >
                     <Typography
                         variant="h3"
@@ -136,8 +127,8 @@ const Home = () => {
                         <SongCard />
                     </Carousel>
                 </Container>
-            </Container>
-        </Container>
+            </Box>
+        </Box>
     );
 };
 

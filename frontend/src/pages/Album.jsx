@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import NavBar from "./components/NavBar";
+import NavBar from "./components/NavBar/NavBar";
 import AlbumCard from "./components/AlbumCard";
 import SongCard from "./components/SongCard";
 import ReviewCard from "./components/ReviewCard";

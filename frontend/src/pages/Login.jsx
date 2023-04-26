@@ -11,7 +11,7 @@ import Button from "@mui/material/Button";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Visibility from "@mui/icons-material/Visibility";
 import LoginIcon from "@mui/icons-material/Login";
-import NavBar from "./components/NavBar";
+import NavBar from "./components/NavBar/NavBar";
 
 const Login = () => {
     let [username, setUsername] = useState("");

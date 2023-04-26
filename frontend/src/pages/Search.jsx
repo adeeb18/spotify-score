@@ -4,7 +4,7 @@ import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
-import NavBar from "./components/NavBar";
+import NavBar from "./components/NavBar/NavBar";
 import SongCard from "./components/SongCard";
 import AlbumCard from "./components/AlbumCard";
 

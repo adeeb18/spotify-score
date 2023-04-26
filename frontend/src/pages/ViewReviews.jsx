@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import SongCard from "./components/SongCard";
 import ReviewCard from "./components/ReviewCard";
-import NavBar from "./components/NavBar";
+import NavBar from "./components/NavBar/NavBar";
 
 const ViewReviews = () => {
     return (
