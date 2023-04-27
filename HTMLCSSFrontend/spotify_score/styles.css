@@ -1,0 +1,184 @@
+/*Custom Scrollbar from W3Schools*/
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: rgba(41,41,41,1);
+}
+   
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888; 
+}
+  
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+
+/*Other CSS*/
+.bodyBox{
+    min-height: 100vh;
+}
+
+
+#sidebar{
+    background-color: #070707;
+    width: 16vw;
+}
+
+#main{
+    background: rgb(18,18,18);
+    background: linear-gradient(0deg, rgba(18,18,18,1) 52%, rgba(26,26,26,1) 75%, rgba(34,34,34,1) 89%, rgba(41,41,41,1) 100%);
+    color: white;
+}
+
+.logo-text{
+    color: #c8c7c7;
+    font-weight: 600;
+}
+
+.nav-link{
+    color: #c8c7c7;
+    background-color: #161616;
+    padding: 2rem;
+    width: 14vw;
+    margin: 1rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-link:hover{
+    color: white;
+    background-color: #363636;
+}
+
+.btn-div{
+    gap: 1em;
+}
+
+.btn-nav{
+    border-radius: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #363636;
+}
+
+.btn-nav > img{
+    height: 32px;
+}
+
+#sign-up{
+    background-color: transparent;
+    border: none;
+}
+
+#log-in{
+    border-radius: 50px;
+    padding: 0.55em 1.5em;
+}
+
+.top-review{
+    background-color: #363636;
+    border-radius: 20px;
+    flex: 2;
+}
+
+.review-box{
+    margin-left: 2.5%;
+    gap: 1%;
+    align-items: center;
+}
+
+.subHead{
+    margin-left: 0.3rem;
+    margin-bottom: 1rem;
+}
+
+.card{
+    background-color: #1b1b1b;
+    color: #c8c7c7;
+    padding: 0;
+}
+
+.card-img-top{
+    max-height: 170px;
+    max-width: 170px;
+    border-radius: 5px;
+}
+
+.card-body{
+    padding: 0;
+    padding-top: 1vh;
+}
+
+.card-title{
+    color: white;
+    font-size: medium;
+    margin-left:  0.8vw;
+}
+
+.card-text{
+    font-size: small;
+    margin-left:  0.8vw;
+}
+
+.card-score{
+    width: 100%;
+    background-color: #47912d;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    text-align: center;
+    margin-left: 0;
+    font-size: medium;
+    color: white;
+}
+
+.more-text{
+    color: #c8c7c7;
+}
+
+.more-text:hover{
+    cursor: pointer;
+    color: white;
+}
+
+.nav-mid{
+    flex: 2;
+}
+
+#top{
+    justify-content: space-between;
+}
+
+.searchBar{
+    max-height: 32px;
+    border-radius: 20px;
+}
+
+.search-options{
+    margin-right: 30%;
+    margin-left: 20%;
+}
+
+.search-options > button{
+    border-radius: 40px;
+    background-color: #161616;
+}
+
+.search-options > button.btn-light{
+    background-color: white;
+}
+
+.search-cards{
+    gap: 1em;
+}
+
+.search-card{
+    background-color: #555;
+}
