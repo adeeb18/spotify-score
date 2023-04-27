@@ -10,7 +10,7 @@ import IconButton from "@mui/material/IconButton";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import SearchIcon from "@mui/icons-material/Search";
-import NavBar from "../components/NavBar/NavBar";
+import SideBar from "../components/SideBar/SideBar";
 import FootNote from "../components/FootNote"
 import SongCard from "../components/SongCard";
 import ArtistCard from "../components/ArtistCard";
@@ -40,7 +40,7 @@ const Home = () => {
 
     return (
         <Box className="main"sx={{ display: "flex" }}>
-                <NavBar/>
+                <SideBar/>
                 <Box sx={{flex:5}}>
                     <Container
                     >

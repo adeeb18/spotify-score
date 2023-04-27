@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import NavBar from "./components/NavBar/NavBar";
+import SideBar from "./components/SideBar/SideBar";
 import AlbumCard from "./components/AlbumCard";
 import SongCard from "./components/SongCard";
 import ReviewCard from "./components/ReviewCard";
@@ -13,7 +13,7 @@ import ReviewCard from "./components/ReviewCard";
 const Album = () => {
     return (
         <Container>
-            <NavBar/>
+            <SideBar/>
             <Container style={{
                 position:"absolute",
                 left:"50%",

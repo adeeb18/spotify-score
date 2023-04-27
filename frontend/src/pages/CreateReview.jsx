@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import SendIcon from "@mui/icons-material/Send";
-import NavBar from "./components/NavBar/NavBar";
+import SideBar from "./components/SideBar/SideBar";
 import SongCard from "./components/SongCard";
 import StyledRating from "./components/StyledRating";
 
@@ -28,7 +28,7 @@ const CreateReview = () => {
 
     return (
         <Container>
-            <NavBar/>
+            <SideBar/>
             <Container sx={{
                 position:"absolute",
                 left:"50%",

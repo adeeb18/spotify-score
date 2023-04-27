@@ -5,12 +5,12 @@ import Button from "@mui/material/Button";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import SongCard from "./components/SongCard";
 import ReviewCard from "./components/ReviewCard";
-import NavBar from "./components/NavBar/NavBar";
+import SideBar from "./components/SideBar/SideBar";
 
 const ViewReviews = () => {
     return (
         <Container>
-            <NavBar/>
+            <SideBar/>
             <Container sx={{
                 position:"absolute",
                 left:"50%",

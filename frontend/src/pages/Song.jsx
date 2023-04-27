@@ -7,13 +7,13 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import SongCard from "./components/SongCard";
 import AlbumCard from "./components/AlbumCard";
-import NavBar from "./components/NavBar/NavBar";
+import SideBar from "./components/SideBar/SideBar";
 import ReviewCard from "./components/ReviewCard";
 
 const Song = () => {
     return (
         <Container>
-            <NavBar/>
+            <SideBar/>
             <Container style={{
                 position:"absolute",
                 left:"50%",

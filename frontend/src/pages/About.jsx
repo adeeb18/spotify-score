@@ -1,11 +1,11 @@
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-import NavBar from "./components/NavBar/NavBar";
+import SideBar from "./components/SideBar/SideBar";
 
 const About = () => {
     return (
         <Container>
-            <NavBar/>
+            <SideBar/>
             <Container sx={{
                 position:"absolute",
                 top:"50%",
