@@ -64,14 +64,17 @@ const Home = () => {
                             Enter a song, album, or artist below to share your thoughts about
                             your favorite music!
                         </Typography>
-                        <Paper component="form" onSubmit={handleSearch} sx={{ p: "0px 4px" }}>
+                        <Paper component="form" onSubmit={handleSearch} 
+                            sx={{ p: "0px 4px", display:"flex", alignItems:"center", borderRadius:3}}
+                        >
                             <InputBase
+                                className="searchBox"
                                 placeholder="What kind of music do you like?"
                                 onChange={handleChange}
-                                sx={{ paddingLeft: "1rem", width: "30rem", height: "4rem" }}
+                                sx={{ paddingLeft: "1rem", width: "40rem", height: "4rem" }}
                             />
                             <IconButton type="submit">
-                                <SearchIcon />
+                                <SearchIcon/>
                             </IconButton>
                         </Paper>
                     </Container>

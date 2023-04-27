@@ -8,3 +8,7 @@
 html{
     scroll-padding-top: 70px;
 }
+
+.searchBox{
+    flex: 2;
+}
