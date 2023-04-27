@@ -15,8 +15,8 @@ const NavBar = () => {
                     <Typography sx={{color:"#c8c7c7"}}>Home</Typography>
                 </Box>
                 <Box>
-                    <Button sx={{textTransform:"none", color:"white"}}>Sign Up</Button>
-                    <Button sx={{textTransform:"none", backgroundColor:"white", color:"black", borderRadius:5}} variant="contained">Log In</Button>
+                    <Button href="/register" sx={{textTransform:"none", color:"white"}}>Sign Up</Button>
+                    <Button href="/login" sx={{textTransform:"none", backgroundColor:"white", color:"black", borderRadius:5}} variant="contained">Log In</Button>
                 </Box>
             </Toolbar>
         </AppBar>

@@ -13,7 +13,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import SideBar from "./components/SideBar/SideBar";
 
-const Register = () => {
+const SignUp = () => {
     let [username, setUsername] = useState("");
     let [password, setPassword] = useState("");
     let [showPassword, setShowPassword] = useState(false);
@@ -53,7 +53,7 @@ const Register = () => {
                     fontWeight="700"
                     textAlign="center"
                 >
-                    Register
+                    SignUp
                 </Typography>
 
                 <FormControl sx={{width:"30ch", mb:"1rem"}} variant="filled">
@@ -96,7 +96,7 @@ const Register = () => {
                     style={{backgroundColor:"#1DB954"}}
                 >
                     <Typography variant="h6" textTransform="none">
-                        Register
+                        SignUp
                     </Typography>
                 </Button>
 
@@ -105,4 +105,4 @@ const Register = () => {
     );
 }
 
-export default Register;
+export default SignUp;
