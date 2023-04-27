@@ -14,10 +14,19 @@ const NavBar = () => {
         >
             <Toolbar className="d-flex justify-content-between">
                 <Box>
-                    <Typography sx={{color:"#c8c7c7"}}>Home</Typography>
+                    <Typography 
+                        href="/"
+                        css={css`
+                            :hover {
+                                cursor:pointer;
+                                color: white;
+                            }
+                        `}
+                        sx={{color:"#c8c7c7"}}
+                    >Home</Typography>
                 </Box>
                 <Box>
-                    <Button href="/register" sx={{textTransform:"none", color:"white"}}>Sign Up</Button>
+                    <Button href="/register" sx={{textTransform:"none", color:"white", marginRight:1}}>Sign Up</Button>
                     <Button href="/login" sx={{textTransform:"none", backgroundColor:"white", color:"black", borderRadius:5}} variant="contained">Log In</Button>
                 </Box>
             </Toolbar>
