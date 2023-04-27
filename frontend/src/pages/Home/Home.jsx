@@ -15,6 +15,7 @@ import FootNote from "../components/FootNote"
 import SongCard from "../components/SongCard";
 import ArtistCard from "../components/ArtistCard";
 import { height } from "@mui/system";
+import NavBar from '../components/NavBar/NavBar';
 
 
 const Home = () => {
@@ -39,11 +40,11 @@ const Home = () => {
     };
 
     return (
-        <Box className="main"sx={{ display: "flex" }}>
+        <Box className="main d-flex">
                 <SideBar/>
                 <Box sx={{flex:5}}>
-                    <Container
-                    >
+                    <NavBar/>
+                    <Container>
                         <Typography
                             variant="h3"
                             color="#1DB954"
@@ -92,7 +93,6 @@ const Home = () => {
                             ))}
                         </Container>
                     )}
-
                     <Container
                         sx={{
                             paddingTop:'4rem'
