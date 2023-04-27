@@ -10,6 +10,7 @@ import MenuItem from "@mui/material/MenuItem";
 import SideBar from "./components/SideBar/SideBar";
 import SongCard from "./components/SongCard";
 import AlbumCard from "./components/AlbumCard";
+import NavBar from "./components/NavBar/NavBar";
 
 const Leaderboard = () => {
     let [type, setType] = useState("songs");
@@ -24,96 +25,91 @@ const Leaderboard = () => {
     }
 
     return (
-        <Container>
+        <Box className="d-flex">
             <SideBar/>
-            <Container sx={{
-                position:"absolute",
-                left:"50%",
-                transform:"translate(-50%,8rem)",
-                display:"flex",
-                flexDirection:"column",
-                alignItems:"center",
-                justifyContent:"center"
-            }}>
-                <Typography
-                    variant="h3"
-                    color="#1DB954"
-                    marginBottom="3rem"
-                    fontWeight="700"
-                    textAlign="center"
-                >
-                    Leaderboard
-                </Typography>
-                <ButtonGroup variant="text" sx={{marginBottom:"1rem"}}>
-                    <Button
-                        name="songsButton"
-                        variant={type==="songs" ? "contained" : "text"}
-                        onClick={() => handleClick("songs")}
-                        sx={{width:"15ch"}}
+            <Box className="main" sx={{flex:5}}>
+                <NavBar/>
+                <Container className="mt-2">
+                    <Typography
+                        variant="h3"
+                        color="#1DB954"
+                        marginBottom="3rem"
+                        fontWeight="700"
+                        textAlign="center"
                     >
-                        Songs
-                    </Button>
-                    <Button
-                        name="albumsButton"
-                        variant={type==="albums" ? "contained" : "text"}
-                        onClick={() => handleClick("albums")}
-                        sx={{width:"15ch"}}
-                    >
-                        Albums
-                    </Button>
-                </ButtonGroup>
-                <Box sx={{minWidth:"10ch", marginBottom:"3rem"}}>
-                    <FormControl fullWidth>
-                        <Select
-                            value={sort}
-                            onChange={handleChange}
-                            sx={{backgroundColor:"#ffffff", height:"2rem"}}
+                        Leaderboard
+                    </Typography>
+                    <ButtonGroup variant="text" sx={{marginBottom:"1rem", marginX:"4rem"}}>
+                        <Button
+                            name="songsButton"
+                            variant={type==="songs" ? "contained" : "text"}
+                            onClick={() => handleClick("songs")}
+                            sx={{width:"15ch"}}
                         >
-                            <MenuItem value="Top-Rated">Top-Rated</MenuItem>
-                            <MenuItem value="Hottest">Hottest</MenuItem>
-                        </Select>
-                    </FormControl>
-                </Box>
-                <Typography
-                    variant="h6"
-                    color="#ffffff"
-                    marginBottom="1rem"
-                    textAlign="center"
-                >
-                    The {sort} {type==="songs" ? "Songs" : "Albums"}
-                </Typography>
-                {
-                    type === "songs" &&
-                    <Container>
-                        <SongCard/>
-                        <SongCard/>
-                        <SongCard/>
-                        <SongCard/>
-                        <SongCard/>
-                        <SongCard/>
-                        <SongCard/>
-                        <SongCard/>
-                        <SongCard/>
-                        <SongCard/>
-                    </Container>
-                }
-                {
-                    type === "albums" &&
-                    <Container>
-                        <AlbumCard/>
-                        <AlbumCard/>
-                        <AlbumCard/>
-                        <AlbumCard/>
-                        <AlbumCard/>
-                        <AlbumCard/>
-                        <AlbumCard/>
-                        <AlbumCard/>
-                        <AlbumCard/>
-                        <AlbumCard/>
-                    </Container>
-                }
-            </Container>
-        </Container>
+                            Songs
+                        </Button>
+                        <Button
+                            name="albumsButton"
+                            variant={type==="albums" ? "contained" : "text"}
+                            onClick={() => handleClick("albums")}
+                            sx={{width:"15ch"}}
+                        >
+                            Albums
+                        </Button>
+                    </ButtonGroup>
+                    <Box sx={{minWidth:"10ch", marginBottom:"3rem", marginX:"4rem"}}>
+                        <FormControl fullWidth>
+                            <Select
+                                value={sort}
+                                onChange={handleChange}
+                                sx={{backgroundColor:"#ffffff", height:"2rem"}}
+                            >
+                                <MenuItem value="Top-Rated">Top-Rated</MenuItem>
+                                <MenuItem value="Hottest">Hottest</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Box>
+                    <Typography
+                        variant="h6"
+                        color="#ffffff"
+                        marginBottom="1rem"
+                        textAlign="center"
+                    >
+                        The {sort} {type==="songs" ? "Songs" : "Albums"}
+                    </Typography>
+                    {
+                        type === "songs" &&
+                        <Container>
+                            <SongCard/>
+                            <SongCard/>
+                            <SongCard/>
+                            <SongCard/>
+                            <SongCard/>
+                            <SongCard/>
+                            <SongCard/>
+                            <SongCard/>
+                            <SongCard/>
+                            <SongCard/>
+                        </Container>
+                    }
+                    {
+                        type === "albums" &&
+                        <Container>
+                            <AlbumCard/>
+                            <AlbumCard/>
+                            <AlbumCard/>
+                            <AlbumCard/>
+                            <AlbumCard/>
+                            <AlbumCard/>
+                            <AlbumCard/>
+                            <AlbumCard/>
+                            <AlbumCard/>
+                            <AlbumCard/>
+                        </Container>
+                    }
+                </Container>
+            </Box>
+        </Box>
     );
 }
 
