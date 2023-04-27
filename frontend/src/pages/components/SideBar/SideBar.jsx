@@ -11,76 +11,82 @@ import { css } from "@emotion/react";
 const SideBar = () => {
     return (
         <AppBar
-                sx={{flex:1, backgroundColor:"#121212"}}
+                sx={{flex:1, background: "#070707"}}
                     position="sticky"
                 >
                     <Toolbar>
-                    <List sx={{display: "flex", flexDirection:"column", justifyContent:"space-between"}}>
+                    <List className="flex flex-column justify-content-between">
                         <Box sx={{display: "flex", gap:1, alignItems:"center", justifyContent:"center"}}>
                             <img src={ScoreLogo} alt="Logo" className="logo"></img>
                             <Typography variant="h6" noWrap component="div">
                                 Spotify Score
                             </Typography>
                         </Box>
-                        <ListItemButton 
-                            href="/" 
+                        <ListItemButton
+                            href="/"
+                            className="mb-3"
                             css={css`
                                 :hover {
                                 background-color: #2e8b57;
                                 }
                             `}
-                            sx={{backgroundColor:"#151515", minHeight:60, minWidth:200, textAlign:"center", borderRadius:2, mt:1}}>
+                            sx={{backgroundColor:"#151515", minHeight:80, minWidth:200, textAlign:"center", borderRadius:2, mt:1}}>
                             <ListItemText primary={'Home'} />
                         </ListItemButton>
                         <ListItemButton 
                             href="/search" 
+                            className="mb-3"
                             css={css`
                                 :hover {
                                 background-color: #2e8b57;
                                 }
                             `}
-                            sx={{backgroundColor:"#151515", minHeight:60, minWidth:200, textAlign:"center", borderRadius:2, mt:1}}>
+                            sx={{backgroundColor:"#151515", minHeight:80, minWidth:200, textAlign:"center", borderRadius:2, mt:1}}>
                             <ListItemText primary={'Search'} />
                         </ListItemButton>
                         <ListItemButton 
                             href="/leaderboard"
+                            className="mb-3"
                             css={css`
                                 :hover {
                                 background-color: #2e8b57;
                                 }
                             `}
-                            sx={{backgroundColor:"#151515", minHeight:60, minWidth:200, textAlign:"center", borderRadius:2, mt:1}}>
+                            sx={{backgroundColor:"#151515", minHeight:80, minWidth:200, textAlign:"center", borderRadius:2, mt:1}}>
                             <ListItemText primary={'Leaderboard'} />
                         </ListItemButton>
                         <ListItemButton 
+                            href="/"
+                            className="mb-3"
+                            css={css`
+                                :hover {
+                                background-color: #2e8b57;
+                                }
+                            `}
+                            sx={{backgroundColor:"#151515", minHeight:80, minWidth:200, textAlign:"center", borderRadius:2, mt:1}}>
+                            <ListItemText primary={'Explore'} />
+                        </ListItemButton>
+                        <ListItemButton 
+                            href="/"
+                            className="mb-3"
+                            css={css`
+                                :hover {
+                                background-color: #2e8b57;
+                                }
+                            `}
+                            sx={{backgroundColor:"#151515", minHeight:80, minWidth:200, textAlign:"center", borderRadius:2, mt:1}}>
+                            <ListItemText primary={'Reviews'} />
+                        </ListItemButton>
+                        <ListItemButton 
                             href="/about"
+                            className="mb-3"
                             css={css`
                                 :hover {
                                 background-color: #2e8b57;
                                 }
                             `}
-                            sx={{backgroundColor:"#151515", minHeight:60, minWidth:200, textAlign:"center", borderRadius:2, mt:1}}>
+                            sx={{backgroundColor:"#151515", minHeight:80, minWidth:200, textAlign:"center", borderRadius:2, mt:1}}>
                             <ListItemText primary={'About'} />
-                        </ListItemButton>
-                        <ListItemButton 
-                            href="/register"
-                            css={css`
-                                :hover {
-                                background-color: #2e8b57;
-                                }
-                            `}
-                            sx={{backgroundColor:"#151515", minHeight:60, minWidth:200, textAlign:"center", borderRadius:2, mt:1}}>
-                            <ListItemText primary={'Register'} />
-                        </ListItemButton>
-                        <ListItemButton 
-                            href="/login"
-                            css={css`
-                                :hover {
-                                background-color: #2e8b57;
-                                }
-                            `}
-                            sx={{backgroundColor:"#151515", minHeight:60, minWidth:200, textAlign:"center", borderRadius:2, mt:1}}>
-                            <ListItemText primary={'Log In'} />
                         </ListItemButton>
                     </List>
                     </Toolbar>
