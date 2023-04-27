@@ -67,7 +67,7 @@ const SideBar = () => {
                             <ListItemText primary={'Explore'} />
                         </ListItemButton>
                         <ListItemButton 
-                            href="/"
+                            href="/song/reviews"
                             className="mb-3"
                             css={css`
                                 :hover {
