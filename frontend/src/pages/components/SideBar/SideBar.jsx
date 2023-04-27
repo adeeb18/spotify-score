@@ -4,7 +4,7 @@ import './SideBar.css';
 import { useState } from 'react';
 import { Link } from "react-router-dom";
 import { AppBar, Toolbar, Typography, List, ListItemButton, ListItemText, Box } from '@mui/material';
-import ScoreLogo from "../../../images/score.png";
+import ScoreLogo from "../../../images/logo.png";
 import { style } from '@mui/system';
 import { css } from "@emotion/react";
 
