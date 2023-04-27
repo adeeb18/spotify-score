@@ -9,7 +9,9 @@ import { css } from "@emotion/react";
 
 const NavBar = () => {
     return (
-        <AppBar sx={{position:"sticky", backgroundColor:"transparent"}}>
+        <AppBar 
+            sx={{position:"sticky", backgroundColor:"rgba(41,41,41,1)"}}
+        >
             <Toolbar className="d-flex justify-content-between">
                 <Box>
                     <Typography sx={{color:"#c8c7c7"}}>Home</Typography>
