@@ -50,6 +50,8 @@ const Home = () => {
                             color="#1DB954"
                             marginBottom="1rem"
                             fontWeight="700"
+                            marginTop="1rem"
+                            textAlign="center"
                         >
                             Search
                         </Typography>
