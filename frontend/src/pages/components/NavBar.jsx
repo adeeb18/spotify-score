@@ -3,9 +3,15 @@
 import { AppBar, Toolbar, Typography, Box, Button} from '@mui/material';
 import { css } from "@emotion/react";
 import {useLocation} from "react-router-dom";
+import axios from 'axios';
 
 const NavBar = () => {
     const currPage = useLocation();
+
+    const getUser = () => { /*Temp PHP submit until server is up*/
+        const url = 'http://localhost:8000';
+        axios.get(url).then(response=> alert(response.data)).catch(error=> alert(error));
+    }
 
     const initializePage = () =>{
         if(currPage.pathname === "/"){
