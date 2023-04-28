@@ -1,13 +1,47 @@
 /* eslint-disable react/react-in-jsx-scope -- Unaware of jsxImportSource */
 /** @jsxImportSource @emotion/react */
-import { useState } from 'react';
-import { Link } from "react-router-dom";
-import { AppBar, Toolbar, Typography, Box, Container, Button} from '@mui/material';
-import ScoreLogo from "../../../images/logo.png";
-import { style } from '@mui/system';
+import { AppBar, Toolbar, Typography, Box, Button} from '@mui/material';
 import { css } from "@emotion/react";
+import {useLocation} from "react-router-dom";
 
 const NavBar = () => {
+    const currPage = useLocation();
+
+    const initializePage = () =>{
+        if(currPage.pathname === "/"){
+            return "Home";
+        }
+        else if(currPage.pathname === "/search"){
+            return "Search";
+        }
+        else if(currPage.pathname === "/song"){
+            return "Song";
+        }
+        else if(currPage.pathname === "/song/reviews"){
+            return "Reviews";
+        }
+        else if(currPage.pathname === "/song/create-review"){
+            return "Create Review";
+        }
+        else if(currPage.pathname === "/album"){
+            return "Album";
+        }
+        else if(currPage.pathname === "/about"){
+            return "About";
+        }
+        else if(currPage.pathname === "/leaderboard"){
+            return "Leaderboard";
+        }
+        else if(currPage.pathname === "/SignUp"){
+            return "SignUp";
+        }
+        else if(currPage.pathname === "/Log In"){
+            return "Log In";
+        }
+    }
+
+    const pageName = initializePage();
+    
     return (
         <AppBar 
             sx={{position:"sticky", backgroundColor:"rgba(41,41,41,1)"}}
@@ -23,7 +57,9 @@ const NavBar = () => {
                             }
                         `}
                         sx={{color:"#c8c7c7"}}
-                    >Home</Typography>
+                    >
+                        {pageName}
+                    </Typography>
                 </Box>
                 <Box>
                     <Button href="/register" sx={{textTransform:"none", color:"white", marginRight:1}}>Sign Up</Button>
