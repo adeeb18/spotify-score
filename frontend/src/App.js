@@ -14,18 +14,18 @@ import './App.css';
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route exact path="/" element={<Home/>}/>
-        <Route path="/search" element={<Search/>}/>
-        <Route exact path="/song" element={<Song/>}/>
-        <Route path="/song/reviews" element={<ViewReviews/>}/>
-        <Route path="/song/create-review" element={<CreateReview/>}/>
-        <Route path="/album" element={<Album/>}/>
-        <Route path="/about" element={<About/>}/>
-        <Route path="/leaderboard" element={<Leaderboard/>}/>
-        <Route path="/register" element={<Register/>}/>
-        <Route path="/login" element={<Login/>}/>
-      </Routes>
+          <Routes>
+            <Route exact path="/" element={<Home/>}/>
+            <Route path="/search" element={<Search/>}/>
+            <Route exact path="/song" element={<Song/>}/>
+            <Route path="/song/reviews" element={<ViewReviews/>}/>
+            <Route path="/song/create-review" element={<CreateReview/>}/>
+            <Route path="/album" element={<Album/>}/>
+            <Route path="/about" element={<About/>}/>
+            <Route path="/leaderboard" element={<Leaderboard/>}/>
+            <Route path="/register" element={<Register/>}/>
+            <Route path="/login" element={<Login/>}/>
+          </Routes>
     </BrowserRouter>
   );
 }

@@ -8,6 +8,7 @@ import LoginIcon from "@mui/icons-material/Login";
 import SideBar from "./components/SideBar/SideBar";
 import NavBar from "./components/NavBar";
 import { css } from "@emotion/react";
+import axios from 'axios';
 
 const Login = () => {
     let [username, setUsername] = useState("");
@@ -23,6 +24,14 @@ const Login = () => {
                 setPassword(event.target.value);
                 break;
         }
+    }
+
+    const handleSubmit = () => { /*Temp PHP submit until server is up*/
+        const url = 'http://localhost:8000';
+        let fData = new FormData();
+        fData.append('username', username);
+        fData.append('password', password);
+        axios.post(url, fData);
     }
 
     const handleClickShowPassword = () => {
@@ -128,7 +137,7 @@ const Login = () => {
                         <Button
                             variant="contained"
                             component={Link}
-                            to="/"
+                            onClick={handleSubmit}
                             startIcon={<LoginIcon/>}
                             sx={{color:"#191414"}}
                             style={{backgroundColor:"#1DB954"}}
@@ -154,7 +163,6 @@ const Login = () => {
                             </Button>
                         </Box>
                     </Box>
-
                 </Box>
             </Box>
         </Box>
