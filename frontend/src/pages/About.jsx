@@ -1,7 +1,7 @@
 import { Box } from "@mui/system";
 import { Typography, Container } from "@mui/material";
 import SideBar from "./components/SideBar/SideBar";
-import NavBar from "./components/NavBar/NavBar";
+import NavBar from "./components/NavBar";
 
 const About = () => {
     return (

@@ -15,7 +15,7 @@ import FootNote from "../components/FootNote"
 import SongCard from "../components/SongCard";
 import ArtistCard from "../components/ArtistCard";
 import { height } from "@mui/system";
-import NavBar from '../components/NavBar/NavBar';
+import NavBar from '../components/NavBar';
 
 
 const Home = () => {

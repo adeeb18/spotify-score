@@ -24,7 +24,7 @@
     background: rgb(18,18,18);
     background: linear-gradient(0deg, rgba(18,18,18,1) 52%, rgba(26,26,26,1) 75%, rgba(34,34,34,1) 89%, rgba(41,41,41,1) 100%);
     color: white;
-    height: 100%;
+    min-height: 100vh;
 }
 
 html{

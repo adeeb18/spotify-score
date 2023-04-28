@@ -1,17 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
-import FormControl from "@mui/material/FormControl";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import InputLabel from "@mui/material/InputLabel";
-import InputAdornment from "@mui/material/InputAdornment";
-import IconButton from "@mui/material/IconButton";
-import Button from "@mui/material/Button";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import Visibility from "@mui/icons-material/Visibility";
+import { Box,Typography, FormControl, OutlinedInput, InputLabel, InputAdornment, IconButton, Button, TextField} from "@mui/material";
+import {VisibilityOff, Visibility} from "@mui/icons-material";
 import LoginIcon from "@mui/icons-material/Login";
 import SideBar from "./components/SideBar/SideBar";
+import NavBar from "./components/NavBar";
+
 
 const Login = () => {
     let [username, setUsername] = useState("");
@@ -34,74 +28,116 @@ const Login = () => {
     }
 
     return (
-        <Container>
+        <Box className="d-flex">
             <SideBar/>
-            <Container sx={{
-                position:"absolute",
-                top:"50%",
-                left:"50%",
-                transform:"translate(-50%,-50%)",
-                display:"flex",
-                flexDirection:"column",
-                alignItems:"center",
-                justifyContent:"center"
-            }}>
-                <Typography
-                    variant="h3"
-                    color="#1DB954"
-                    marginBottom="6rem"
-                    fontWeight="700"
-                    textAlign="center"
-                >
-                    Log In
-                </Typography>
+            <Box className="main" sx={{flex:5}}>
+                <NavBar/>
+                <Box className="d-flex flex-column align-items-center mt-1 py-3" sx={{paddingX:"10vw"}}>
+                    <Box 
+                        className="d-flex flex-column align-items-center" 
+                        sx={{width:"40vw",backgroundColor:"rgba(41,41,41,1)", padding:"2rem"}}
+                    >
+                        <Typography
+                            variant="h4"
+                            color="#1DB954"
+                            fontWeight="700"
+                            textAlign="center"
+                        >
+                            WELCOME BACK
+                        </Typography>
+                        <Typography
+                            variant="h6"
+                            color="#C8C7C7"
+                            marginBottom="6rem"
+                            fontWeight="700"
+                            textAlign="center"
+                        >
+                            Log In
+                        </Typography>
 
-                <FormControl sx={{width:"30ch", mb:"1rem"}} variant="filled">
-                    <InputLabel htmlFor="usernameInput">Username</InputLabel>
-                    <OutlinedInput
-                        id="usernameInput"
-                        name="usernameInput"
-                        onChange={handleChange}
-                        sx={{backgroundColor:"#ffffff"}}
-                    />
-                </FormControl>
+                        <Box width="100%"><Typography textAlign="left" marginLeft={0.5} marginBottom={1}>Username</Typography></Box>
+                        <FormControl sx={{width:"100%", mb:"2rem"}} variant="outlined">
+                            <TextField 
+                                id="usernameInput"
+                                name="usernameInput"
+                                onChange={handleChange}
 
-                <FormControl sx={{width:"30ch", mb:"6rem"}} variant="filled">
-                    <InputLabel htmlFor="passwordInput">Password</InputLabel>
-                    <OutlinedInput
-                        id="passwordInput"
-                        name="passwordInput"
-                        onChange={handleChange}
-                        type={showPassword ? "text" : "password"}
-                        endAdornment={
-                            <InputAdornment position="end">
-                                <IconButton
-                                    onClick={handleClickShowPassword}
-                                    edge="end"
-                                >
-                                    {showPassword ? <VisibilityOff/> : <Visibility/>}
-                                </IconButton>
-                            </InputAdornment>
-                        }
-                        sx={{backgroundColor:"#ffffff"}}
-                    />
-                </FormControl>
+                                //label="Username" 
+                                variant="outlined"
+                                sx={{
+                                    "& .MuiOutlinedInput-root":{
+                                        "& > fieldset": {borderColor: "#C8C7C7"}
+                                    },
+                                    "& .MuiOutlinedInput-root:hover": {
+                                        "& > fieldset": {borderColor: "#1DB954"}
+                                    },
+                                    "& .MuiOutlinedInput-root.Mui-focused": {
+                                        "& > fieldset": {borderColor: "#1DB954"}
+                                    },
+                                    width: "100%"
+                                }} 
+                            />
+                        </FormControl>
 
-                <Button
-                    variant="contained"
-                    component={Link}
-                    to="/"
-                    startIcon={<LoginIcon/>}
-                    sx={{marginBottom:"6em", color:"#191414"}}
-                    style={{backgroundColor:"#1DB954"}}
-                >
-                    <Typography variant="h6" textTransform="none">
-                        Log In
-                    </Typography>
-                </Button>
+                        <Box className="d-flex justify-content-between align-items-center" width="100%">
+                            <Typography textAlign="left" marginLeft={0.5} marginBottom={1}>Password</Typography>
+                            <Typography color="#B6B5B5" fontSize={12} marginBottom={1}>Forgot password</Typography>
+                        </Box>
+                        <FormControl sx={{width:"100%", mb:"2rem"}} variant="outlined">
+                            <TextField
+                                id="passwordInput"
+                                name="passwordInput"
+                                onChange={handleChange}
+                                type={showPassword ? "text" : "password"}
+                                endAdornment={
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            onClick={handleClickShowPassword}
+                                            edge="end"
+                                        >
+                                            {showPassword ? <VisibilityOff/> : <Visibility/>}
+                                        </IconButton>
+                                    </InputAdornment>
+                                }
+                                //label="Username" 
+                                variant="outlined"
+                                sx={{
+                                    "& .MuiOutlinedInput-root":{
+                                        "& > fieldset": {borderColor: "#C8C7C7"}
+                                    },
+                                    "& .MuiOutlinedInput-root:hover": {
+                                        "& > fieldset": {borderColor: "#1DB954"}
+                                    },
+                                    "& .MuiOutlinedInput-root.Mui-focused": {
+                                        "& > fieldset": {borderColor: "#1DB954"}
+                                    },
+                                    width: "100%"
+                                }} 
+                            />
+                        </FormControl>
 
-            </Container>
-        </Container>
+                        <Button
+                            variant="contained"
+                            component={Link}
+                            to="/"
+                            startIcon={<LoginIcon/>}
+                            sx={{color:"#191414"}}
+                            style={{backgroundColor:"#1DB954"}}
+                        >
+                            <Typography variant="h6" textTransform="none">
+                                Log In
+                            </Typography>
+                        </Button>
+                        <Box class="d-flex">
+                            <Typography color="#B6B5B5" fontSize={12} marginTop={1}>New to SpotifyScore?</Typography>
+                            <Typography marginLeft={0.5} color="#1a9f48" fontWeight="bold" fontSize={12} marginTop={1}>Sign Up</Typography>
+                        </Box>
+                        
+                    </Box>
+
+                </Box>
+            </Box>
+        </Box>
     );
 }
 

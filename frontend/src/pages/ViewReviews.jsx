@@ -3,7 +3,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import SongCard from "./components/SongCard";
 import ReviewCard from "./components/ReviewCard";
 import SideBar from "./components/SideBar/SideBar";
-import NavBar from "./components/NavBar/NavBar";
+import NavBar from "./components/NavBar";
 import { Box, Container, Typography, Button} from "@mui/material";
 
 const ViewReviews = () => {

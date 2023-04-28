@@ -62,7 +62,7 @@ const NavBar = () => {
                     </Typography>
                 </Box>
                 <Box>
-                    <Button href="/register" sx={{textTransform:"none", color:"white", marginRight:1}}>Sign Up</Button>
+                    <Button href="/SignUp" sx={{textTransform:"none", color:"white", marginRight:1}}>Sign Up</Button>
                     <Button href="/login" sx={{textTransform:"none", backgroundColor:"white", color:"black", borderRadius:5}} variant="contained">Log In</Button>
                 </Box>
             </Toolbar>

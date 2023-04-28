@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Form, useSearchParams } from "react-router-dom";
 import { Box, Container, Typography, Button, ButtonGroup, Paper, InputBase, IconButton} from "@mui/material";
 import SideBar from "./components/SideBar/SideBar";
-import NavBar from "./components/NavBar/NavBar";
+import NavBar from "./components/NavBar";
 import SongCard from "./components/SongCard";
 import AlbumCard from "./components/AlbumCard";
 import SearchIcon from "@mui/icons-material/Search";

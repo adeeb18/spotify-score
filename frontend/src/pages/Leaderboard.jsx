@@ -10,7 +10,7 @@ import MenuItem from "@mui/material/MenuItem";
 import SideBar from "./components/SideBar/SideBar";
 import SongCard from "./components/SongCard";
 import AlbumCard from "./components/AlbumCard";
-import NavBar from "./components/NavBar/NavBar";
+import NavBar from "./components/NavBar";
 
 const Leaderboard = () => {
     let [type, setType] = useState("songs");
