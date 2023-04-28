@@ -4,12 +4,13 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Box,Typography, FormControl, InputAdornment, IconButton, Button, TextField} from "@mui/material";
 import {VisibilityOff, Visibility} from "@mui/icons-material";
-import LoginIcon from "@mui/icons-material/Login";
+import InputLabel from "@mui/material/InputLabel";
+import HowToRegIcon from "@mui/icons-material/HowToReg";
 import SideBar from "./components/SideBar/SideBar";
 import NavBar from "./components/NavBar";
 import { css } from "@emotion/react";
 
-const Login = () => {
+const SignUp = () => {
     let [username, setUsername] = useState("");
     let [password, setPassword] = useState("");
     let [showPassword, setShowPassword] = useState(false);
@@ -35,7 +36,7 @@ const Login = () => {
             <Box className="main" sx={{flex:5}}>
                 <NavBar/>
                 <Box className="d-flex flex-column align-items-center mt-1 py-3" sx={{paddingX:"10vw"}}>
-                    <Box 
+                    <Box
                         className="d-flex flex-column align-items-center" 
                         sx={{width:"40vw",backgroundColor:"rgba(41,41,41,1)", padding:"2rem"}}
                     >
@@ -45,9 +46,9 @@ const Login = () => {
                             fontWeight="700"
                             textAlign="center"
                         >
-                            WELCOME BACK
+                            WELCOME
                         </Typography>
-                        
+
                         <Typography
                             variant="h6"
                             color="#C8C7C7"
@@ -55,7 +56,7 @@ const Login = () => {
                             fontWeight="700"
                             textAlign="center"
                         >
-                            Log In
+                            Sign Up
                         </Typography>
 
                         <Box width="100%"><Typography textAlign="left" marginLeft={0.5} marginBottom={1}>Username</Typography></Box>
@@ -82,10 +83,10 @@ const Login = () => {
                                 }} 
                             />
                         </FormControl>
-
+                        
                         <Box className="d-flex justify-content-between align-items-center" width="100%">
                             <Typography textAlign="left" marginLeft={0.5} marginBottom={1}>Password</Typography>
-                            <Typography color="#B6B5B5" fontSize={12} marginBottom={1}>Forgot password</Typography>
+                            <Typography color="#B6B5B5" fontSize={12} marginBottom={1}>Forgot password?</Typography>
                         </Box>
                         <FormControl sx={{width:"100%", mb:"2rem"}} variant="outlined">
                             <TextField
@@ -93,7 +94,6 @@ const Login = () => {
                                 name="passwordInput"
                                 onChange={handleChange}
                                 type={showPassword ? "text" : "password"}
-                                
                                 InputProps={{
                                     endAdornment:(
                                         <InputAdornment>
@@ -129,18 +129,18 @@ const Login = () => {
                             variant="contained"
                             component={Link}
                             to="/"
-                            startIcon={<LoginIcon/>}
+                            startIcon={<HowToRegIcon/>}
                             sx={{color:"#191414"}}
                             style={{backgroundColor:"#1DB954"}}
                         >
                             <Typography variant="h6" textTransform="none">
-                                Log In
+                                SignUp
                             </Typography>
                         </Button>
                         <Box class="d-flex">
-                            <Typography color="#B6B5B5" fontSize={12} marginTop={1.2}>New to SpotifyScore?</Typography>
+                            <Typography color="#B6B5B5" fontSize={12} marginTop={1.2}>Already have an account?</Typography>
                             <Button 
-                                href="/register" 
+                                href="/login" 
                                 sx={{textTransform:"none", color:"#1a9f48"}}
                                 css={css`
                                     :hover {
@@ -150,15 +150,14 @@ const Login = () => {
                                     }
                                 `}
                             >
-                                Register
+                                Log In
                             </Button>
                         </Box>
                     </Box>
-
                 </Box>
             </Box>
         </Box>
     );
 }
 
-export default Login;
+export default SignUp;

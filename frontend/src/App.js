@@ -7,7 +7,7 @@ import About from "./pages/About";
 import ViewReviews from "./pages/ViewReviews";
 import CreateReview from "./pages/CreateReview";
 import Leaderboard from "./pages/Leaderboard";
-import SignUp from "./pages/SignUp";
+import Register from "./pages/Register";
 import Login from "./pages/Login";
 import './App.css';
 
@@ -23,7 +23,7 @@ function App() {
         <Route path="/album" element={<Album/>}/>
         <Route path="/about" element={<About/>}/>
         <Route path="/leaderboard" element={<Leaderboard/>}/>
-        <Route path="/SignUp" element={<SignUp/>}/>
+        <Route path="/register" element={<Register/>}/>
         <Route path="/login" element={<Login/>}/>
       </Routes>
     </BrowserRouter>

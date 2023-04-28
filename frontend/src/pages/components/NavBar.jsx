@@ -32,10 +32,10 @@ const NavBar = () => {
         else if(currPage.pathname === "/leaderboard"){
             return "Leaderboard";
         }
-        else if(currPage.pathname === "/SignUp"){
-            return "SignUp";
+        else if(currPage.pathname === "/register"){
+            return "Register";
         }
-        else if(currPage.pathname === "/Log In"){
+        else if(currPage.pathname === "/login"){
             return "Log In";
         }
     }
@@ -62,7 +62,7 @@ const NavBar = () => {
                     </Typography>
                 </Box>
                 <Box>
-                    <Button href="/SignUp" sx={{textTransform:"none", color:"white", marginRight:1}}>Sign Up</Button>
+                    <Button href="/register" sx={{textTransform:"none", color:"white", marginRight:1}}>Register</Button>
                     <Button href="/login" sx={{textTransform:"none", backgroundColor:"white", color:"black", borderRadius:5}} variant="contained">Log In</Button>
                 </Box>
             </Toolbar>
