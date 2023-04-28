@@ -138,6 +138,7 @@ const Login = () => {
                             variant="contained"
                             component={Link}
                             onClick={handleSubmit}
+                            to="/"
                             startIcon={<LoginIcon/>}
                             sx={{color:"#191414"}}
                             style={{backgroundColor:"#1DB954"}}
