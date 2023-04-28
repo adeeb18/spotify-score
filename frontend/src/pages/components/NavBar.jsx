@@ -12,7 +12,7 @@ const NavBar = () => {
     let [check, setCheck] = useState(false);
     
 
-    const getUser = () => { /*Temp PHP submit until server is up*/
+    const getUser = () => { /*Temp PHP get until server is up*/
         if(!check){
             const url = 'http://localhost:8000';
             axios.get(url).then(res => {
