@@ -14,10 +14,14 @@ class User(BaseModel):
     username: str
     password: str
     dob: date
-    date_created: Optional[date]
+    date_created: Optional[datetime]
 
 class User_ID(BaseModel):
     user_id: int
+
+class User_Song(BaseModel):
+    user_id: int
+    song_id: str
 
 class Login(BaseModel):
     username: str
@@ -32,8 +36,8 @@ class Song_Review(BaseModel):
     style: str
     mood: str
     would_recommend: str
-    time_created: Optional[date]
-    last_edited: Optional[date]
+    time_created: Optional[datetime]
+    last_edited: Optional[datetime]
 
 class Album_Review(BaseModel):
     user_id: int
@@ -44,8 +48,8 @@ class Album_Review(BaseModel):
     style: str
     mood: str
     would_recommend: str
-    time_created: Optional[date]
-    last_edited: Optional[date]
+    time_created: Optional[datetime]
+    last_edited: Optional[datetime]
 
 def connect_to_database(host, user, password, database):
     db = mysql.connector.connect(
@@ -187,7 +191,7 @@ async def delete_user(user: User_ID, content_type: str = Header("application/jso
 
 # CREATE A REVIEW
 @app.post("/users/createSongReview")
-async def create_review(review: Song_Review, content_type: str = Header("application/json")):
+async def create_song_review(review: Song_Review, content_type: str = Header("application/json")):
     review_dict = jsonable_encoder(review)
 
     db = connect_to_database("sql9.freemysqlhosting.net", "sql9614548", "uxn5nljy2g", "sql9614548")
@@ -255,9 +259,75 @@ async def get_user_reviews(user: User_ID, content_type: str = Header("applicatio
     return review_dicts_with_fields
 
 # EDIT A REVIEW
+# PASS IN THE SONG_ID AND USER_ID ALONG WITH ALL THE FIELDS FROM THE REVIEW FORM
+@app.put("/users/editSongReview")
+async def edit_song_review(review: Song_Review, content_type: str = Header("application/json")):
+    review_dict = jsonable_encoder(review)
 
-# DELETE A REVIEW
+    db = connect_to_database("sql9.freemysqlhosting.net", "sql9614548", "uxn5nljy2g", "sql9614548")
 
+    cursor = db.cursor()
 
+    # VALIDATE THE INFORMATION
+    if not review_dict['user_id'] or not review_dict['song_id'] or not review_dict['genre'] or not review_dict['num_rating'] or not review_dict['overall_thoughts'] or not review_dict['style'] or not review_dict['mood']:
+        raise HTTPException(status_code=400, detail="Missing fields.")
+    
+    # CHECK IF THIS USER HAS ALREADY MADE A REVIEW FOR THIS SONG
+    existing_review_query = "SELECT * FROM song_reviews WHERE user_id = %s AND song_id = %s"
+    cursor.execute(existing_review_query, (review_dict['user_id'], review_dict['song_id']))
+    existing_review = cursor.fetchone()
 
+    if existing_review is None:
+        raise HTTPException(status_code=400, detail="This user has not made an existing review for this song.")
+    else:
+        # GET THE TIME CREATED
+        review_dict['time_created'] = existing_review[8]
+
+    # SET THE VALUE OF TIME_EDITED TO THE CURRENT TIME
+    review_dict['last_edited'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+    query = "UPDATE song_reviews SET genre = %s, num_rating = %s, overall_thoughts = %s, style = %s, mood = %s, would_recommend = %s, last_edited = %s WHERE user_id = %s AND song_id = %s"
+    values = (review_dict['genre'], review_dict['num_rating'], review_dict['overall_thoughts'], review_dict['style'], review_dict['mood'], review_dict['would_recommend'], review_dict['last_edited'], review_dict['user_id'], review_dict['song_id'])
+
+    try:
+        cursor.execute(query, values)
+        db.commit()
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+    # RETRIEVE THE NEWLY CREATED REVIEW
+    review_query = "SELECT user_id, song_id, genre, num_rating, overall_thoughts, style, mood, would_recommend, time_created, last_edited FROM song_reviews WHERE user_id = %s AND song_id = %s"
+    cursor.execute(review_query, (review_dict['user_id'], review_dict['song_id']))
+    review_result = cursor.fetchone()
+    field_names = ['user_id', 'song_id', 'genre', 'num_rating', 'overall_thoughts', 'style', 'mood', 'would_recommend', 'time_created', 'last_edited']
+    review_dict_with_fields = dict(zip(field_names, review_result))
+
+    cursor.close()
+    db.close()
+
+    return review_dict_with_fields
+
+# DELETE A SONG REVIEW
+@app.delete("/users/deleteSongReview")
+async def delete_song_review(user: User_Song, content_type: str = Header("application/json")):
+    db = connect_to_database("sql9.freemysqlhosting.net", "sql9614548", "uxn5nljy2g", "sql9614548")
+
+    cursor = db.cursor()
+
+    user_dict = jsonable_encoder(user)
+
+    # USER_ID CONSTRAINT HAS "ON DELETE CASCADE" SO, WHEN THE USER IS DELETED, IT DELETES ENTRIES IN THE REVIEW TABLES WHERE USER_ID IS A FOREIGN KEY
+    query = "DELETE FROM song_reviews WHERE user_id = %s AND song_id = %s"
+
+    # NEED TO ALSO UPDATE OVERALL SONG/ALBUM RATINGS SINCE REVIEWS WILL BE DELETED
+
+    cursor.execute(query, (user_dict['user_id'], user_dict['song_id'],))
+    db.commit()
+    if cursor.rowcount == 0:
+        raise HTTPException(status_code=404, detail="User song review not found.")
+
+    cursor.close()
+    db.close()
+
+    return {"message": f"User with user_id {user_dict['user_id']} and song_id {user_dict['song_id']} has been deleted."}
 
