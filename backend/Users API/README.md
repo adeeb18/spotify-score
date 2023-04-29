@@ -32,4 +32,4 @@
       "date_created": null
     }
     ```
-    - Make sure to know what you **need** to pass in and what is optional. The fields that have "Optional" are not needed can have "null" in its place.
+    - Make sure to know what you **need** to pass in and what is optional. The fields that have "Optional" are not needed and can have "null" in its place.
