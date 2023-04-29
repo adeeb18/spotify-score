@@ -12,9 +12,9 @@ import { css } from "@emotion/react";
 import axios from "axios";
 
 const SignUp = () => {
-    let [username, setUsername] = useState("");
-    let [password, setPassword] = useState("");
-    let [dob, setDOB] = useState("");
+    let [user, setUsername] = useState("");
+    let [pass, setPassword] = useState("");
+    let [date, setDOB] = useState("");
     let [month, setMonth] = useState("");
     let [day, setDay] = useState("");
     let [year, setYear] = useState("");
@@ -47,17 +47,11 @@ const SignUp = () => {
     const handleSubmit = () => {
         //set dob
         setDOB(year + "-1" + "-" + day);
-        const body = {"user_id": null,"username": username, "password": password, "dob": dob, "date_created": null}
         const url = 'http://localhost:8000/users/createUser'
-        (async () => {
-            try {
-                const response = await axios.post(url, body);
-                const responseID = response.data.id;
-                console.log(responseID); // use split if you have to, I dont think you need that.
-            } catch(err) {
-                console.error(err);
-            }
-        })()
+        const payload = {user_id: null, username: user, password: pass, dob: date, date_created: null}
+        axios.post(url, payload)
+            .then(response => console.log(response))
+            .catch(error => console.error(error));
     }
 
     return (
