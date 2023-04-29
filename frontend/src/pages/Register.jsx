@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Box,Typography, FormControl, InputAdornment, IconButton, Button, 
-         TextField, Select, MenuItem, Menu} from "@mui/material";
+         TextField, Select, MenuItem, Menu, useRadioGroup} from "@mui/material";
 import {VisibilityOff, Visibility} from "@mui/icons-material";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import SideBar from "./components/SideBar/SideBar";
@@ -19,6 +19,8 @@ const SignUp = () => {
     let [day, setDay] = useState("");
     let [year, setYear] = useState("");
     let [showPassword, setShowPassword] = useState(false);
+    let [errorState, setError] = useState(false);
+    let [helper, setHelper] = useState("");
 
     const handleChange = (event) => {
         switch(event.target.name) {
@@ -44,11 +46,21 @@ const SignUp = () => {
         setShowPassword((show) => !show);
     }
 
+    const handleValidation = () => {
+
+    }
+
+    const getDOB = () => {
+        if(Number(month) < 10){setMonth("0"+ month);}
+        const dob = year + "-" + month + "-" + day;
+        setDOB(dob);
+    }
+
     const handleSubmit = () => {
         //set dob
-        setDOB(year + "-1" + "-" + day);
+        getDOB();
         const url = 'http://localhost:8000/users/createUser'
-        const payload = {user_id: null, username: user, password: pass, dob: "2020-10-02", date_created: null}
+        const payload = {user_id: null, username: user, password: pass, dob: date, date_created: null}
         axios.post(url, payload)
             .then(response => console.log(response))
             .catch(error => console.error(error));
@@ -86,6 +98,8 @@ const SignUp = () => {
                         <Box width="100%"><Typography textAlign="left" marginLeft={0.5} marginBottom={1}>Username</Typography></Box>
                         <FormControl sx={{width:"100%", mb:"2rem"}} variant="outlined">
                             <TextField 
+                                error={errorState}
+                                helperText={helper}
                                 id="usernameInput"
                                 name="usernameInput"
                                 onChange={handleChange}
