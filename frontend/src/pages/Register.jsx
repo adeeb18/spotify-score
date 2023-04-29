@@ -19,35 +19,85 @@ const SignUp = () => {
     let [day, setDay] = useState("");
     let [year, setYear] = useState("");
     let [showPassword, setShowPassword] = useState(false);
-    let [errorState, setError] = useState(false);
-    let [helper, setHelper] = useState("");
+    let [userError, setUserError] = useState(false);
+    let [userHelper, setUserHelper] = useState("");
+    let [passwordError, setPasswordError] = useState(false);
+    let [passwordHelper, setPasswordHelper] = useState("");
+    let [monthError, setMonthError] = useState(false);
+    let [monthHelper, setMonthHelper] = useState("");
+    let [dayError, setDayError] = useState(false);
+    let [dayHelper, setDayHelper] = useState("");
+    let [yearError, setYearError] = useState(false);
+    let [yearHelper, setYearHelper] = useState("");
 
     const handleChange = (event) => {
         switch(event.target.name) {
-            case "usernameInput":
-                setUsername(event.target.value);
-                break;
-            case "passwordInput":
-                setPassword(event.target.value);
-                break;
-            case "monthInput":
-                setMonth(event.target.value);
-                break;
-            case "dayInput":
-                setDay(event.target.value);
-                break;
-            case "yearInput":
-                setYear(event.target.value);
-                break;
+            case "usernameInput":{
+                if((event.target.value) == undefined || (event.target.value) == ""){
+                    setUserError(true);
+                    setUserHelper("Username is required");
+                }
+                else{
+                    setUsername(event.target.value);
+                    setUserError(false);
+                    setUserHelper("");
+                }
+            }break;
+            case "passwordInput":{
+                if((event.target.value) == undefined || (event.target.value) == ""){
+                    setPasswordError(true);
+                    setPasswordHelper("Password is required");
+                }
+                else{
+                    setPassword(event.target.value);
+                    setPasswordError(false);
+                    setPasswordHelper("");
+                }
+            }break;
+            case "monthInput":{
+                if((event.target.value) == undefined || (event.target.value) == ""){
+                    setMonthError(true);
+                    setMonthHelper("Month is required");
+                }
+                else{
+                    setMonth(event.target.value);
+                    setMonthError(false);
+                    setMonthHelper("");
+                }
+            }break;
+            case "dayInput":{
+                if(isNaN(event.target.value)){
+                    setDayError(true);
+                    setDayHelper("Day must be a number")
+                }
+                else{
+                    setDay(event.target.value);
+                    setDayError(false);
+                    setDayHelper("");
+                }
+            }break;
+                
+                
+            case "yearInput":{
+                if(isNaN(event.target.value)){
+                    setYearError(true);
+                    setYearHelper("Year must be a number");
+                }
+                else if((event.target.value).length != 4 ){
+                    setYearError(true);
+                    setYearHelper("Years must be 4 digits");
+                }
+                else{
+                    setYear(event.target.value);
+                    setYearError(false);
+                    setYearHelper("");
+                }
+            }break;
         }
     }
 
     const handleClickShowPassword = () => {
         setShowPassword((show) => !show);
-    }
-
-    const handleValidation = () => {
-
     }
 
     const getDOB = () => {
@@ -98,8 +148,8 @@ const SignUp = () => {
                         <Box width="100%"><Typography textAlign="left" marginLeft={0.5} marginBottom={1}>Username</Typography></Box>
                         <FormControl sx={{width:"100%", mb:"2rem"}} variant="outlined">
                             <TextField 
-                                error={errorState}
-                                helperText={helper}
+                                error={userError}
+                                helperText={userHelper}
                                 id="usernameInput"
                                 name="usernameInput"
                                 onChange={handleChange}
@@ -114,6 +164,8 @@ const SignUp = () => {
                         </Box>
                         <FormControl sx={{width:"100%", mb:"2rem"}} variant="outlined">
                             <TextField
+                                error={passwordError}
+                                helperText={passwordHelper}
                                 id="passwordInput"
                                 name="passwordInput"
                                 onChange={handleChange}
@@ -142,6 +194,8 @@ const SignUp = () => {
                                 <Typography textAlign="left" color="#c7c9c9">Month</Typography>
                                 <FormControl sx={{minWidth:150}} variant="outlined">
                                     <Select
+                                        error={monthError}
+                                        helperText={monthHelper}
                                         id="monthInput"
                                         name="monthInput"
                                         value={month}
@@ -167,6 +221,8 @@ const SignUp = () => {
                                 <Typography textAlign="left" marginLeft={0.5} marginBottom={0} color="#c7c9c9">Day</Typography>
                                 <FormControl sx={{width:50}} variant="outlined">
                                     <TextField 
+                                        error={dayError}
+                                        helperText={dayHelper}
                                         id="dayInput"
                                         name="dayInput"
                                         onChange={handleChange}
@@ -179,6 +235,8 @@ const SignUp = () => {
                                 <Typography textAlign="left" marginLeft={0.5} marginBottom={0} color="#c7c9c9">Year</Typography>
                                 <FormControl sx={{width:100}} variant="outlined">
                                     <TextField 
+                                        error={yearError}
+                                        helperText={yearHelper}
                                         id="yearInput"
                                         name="yearInput"
                                         onChange={handleChange}
