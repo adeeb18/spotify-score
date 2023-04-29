@@ -6,8 +6,10 @@ import { css } from "@emotion/react";
 import {useLocation} from "react-router-dom";
 import axios from 'axios';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import SearchBar from './SearchBar';
 
 const NavBar = () => {
+    /*PAGE LOCATION */
     const currPage = useLocation();
     let [user, setUser] = useState([]);
     let [check, setCheck] = useState(false);
@@ -59,21 +61,6 @@ const NavBar = () => {
 
     const pageName = initializePage();
 
-    const [auth, setAuth] = useState(true);
-    const [anchorEl, setAnchorEl] = useState(null);
-
-    const handleChange = (event) => {
-        setAuth(event.target.checked);
-    };
-
-    const handleMenu = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
     const LoggedOut = (
         <Box>
             <Button href="/register" sx={{textTransform:"none", color:"white", marginRight:1}}>Register</Button>
@@ -91,6 +78,19 @@ const NavBar = () => {
             </Button>
         </Box>
     );
+
+    /*USER INFORMATION*/
+    const [auth, setAuth] = useState(true);
+    const [anchorEl, setAnchorEl] = useState(null);
+
+    const handleMenu = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
     const LoggedIn = (
         <Box>
             <Button 
@@ -127,7 +127,8 @@ const NavBar = () => {
             </Menu>
         </Box>
     );
-    
+
+    /*DYNAMIC UI FIELDS*/
     const NavLeft = (user[0] == "No user") ? LoggedOut : LoggedIn;
     
     return (
@@ -149,6 +150,7 @@ const NavBar = () => {
                         {pageName}
                     </Typography>
                 </Box>
+                <SearchBar/>
                 {NavLeft}
                     
             </Toolbar>

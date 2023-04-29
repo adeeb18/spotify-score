@@ -1,11 +1,9 @@
 /* eslint-disable react/react-in-jsx-scope -- Unaware of jsxImportSource */
 /** @jsxImportSource @emotion/react */
-import { useState } from 'react';
 import './SideBar.css';
 import { AppBar, Toolbar, Typography, List, ListItemButton, ListItemText, Box } from '@mui/material';
 import ScoreLogo from "../../../images/logo.png";
 import { css } from "@emotion/react";
-import axios from 'axios';
 
 const SideBar = () => {
     return (

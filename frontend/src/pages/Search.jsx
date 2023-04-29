@@ -42,41 +42,6 @@ const Search = () => {
             <Box className="main" sx={{flex:5}}>
                 <NavBar/>
                 <Container className="mt-2">
-                    <Box className="my-3">
-                        <Paper component="form" onSubmit={handleSearch} 
-                            sx={{ p: "0px 4px", display:"flex", alignItems:"center", borderRadius:3, marginX:"4rem"}}
-                        >
-                            <InputBase
-                                className="searchBox"
-                                placeholder="What kind of music do you like?"
-                                onChange={handleChange}
-                                sx={{ paddingLeft: "1rem", width: "40rem", height: "4rem" }}
-                            />
-                            <IconButton type="submit">
-                                <SearchIcon/>
-                            </IconButton>
-                        </Paper>
-                        {searchResults.length > 0 && (
-                            <Container
-                                sx={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    alignItems: "center",
-                                    position: "relative",
-                                    height: "30rem",
-                                    overflowY: "scroll",
-                                }}
-                            >
-                                {searchResults.map((result) => (
-                                    <ArtistCard
-                                        artist={result.name}
-                                        imageUrl={result.image_url}
-                                        song = ''
-                                    />
-                                ))}
-                            </Container>
-                        )}
-                    </Box>
                     <Typography variant="h4" color="#1DB954" mb="1rem" mx="4rem">
                         Search Results for "{searchParams.get("q")}"
                     </Typography>
