@@ -1,31 +1,10 @@
-const initializePage = () =>{
-    if(currPage === "/search"){
-        return "Search";
+(async () => {
+    try {
+        const response = await  axios.get('http://localhost:8000/users/getUsers');
+        const data = response.data;
+        setData(data); // use split if you have to, I dont think you need that.
+    } catch(err) {
+        console.error(err);
     }
-    else if(currPage === "/song"){
-        return "Song";
-    }
-    else if(currPage === "/song/reviews"){
-        return "Reviews";
-    }
-    else if(currPage === "/song/create-review"){
-        return "Create Review";
-    }
-    else if(currPage === "/album"){
-        return "Album";
-    }
-    else if(currPage === "/about"){
-        return "About";
-    }
-    else if(currPage === "/leaderboard"){
-        return "Leaderboard";
-    }
-    else if(currPage === "/SignUp"){
-        return "SignUp";
-    }
-    else if(currPage === "/Log In"){
-        return "Log In";
-    }
-}
-
-currPage.pathname === "/" ? "Home" : "NotHome"
+})()
+console.log(data[0]);

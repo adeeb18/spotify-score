@@ -2,17 +2,22 @@
 /** @jsxImportSource @emotion/react */
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Box,Typography, FormControl, InputAdornment, IconButton, Button, TextField} from "@mui/material";
+import { Box,Typography, FormControl, InputAdornment, IconButton, Button, 
+         TextField, Select, MenuItem, Menu} from "@mui/material";
 import {VisibilityOff, Visibility} from "@mui/icons-material";
-import InputLabel from "@mui/material/InputLabel";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import SideBar from "./components/SideBar/SideBar";
 import NavBar from "./components/NavBar";
 import { css } from "@emotion/react";
+import axios from "axios";
 
 const SignUp = () => {
     let [username, setUsername] = useState("");
     let [password, setPassword] = useState("");
+    let [dob, setDOB] = useState("");
+    let [month, setMonth] = useState("");
+    let [day, setDay] = useState("");
+    let [year, setYear] = useState("");
     let [showPassword, setShowPassword] = useState(false);
 
     const handleChange = (event) => {
@@ -23,11 +28,36 @@ const SignUp = () => {
             case "passwordInput":
                 setPassword(event.target.value);
                 break;
+            case "monthInput":
+                setMonth(event.target.value);
+                break;
+            case "dayInput":
+                setDay(event.target.value);
+                break;
+            case "yearInput":
+                setYear(event.target.value);
+                break;
         }
     }
 
     const handleClickShowPassword = () => {
         setShowPassword((show) => !show);
+    }
+
+    const handleSubmit = () => {
+        //set dob
+        setDOB(year + "-1" + "-" + day);
+        const body = {"user_id": null,"username": username, "password": password, "dob": dob, "date_created": null}
+        const url = 'http://localhost:8000/users/createUser'
+        (async () => {
+            try {
+                const response = await axios.post(url, body);
+                const responseID = response.data.id;
+                console.log(responseID); // use split if you have to, I dont think you need that.
+            } catch(err) {
+                console.error(err);
+            }
+        })()
     }
 
     return (
@@ -65,22 +95,8 @@ const SignUp = () => {
                                 id="usernameInput"
                                 name="usernameInput"
                                 onChange={handleChange}
-
-                                //label="Username" 
                                 variant="outlined"
-                                sx={{
-                                    input: { color:"#C8C7C7" },
-                                    "& .MuiOutlinedInput-root":{
-                                        "& > fieldset": {borderColor: "#C8C7C7"}
-                                    },
-                                    "& .MuiOutlinedInput-root:hover": {
-                                        "& > fieldset": {borderColor: "#1DB954"}
-                                    },
-                                    "& .MuiOutlinedInput-root.Mui-focused": {
-                                        "& > fieldset": {borderColor: "#1DB954"}
-                                    },
-                                    width: "100%"
-                                }} 
+                                sx={{input: { color:"#C8C7C7" },}}
                             />
                         </FormControl>
                         
@@ -96,7 +112,7 @@ const SignUp = () => {
                                 type={showPassword ? "text" : "password"}
                                 InputProps={{
                                     endAdornment:(
-                                        <InputAdornment>
+                                        <InputAdornment position="end">
                                             <IconButton
                                                 onClick={handleClickShowPassword}
                                                 edge="end"
@@ -107,28 +123,67 @@ const SignUp = () => {
                                         </InputAdornment>
                                     )
                                 }}
-                                //label="Username" 
                                 variant="outlined"
-                                sx={{
-                                    input: { color:"#C8C7C7" },
-                                    "& .MuiOutlinedInput-root":{
-                                        "& > fieldset": {borderColor: "#C8C7C7"}
-                                    },
-                                    "& .MuiOutlinedInput-root:hover": {
-                                        "& > fieldset": {borderColor: "#1DB954"}
-                                    },
-                                    "& .MuiOutlinedInput-root.Mui-focused": {
-                                        "& > fieldset": {borderColor: "#1DB954"}
-                                    },
-                                    width: "100%"
-                                }} 
+                                sx={{input: { color:"#C8C7C7" },}}
                             />
                         </FormControl>
 
+                        <Box width="100%"><Typography textAlign="left" marginLeft={0.5} marginBottom={1}>Date of birth</Typography></Box>
+                        <Box width="100%" className="d-flex justify-content-evenly mb-4">
+                            <Box>
+                                <Typography textAlign="left" color="#c7c9c9">Month</Typography>
+                                <FormControl sx={{minWidth:150}} variant="outlined">
+                                    <Select
+                                        id="monthInput"
+                                        name="monthInput"
+                                        value={month}
+                                        onChange={handleChange}
+                                        sx={{input: { color:"#C8C7C7" },}}
+                                    >
+                                        <MenuItem value={1}>January</MenuItem>
+                                        <MenuItem value={2}>February</MenuItem>
+                                        <MenuItem value={3}>March</MenuItem>
+                                        <MenuItem value={4}>April</MenuItem>
+                                        <MenuItem value={5}>May</MenuItem>
+                                        <MenuItem value={6}>June</MenuItem>
+                                        <MenuItem value={7}>July</MenuItem>
+                                        <MenuItem value={8}>August</MenuItem>
+                                        <MenuItem value={9}>September</MenuItem>
+                                        <MenuItem value={10}>October</MenuItem>
+                                        <MenuItem value={11}>November</MenuItem>
+                                        <MenuItem value={12}>December</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </Box>
+                            <Box>
+                                <Typography textAlign="left" marginLeft={0.5} marginBottom={0} color="#c7c9c9">Day</Typography>
+                                <FormControl sx={{width:50}} variant="outlined">
+                                    <TextField 
+                                        id="dayInput"
+                                        name="dayInput"
+                                        onChange={handleChange}
+                                        variant="outlined"
+                                        sx={{input: { color:"#C8C7C7", textAlign:"center"},}}
+                                    />
+                                </FormControl>
+                            </Box>
+                            <Box>
+                                <Typography textAlign="left" marginLeft={0.5} marginBottom={0} color="#c7c9c9">Year</Typography>
+                                <FormControl sx={{width:100}} variant="outlined">
+                                    <TextField 
+                                        id="yearInput"
+                                        name="yearInput"
+                                        onChange={handleChange}
+                                        variant="outlined"
+                                        sx={{input: { color:"#C8C7C7", textAlign:"center"},}}
+                                    />
+                                </FormControl>
+                            </Box>
+                        </Box>
+
                         <Button
                             variant="contained"
-                            component={Link}
-                            to="/"
+                            onClick={handleSubmit}
                             startIcon={<HowToRegIcon/>}
                             sx={{color:"#191414"}}
                             style={{backgroundColor:"#1DB954"}}
@@ -137,7 +192,7 @@ const SignUp = () => {
                                 SignUp
                             </Typography>
                         </Button>
-                        <Box class="d-flex">
+                        <Box className="d-flex">
                             <Typography color="#B6B5B5" fontSize={12} marginTop={1.2}>Already have an account?</Typography>
                             <Button 
                                 href="/login" 

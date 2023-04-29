@@ -16,6 +16,7 @@ import SongCard from "../components/SongCard";
 import ArtistCard from "../components/ArtistCard";
 import { height } from "@mui/system";
 import NavBar from '../components/NavBar';
+import axios from 'axios';
 
 
 const Home = () => {
@@ -24,6 +25,8 @@ const Home = () => {
     const handleChange = (event) => {
         setSearchInput(event.target.value);
     };
+
+    let [data, setData] = useState([]);
 
     const handleSearch = (event) => {
         event.preventDefault(); // prevent the default form submission

@@ -17,10 +17,12 @@ const NavBar = () => {
 
     const getUser = () => { /*Temp PHP get until server is up*/
         if(!check){
-            const url = 'http://localhost:8000';
+            /*const url = 'http://localhost:8000';
             axios.get(url).then(res => {
                 setUser(res.data.split("\n"));
-            });
+            });*/
+            const temp = ["No user","No user"];
+            setUser(temp);
             setCheck(true);
         }
     }
@@ -62,7 +64,7 @@ const NavBar = () => {
     const pageName = initializePage();
 
     const LoggedOut = (
-        <Box>
+        <Box className="d-flex align-items-center">
             <Button href="/register" sx={{textTransform:"none", color:"white", marginRight:1}}>Register</Button>
             <Button 
                 href="/login" 
