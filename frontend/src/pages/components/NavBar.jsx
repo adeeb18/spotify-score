@@ -1,10 +1,11 @@
 /* eslint-disable react/react-in-jsx-scope -- Unaware of jsxImportSource */
 /** @jsxImportSource @emotion/react */
 import { useState } from 'react';
-import { AppBar, Toolbar, Typography, Box, Button} from '@mui/material';
+import { AppBar, Toolbar, Typography, Box, Button, Menu, MenuItem} from '@mui/material';
 import { css } from "@emotion/react";
 import {useLocation} from "react-router-dom";
 import axios from 'axios';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 const NavBar = () => {
     const currPage = useLocation();
@@ -58,15 +59,72 @@ const NavBar = () => {
 
     const pageName = initializePage();
 
+    const [auth, setAuth] = useState(true);
+    const [anchorEl, setAnchorEl] = useState(null);
+
+    const handleChange = (event) => {
+        setAuth(event.target.checked);
+    };
+
+    const handleMenu = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
     const LoggedOut = (
         <Box>
             <Button href="/register" sx={{textTransform:"none", color:"white", marginRight:1}}>Register</Button>
-            <Button href="/login" sx={{textTransform:"none", backgroundColor:"white", color:"black", borderRadius:5}} variant="contained">Log In</Button>
+            <Button 
+                href="/login" 
+                sx={{textTransform:"none", backgroundColor:"white", color:"black", borderRadius:5}} 
+                variant="contained"
+                css={css`
+                    :hover {
+                    background-color: #2e8b57;
+                    }
+                `}
+            >
+                    Log In
+            </Button>
         </Box>
     );
     const LoggedIn = (
         <Box>
-            <Button href="/login" sx={{textTransform:"none", backgroundColor:"white", color:"black", borderRadius:5}} variant="contained">{user[0]}</Button>
+            <Button 
+                sx={{textTransform:"none", backgroundColor:"white", color:"black", borderRadius:5, paddingRight:0.5}} 
+                variant="contained"
+                onClick={handleMenu}
+                css={css`
+                    :hover {
+                    background-color: #2e8b57;
+                    }
+                `}
+            >
+                {user[0]} <ArrowDropDownIcon/>
+            </Button>
+            <Menu
+                sx={{marginTop: "6vh"}}
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={handleClose}>Profile</MenuItem>
+                <MenuItem onClick={handleClose}>My Reviews</MenuItem>
+                <MenuItem onClick={handleClose}>Log Out</MenuItem>
+            </Menu>
         </Box>
     );
     
