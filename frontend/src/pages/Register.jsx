@@ -102,6 +102,7 @@ const SignUp = () => {
 
     const getDOB = () => {
         if(Number(month) < 10){setMonth("0"+ month);}
+        if(Number(day) < 10){setDay("0"+ day);}
         const dob = year + "-" + month + "-" + day;
         setDOB(dob);
     }
@@ -200,7 +201,7 @@ const SignUp = () => {
                                         name="monthInput"
                                         value={month}
                                         onChange={handleChange}
-                                        sx={{input: { color:"#C8C7C7" },}}
+                                        sx={{color:"#C8C7C7"}}
                                     >
                                         <MenuItem value={1}>January</MenuItem>
                                         <MenuItem value={2}>February</MenuItem>
