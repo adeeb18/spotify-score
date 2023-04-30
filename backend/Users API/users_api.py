@@ -27,21 +27,10 @@ class Login(BaseModel):
     username: str
     password: str  
 
-class Song_Review(BaseModel):
+class Review(BaseModel):
+    type: str
     user_id: int
-    song_id: str
-    genre: str
-    num_rating: str
-    overall_thoughts: str
-    style: str
-    mood: str
-    would_recommend: str
-    time_created: Optional[datetime]
-    last_edited: Optional[datetime]
-
-class Album_Review(BaseModel):
-    user_id: int
-    album_id: str
+    id: str
     genre: str
     num_rating: str
     overall_thoughts: str
@@ -165,9 +154,8 @@ async def get_users():
 
     return {"Users": users}
 
-# CREATE A REVIEW
-@app.post("/users/createSongReview")
-async def create_song_review(review: Song_Review, content_type: str = Header("application/json")):
+@app.post("/users/createReview")
+async def create_review(review: Review, content_type: str = Header("application/json")):
     review_dict = jsonable_encoder(review)
 
     db = connect_to_database("sql9.freemysqlhosting.net", "sql9614548", "uxn5nljy2g", "sql9614548")
@@ -175,36 +163,44 @@ async def create_song_review(review: Song_Review, content_type: str = Header("ap
     cursor = db.cursor()
 
     # VALIDATE THE INFORMATION
-    if not review_dict['user_id'] or not review_dict['song_id'] or not review_dict['genre'] or not review_dict['num_rating'] or not review_dict['overall_thoughts'] or not review_dict['style'] or not review_dict['mood']:
+    if not review_dict['user_id'] or not review_dict['id'] or not review_dict['genre'] or not review_dict['num_rating'] or not review_dict['overall_thoughts'] or not review_dict['style'] or not review_dict['mood']:
         raise HTTPException(status_code=400, detail="Missing fields.")
     
-    # CHECK IF THIS USER HAS ALREADY MADE A REVIEW FOR THIS SONG
-    existing_review_query = "SELECT * FROM song_reviews WHERE user_id = %s AND song_id = %s"
-    cursor.execute(existing_review_query, (review_dict['user_id'], review_dict['song_id']))
+    # CHECK IF THIS USER HAS ALREADY MADE A REVIEW FOR THIS ITEM
+    existing_review_query = "SELECT * FROM {} WHERE user_id = %s AND {}_id = %s".format(review_dict['type'] + '_reviews', review_dict['type'])
+
+    cursor.execute(existing_review_query, (review_dict['user_id'], review_dict['id']))
     existing_review = cursor.fetchone()
 
     if existing_review:
-        raise HTTPException(status_code=400, detail="This user has already made a review for this song.")
+        raise HTTPException(status_code=400, detail="This user has already made a review for this item.")
     
     # SET THE VALUE OF DATE_CREATED TO THE CURRENT TIME
     review_dict['time_created'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-    query = "INSERT INTO song_reviews (user_id, song_id, genre, num_rating, overall_thoughts, style, mood, would_recommend, time_created, last_edited) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-    values = (review_dict['user_id'], review_dict['song_id'], review_dict['genre'], review_dict['num_rating'], review_dict['overall_thoughts'], review_dict['style'], review_dict['mood'], review_dict['would_recommend'], review_dict['time_created'], review_dict['last_edited'])
+    # INSERT THE REVIEW INTO THE APPROPRIATE TABLE
+    if review_dict['type'] == 'song':
+        query = "INSERT INTO song_reviews (user_id, song_id, genre, num_rating, overall_thoughts, style, mood, would_recommend, time_created, last_edited) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        values = (review_dict['user_id'], review_dict['id'], review_dict['genre'], review_dict['num_rating'], review_dict['overall_thoughts'], review_dict['style'], review_dict['mood'], review_dict['would_recommend'], review_dict['time_created'], review_dict['last_edited'])
+        updateRating(review_dict['id'], review_dict['num_rating'], True, "song")
+    elif review_dict['type'] == 'album':
+        query = "INSERT INTO album_reviews (user_id, album_id, genre, num_rating, overall_thoughts, style, mood, would_recommend, time_created, last_edited) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        values = (review_dict['user_id'], review_dict['id'], review_dict['genre'], review_dict['num_rating'], review_dict['overall_thoughts'], review_dict['style'], review_dict['mood'], review_dict['would_recommend'], review_dict['time_created'], review_dict['last_edited'])
+        updateRating(review_dict['id'], review_dict['num_rating'], True, "album")
+    else:
+        raise HTTPException(status_code=400, detail="Invalid review type.")
     
     try:
         cursor.execute(query, values)
         db.commit()
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
-    
-    updateRating(review_dict['song_id'], review_dict['num_rating'], True, "song")
 
     # RETRIEVE THE NEWLY CREATED REVIEW
-    review_query = "SELECT user_id, song_id, genre, num_rating, overall_thoughts, style, mood, would_recommend, time_created, last_edited FROM song_reviews WHERE user_id = %s AND song_id = %s"
-    cursor.execute(review_query, (review_dict['user_id'], review_dict['song_id']))
+    review_query = "SELECT user_id, {}, genre, num_rating, overall_thoughts, style, mood, would_recommend, time_created, last_edited FROM {} WHERE user_id = %s AND {}_id = %s".format(review_dict['type'] + '_id', review_dict['type'] + '_reviews', review_dict['type'])
+    cursor.execute(review_query, (review_dict['user_id'], review_dict['id']))
     review_result = cursor.fetchone()
-    field_names = ['user_id', 'song_id', 'genre', 'num_rating', 'overall_thoughts', 'style', 'mood', 'would_recommend', 'time_created', 'last_edited']
+    field_names = ['user_id', '{}_id'.format(review_dict['type']), 'genre', 'num_rating', 'overall_thoughts', 'style', 'mood', 'would_recommend', 'time_created', 'last_edited']
     review_dict_with_fields = dict(zip(field_names, review_result))
 
     cursor.close()
@@ -308,20 +304,21 @@ async def get_user_reviews(user: User_ID, content_type: str = Header("applicatio
 # EDIT A REVIEW
 # PASS IN THE SONG_ID AND USER_ID ALONG WITH ALL THE FIELDS FROM THE REVIEW FORM
 @app.put("/users/editSongReview")
-async def edit_song_review(review: Song_Review, content_type: str = Header("application/json")):
+async def edit_song_review(review: Review, content_type: str = Header("application/json")):
     review_dict = jsonable_encoder(review)
 
     db = connect_to_database("sql9.freemysqlhosting.net", "sql9614548", "uxn5nljy2g", "sql9614548")
 
     cursor = db.cursor()
-
+    
     # VALIDATE THE INFORMATION
-    if not review_dict['user_id'] or not review_dict['song_id'] or not review_dict['genre'] or not review_dict['num_rating'] or not review_dict['overall_thoughts'] or not review_dict['style'] or not review_dict['mood']:
+    if not review_dict['user_id'] or not review_dict['id'] or not review_dict['genre'] or not review_dict['num_rating'] or not review_dict['overall_thoughts'] or not review_dict['style'] or not review_dict['mood']:
         raise HTTPException(status_code=400, detail="Missing fields.")
     
-    # CHECK IF THIS USER HAS ALREADY MADE A REVIEW FOR THIS SONG
-    existing_review_query = "SELECT * FROM song_reviews WHERE user_id = %s AND song_id = %s"
-    cursor.execute(existing_review_query, (review_dict['user_id'], review_dict['song_id']))
+    # CHECK IF THIS USER HAS ALREADY MADE A REVIEW FOR THIS ITEM
+    existing_review_query = "SELECT * FROM {} WHERE user_id = %s AND {}_id = %s".format(review_dict['type'] + '_reviews', review_dict['type'])
+
+    cursor.execute(existing_review_query, (review_dict['user_id'], review_dict['id']))
     existing_review = cursor.fetchone()
 
     if existing_review is None:
@@ -329,12 +326,24 @@ async def edit_song_review(review: Song_Review, content_type: str = Header("appl
     else:
         # GET THE TIME CREATED
         review_dict['time_created'] = existing_review[8]
+        old_score = existing_review[3]
 
     # SET THE VALUE OF TIME_EDITED TO THE CURRENT TIME
     review_dict['last_edited'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-    query = "UPDATE song_reviews SET genre = %s, num_rating = %s, overall_thoughts = %s, style = %s, mood = %s, would_recommend = %s, last_edited = %s WHERE user_id = %s AND song_id = %s"
-    values = (review_dict['genre'], review_dict['num_rating'], review_dict['overall_thoughts'], review_dict['style'], review_dict['mood'], review_dict['would_recommend'], review_dict['last_edited'], review_dict['user_id'], review_dict['song_id'])
+    if review_dict['type'] == 'song':
+        query = "UPDATE song_reviews SET genre = %s, num_rating = %s, overall_thoughts = %s, style = %s, mood = %s, would_recommend = %s, last_edited = %s WHERE user_id = %s AND song_id = %s"
+        values = (review_dict['genre'], review_dict['num_rating'], review_dict['overall_thoughts'], review_dict['style'], review_dict['mood'], review_dict['would_recommend'], review_dict['last_edited'], review_dict['user_id'], review_dict['id'])
+        # UPDATE THE SCORE IN CASE THE RATING WAS CHANGED
+        updateRating(review_dict['id'], old_score, False, "song")
+        updateRating(review_dict['id'], review_dict['num_rating'], True, "song")
+    elif review_dict['type'] == 'album':
+        query = "UPDATE album_reviews SET genre = %s, num_rating = %s, overall_thoughts = %s, style = %s, mood = %s, would_recommend = %s, last_edited = %s WHERE user_id = %s AND album_id = %s"
+        values = (review_dict['genre'], review_dict['num_rating'], review_dict['overall_thoughts'], review_dict['style'], review_dict['mood'], review_dict['would_recommend'], review_dict['last_edited'], review_dict['user_id'], review_dict['id'])
+        updateRating(review_dict['id'], old_score, False, "album")
+        updateRating(review_dict['id'], review_dict['num_rating'], True, "album")
+    else:
+        raise HTTPException(status_code=400, detail="Invalid review type.")
 
     try:
         cursor.execute(query, values)
@@ -343,10 +352,10 @@ async def edit_song_review(review: Song_Review, content_type: str = Header("appl
         raise HTTPException(status_code=400, detail=str(e))
 
     # RETRIEVE THE NEWLY CREATED REVIEW
-    review_query = "SELECT user_id, song_id, genre, num_rating, overall_thoughts, style, mood, would_recommend, time_created, last_edited FROM song_reviews WHERE user_id = %s AND song_id = %s"
-    cursor.execute(review_query, (review_dict['user_id'], review_dict['song_id']))
+    review_query = "SELECT user_id, {}, genre, num_rating, overall_thoughts, style, mood, would_recommend, time_created, last_edited FROM {} WHERE user_id = %s AND {}_id = %s".format(review_dict['type'] + '_id', review_dict['type'] + '_reviews', review_dict['type'])
+    cursor.execute(review_query, (review_dict['user_id'], review_dict['id']))
     review_result = cursor.fetchone()
-    field_names = ['user_id', 'song_id', 'genre', 'num_rating', 'overall_thoughts', 'style', 'mood', 'would_recommend', 'time_created', 'last_edited']
+    field_names = ['user_id', '{}_id'.format(review_dict['type']), 'genre', 'num_rating', 'overall_thoughts', 'style', 'mood', 'would_recommend', 'time_created', 'last_edited']
     review_dict_with_fields = dict(zip(field_names, review_result))
 
     cursor.close()
