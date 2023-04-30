@@ -6,21 +6,8 @@ from pydantic import BaseModel
 from pydantic.schema import Optional, Dict
 from datetime import datetime
 from datetime import date
-from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
-
-origins = [
-    "http://localhost:3000",
-]
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 class User(BaseModel):
     user_id: Optional[int]
@@ -178,30 +165,6 @@ async def get_users():
 
     return {"Users": users}
 
-# DELETE USER
-@app.delete("/users/deleteUser")
-async def delete_user(user: User_ID, content_type: str = Header("application/json")):
-    db = connect_to_database("sql9.freemysqlhosting.net", "sql9614548", "uxn5nljy2g", "sql9614548")
-
-    cursor = db.cursor()
-
-    user_dict = jsonable_encoder(user)
-
-    # USER_ID CONSTRAINT HAS "ON DELETE CASCADE" SO, WHEN THE USER IS DELETED, IT DELETES ENTRIES IN THE REVIEW TABLES WHERE USER_ID IS A FOREIGN KEY
-    query = "DELETE FROM users WHERE user_id = %s"
-
-    # NEED TO ALSO UPDATE OVERALL SONG/ALBUM RATINGS SINCE REVIEWS WILL BE DELETED
-
-    cursor.execute(query, (user_dict['user_id'],))
-    db.commit()
-    if cursor.rowcount == 0:
-        raise HTTPException(status_code=404, detail="User not found.")
-
-    cursor.close()
-    db.close()
-
-    return {"message": f"User with user_id {user_dict['user_id']} has been deleted."}
-
 # CREATE A REVIEW
 @app.post("/users/createSongReview")
 async def create_song_review(review: Song_Review, content_type: str = Header("application/json")):
@@ -234,6 +197,8 @@ async def create_song_review(review: Song_Review, content_type: str = Header("ap
         db.commit()
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
+    
+    updateRating(review_dict['song_id'], review_dict['num_rating'], True, "song")
 
     # RETRIEVE THE NEWLY CREATED REVIEW
     review_query = "SELECT user_id, song_id, genre, num_rating, overall_thoughts, style, mood, would_recommend, time_created, last_edited FROM song_reviews WHERE user_id = %s AND song_id = %s"
@@ -246,6 +211,75 @@ async def create_song_review(review: Song_Review, content_type: str = Header("ap
     db.close()
 
     return review_dict_with_fields
+
+def updateRating(id: str, user_score: int, add: bool, type: str):
+    db = connect_to_database("sql9.freemysqlhosting.net", "sql9614548", "uxn5nljy2g", "sql9614548")
+    cursor = db.cursor()
+
+    # SET VALUES BASED ON IF IT IS SONG OR ALBUM
+    if type == "song":
+        table = "overall_song_ratings"
+        id_field = "song_id"
+    elif type == "album":
+        table = "overall_album_ratings"
+        id_field = "album_id"
+    else:
+        raise ValueError("Invalid type parameter. Must be 'song' or 'album'.")
+
+    # CHECK IF THERE IS AN ENTRY ALREADY
+    check_query = f"SELECT * FROM {table} WHERE {id_field} = %s"
+    cursor.execute(check_query, (id,))
+    existing_item = cursor.fetchone()
+
+    if add:
+        if existing_item is None:
+            query = f"INSERT INTO {table} ({id_field}, num_rating, score_sum, review_count) VALUES (%s, %s, %s, %s)"
+            values = (id, user_score, user_score, 1)
+            cursor.execute(query, values)
+            db.commit()
+        else:
+            num_rating = existing_item[1]
+            score_sum = existing_item[2]
+            review_count = existing_item[3]
+
+            if score_sum is None:
+                score_sum = 0
+
+            if user_score is not None:
+                new_score_sum = int(score_sum) + int(user_score)
+                new_review_count = int(review_count) + 1
+                new_num_rating = round(new_score_sum / new_review_count, 2)
+
+                query = f"UPDATE {table} SET num_rating = %s, score_sum = %s, review_count = %s WHERE {id_field} = %s"
+                values = (new_num_rating, new_score_sum, new_review_count, id)
+                cursor.execute(query, values)
+                db.commit()
+    else:
+        # UPDATE THE EXISTING AVERAGE AND ASSOCIATED FIELDS
+        num_rating = existing_item[1]
+        score_sum = existing_item[2]
+        review_count = existing_item[3]
+
+        if score_sum is None:
+            score_sum = 0
+
+        if user_score is not None:
+            new_score_sum = int(score_sum) - int(user_score)
+            new_review_count = int(review_count) - 1
+            if new_review_count == 0:
+                 new_num_rating = 0
+            else:
+                new_num_rating = round(new_score_sum / new_review_count, 2)
+
+            query = f"UPDATE {table} SET num_rating = %s, score_sum = %s, review_count = %s WHERE {id_field} = %s"
+            values = (new_num_rating, new_score_sum, new_review_count, id)
+            cursor.execute(query, values)
+            db.commit()
+
+    cursor.close()
+    db.close()
+
+    return
 
 @app.get("/users/getUserReviews")
 async def get_user_reviews(user: User_ID, content_type: str = Header("application/json")):
@@ -320,27 +354,38 @@ async def edit_song_review(review: Song_Review, content_type: str = Header("appl
 
     return review_dict_with_fields
 
-# DELETE A SONG REVIEW
-@app.delete("/users/deleteSongReview")
-async def delete_song_review(user: User_Song, content_type: str = Header("application/json")):
-    db = connect_to_database("sql9.freemysqlhosting.net", "sql9614548", "uxn5nljy2g", "sql9614548")
+@app.delete("/users/deleteUser")
+async def delete_user(user: User_ID, content_type: str = Header("application/json")):
 
+    db = connect_to_database("sql9.freemysqlhosting.net", "sql9614548", "uxn5nljy2g", "sql9614548")
     cursor = db.cursor()
 
     user_dict = jsonable_encoder(user)
 
-    # USER_ID CONSTRAINT HAS "ON DELETE CASCADE" SO, WHEN THE USER IS DELETED, IT DELETES ENTRIES IN THE REVIEW TABLES WHERE USER_ID IS A FOREIGN KEY
-    query = "DELETE FROM song_reviews WHERE user_id = %s AND song_id = %s"
+    # LOOP THROUGH ALL SONG REVIEWS AND UPDATE OVERALL SONG RATINGS
+    song_query = "SELECT * FROM song_reviews WHERE user_id = %s"
+    cursor.execute(song_query, (user_dict['user_id'],))
+    song_reviews = cursor.fetchall()
 
-    # NEED TO ALSO UPDATE OVERALL SONG/ALBUM RATINGS SINCE REVIEWS WILL BE DELETED
+    for review in song_reviews:
+        updateRating(review[1], review[3], False, "song")
 
-    cursor.execute(query, (user_dict['user_id'], user_dict['song_id'],))
+    # LOOP THROUGH ALL ALBUM REVIEWS AND UPDATE OVERALL ALBUM RATINGS
+    album_query = "SELECT * FROM album_reviews WHERE user_id = %s"
+    cursor.execute(album_query, (user_dict['user_id'],))
+    album_reviews = cursor.fetchall()
+
+    for review in album_reviews:
+        updateRating(review[1], review[3], False, "album")
+
+    # DELETE USER FROM USERS TABLE
+    query = "DELETE FROM users WHERE user_id = %s"
+    cursor.execute(query, (user_dict['user_id'],))
     db.commit()
     if cursor.rowcount == 0:
-        raise HTTPException(status_code=404, detail="User song review not found.")
-
+        raise HTTPException(status_code=404, detail="User not found.")
+    
     cursor.close()
     db.close()
 
-    return {"message": f"User with user_id {user_dict['user_id']} and song_id {user_dict['song_id']} has been deleted."}
-
+    return {"message": f"User with user_id {user_dict['user_id']} has been deleted."}
