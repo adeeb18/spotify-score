@@ -302,21 +302,26 @@ const SignUp = () => {
                         </Box>
                     </Box>
                     <Dialog
+                        PaperProps={{
+                            style:{
+                                backgroundColor:"#555",
+                            }
+                        }}
                         open={submit}
                         onClose={handleClose}
                         aria-labelledby="alert-dialog-title"
                         aria-describedby="alert-dialog-description"
                     >
-                        <DialogTitle id="alert-dialog-title">
+                        <DialogTitle id="alert-dialog-title" sx={{color:"#C8C7C7"}}>
                         {"Welcome to SpotifyScore!"}
                         </DialogTitle>
                         <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
+                        <DialogContentText id="alert-dialog-description" sx={{color:"#C8C7C7"}}>
                             Your account has successfully been created.
                         </DialogContentText>
                         </DialogContent>
                         <DialogActions>
-                        <Button onClick={handleClose} href="/login" autoFocus>
+                        <Button sx={{color:"#1a9f48"}}onClick={handleClose} href="/login" autoFocus>
                             Login
                         </Button>
                         </DialogActions>
