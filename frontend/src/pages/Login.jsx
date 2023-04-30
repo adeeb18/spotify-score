@@ -11,18 +11,40 @@ import { css } from "@emotion/react";
 import axios from 'axios';
 
 const Login = () => {
+    /*INPUT STATES */
     let [username, setUsername] = useState("");
     let [password, setPassword] = useState("");
     let [showPassword, setShowPassword] = useState(false);
+    /*VALIDATION STATES*/
+    let [userError, setUserError] = useState(false);
+    let [userHelper, setUserHelper] = useState("");
+    let [passwordError, setPasswordError] = useState(false);
+    let [passwordHelper, setPasswordHelper] = useState("");
 
     const handleChange = (event) => {
         switch(event.target.name) {
-            case "usernameInput":
-                setUsername(event.target.value);
-                break;
-            case "passwordInput":
-                setPassword(event.target.value);
-                break;
+            case "usernameInput":{
+                if((event.target.value) == undefined || (event.target.value) == ""){
+                    setUserError(true);
+                    setUserHelper("Username is required");
+                }
+                else{
+                    setUsername(event.target.value);
+                    setUserError(false);
+                    setUserHelper("");
+                }
+            }break;
+            case "passwordInput":{
+                if((event.target.value) == undefined || (event.target.value) == ""){
+                    setPasswordError(true);
+                    setPasswordHelper("Password is required");
+                }
+                else{
+                    setPassword(event.target.value);
+                    setPasswordError(false);
+                    setPasswordHelper("");
+                }
+            }break;
         }
     }
 
@@ -70,42 +92,30 @@ const Login = () => {
                         <Box width="100%"><Typography textAlign="left" marginLeft={0.5} marginBottom={1}>Username</Typography></Box>
                         <FormControl sx={{width:"100%", mb:"2rem"}} variant="outlined">
                             <TextField 
+                                error={userError}
+                                helperText={userHelper}
                                 id="usernameInput"
                                 name="usernameInput"
                                 onChange={handleChange}
-
-                                //label="Username" 
                                 variant="outlined"
-                                sx={{
-                                    input: { color:"#C8C7C7" },
-                                    "& .MuiOutlinedInput-root":{
-                                        "& > fieldset": {borderColor: "#C8C7C7"}
-                                    },
-                                    "& .MuiOutlinedInput-root:hover": {
-                                        "& > fieldset": {borderColor: "#1DB954"}
-                                    },
-                                    "& .MuiOutlinedInput-root.Mui-focused": {
-                                        "& > fieldset": {borderColor: "#1DB954"}
-                                    },
-                                    width: "100%"
-                                }} 
+                                sx={{input: { color:"#C8C7C7" },}}
                             />
                         </FormControl>
 
                         <Box className="d-flex justify-content-between align-items-center" width="100%">
                             <Typography textAlign="left" marginLeft={0.5} marginBottom={1}>Password</Typography>
-                            <Typography color="#B6B5B5" fontSize={12} marginBottom={1}>Forgot password</Typography>
+                            <Typography color="#B6B5B5" fontSize={12} marginBottom={1}>Forgot password?</Typography>
                         </Box>
                         <FormControl sx={{width:"100%", mb:"2rem"}} variant="outlined">
                             <TextField
-                                id="passwordInput"
+                                error={passwordError}
+                                helperText={passwordHelper}
                                 name="passwordInput"
                                 onChange={handleChange}
                                 type={showPassword ? "text" : "password"}
-                                
                                 InputProps={{
                                     endAdornment:(
-                                        <InputAdornment>
+                                        <InputAdornment position="end">
                                             <IconButton
                                                 onClick={handleClickShowPassword}
                                                 edge="end"
@@ -116,21 +126,8 @@ const Login = () => {
                                         </InputAdornment>
                                     )
                                 }}
-                                //label="Username" 
                                 variant="outlined"
-                                sx={{
-                                    input: { color:"#C8C7C7" },
-                                    "& .MuiOutlinedInput-root":{
-                                        "& > fieldset": {borderColor: "#C8C7C7"}
-                                    },
-                                    "& .MuiOutlinedInput-root:hover": {
-                                        "& > fieldset": {borderColor: "#1DB954"}
-                                    },
-                                    "& .MuiOutlinedInput-root.Mui-focused": {
-                                        "& > fieldset": {borderColor: "#1DB954"}
-                                    },
-                                    width: "100%"
-                                }} 
+                                sx={{input: { color:"#C8C7C7" },}}
                             />
                         </FormControl>
 
