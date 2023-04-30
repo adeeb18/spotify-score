@@ -155,6 +155,7 @@ async def get_users():
     return {"Users": users}
 
 @app.post("/users/createReview")
+# THE TYPE FIELD SHOULD BE EITHER "SONG" OR "ALBUM". THAT WILL DETERMINE WHICH TABLE IT IS PLACED INTO
 async def create_review(review: Review, content_type: str = Header("application/json")):
     review_dict = jsonable_encoder(review)
 
