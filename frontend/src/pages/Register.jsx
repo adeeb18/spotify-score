@@ -2,9 +2,9 @@
 /** @jsxImportSource @emotion/react */
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Box,Typography, FormControl, InputAdornment, IconButton, Button, 
-         TextField, Select, MenuItem, Menu, useRadioGroup} from "@mui/material";
-import {VisibilityOff, Visibility} from "@mui/icons-material";
+import { Box,Typography, FormControl, InputAdornment, IconButton, Button, TextField, Select, MenuItem, 
+         Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions} from "@mui/material";
+import {VisibilityOff, Visibility, DateRange} from "@mui/icons-material";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import SideBar from "./components/SideBar/SideBar";
 import NavBar from "./components/NavBar";
@@ -12,13 +12,14 @@ import { css } from "@emotion/react";
 import axios from "axios";
 
 const SignUp = () => {
+    /*INPUT STATES */
     let [user, setUsername] = useState("");
     let [pass, setPassword] = useState("");
-    let [date, setDOB] = useState("");
     let [month, setMonth] = useState("");
     let [day, setDay] = useState("");
     let [year, setYear] = useState("");
     let [showPassword, setShowPassword] = useState(false);
+    /*VALIDATION STATES*/
     let [userError, setUserError] = useState(false);
     let [userHelper, setUserHelper] = useState("");
     let [passwordError, setPasswordError] = useState(false);
@@ -29,6 +30,8 @@ const SignUp = () => {
     let [dayHelper, setDayHelper] = useState("");
     let [yearError, setYearError] = useState(false);
     let [yearHelper, setYearHelper] = useState("");
+    /*SUBMISSION STATES*/
+    let [submit, setSubmit] = useState(false);
 
     const handleChange = (event) => {
         switch(event.target.name) {
@@ -101,20 +104,43 @@ const SignUp = () => {
     }
 
     const getDOB = () => {
-        if(Number(month) < 10){setMonth("0"+ month);}
-        if(Number(day) < 10){setDay("0"+ day);}
-        const dob = year + "-" + month + "-" + day;
-        setDOB(dob);
+        let monthStr = "";
+        let dayStr = "";
+        if(Number(month) < 10){
+            monthStr = "0"+ month.toString();
+        }
+        else{
+            monthStr = month.toString();
+        }
+        if(Number(day) < 10){
+            dayStr = "0"+ day.toString();
+        }
+        else{
+            dayStr = day.toString();
+        }
+        let dob = year.toString() + "-" + monthStr + "-" + dayStr;
+        return dob;
     }
 
     const handleSubmit = () => {
         //set dob
-        getDOB();
+        let date = getDOB();
         const url = 'http://localhost:8000/users/createUser'
         const payload = {user_id: null, username: user, password: pass, dob: date, date_created: null}
         axios.post(url, payload)
-            .then(response => console.log(response))
+            .then(response => setDialog(response))
             .catch(error => console.error(error));
+    }
+
+    const setDialog = (response) =>{
+        if(response.status == 200){
+            setSubmit(true);
+        }
+        console.log(response.status);
+    }
+
+    const handleClose = () => {
+        setSubmit(false);
     }
 
     return (
@@ -167,7 +193,6 @@ const SignUp = () => {
                             <TextField
                                 error={passwordError}
                                 helperText={passwordHelper}
-                                id="passwordInput"
                                 name="passwordInput"
                                 onChange={handleChange}
                                 type={showPassword ? "text" : "password"}
@@ -276,6 +301,26 @@ const SignUp = () => {
                             </Button>
                         </Box>
                     </Box>
+                    <Dialog
+                        open={submit}
+                        onClose={handleClose}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                    >
+                        <DialogTitle id="alert-dialog-title">
+                        {"Welcome to SpotifyScore!"}
+                        </DialogTitle>
+                        <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Your account has successfully been created.
+                        </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                        <Button onClick={handleClose} href="/login" autoFocus>
+                            Login
+                        </Button>
+                        </DialogActions>
+                    </Dialog>
                 </Box>
             </Box>
         </Box>
