@@ -53,9 +53,12 @@ const Login = () => {
     const handleLogin = (response) => {
         const toSend = JSON.stringify(response.data);
         const splitIt = toSend.split("\"");
-        const val = splitIt[7];
+        let id = splitIt[4].substring(1);
+        id = id.substring(0,id.length-1);
+        const val = splitIt[7]
         localStorage.setItem('username', val);
-        console.log(val);
+        localStorage.setItem('id', id);
+        console.log(id);
     }
 
     const handleSubmit = () => {

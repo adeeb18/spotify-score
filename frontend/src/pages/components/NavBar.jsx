@@ -17,7 +17,7 @@ const NavBar = () => {
     useEffect(() => {
         if(!check || user==""){
             const loggedInUser = localStorage.getItem("username");
-            if (loggedInUser) {
+            if (loggedInUser != "") {
                 setUser(loggedInUser);
                 setCheck(true);
             }
