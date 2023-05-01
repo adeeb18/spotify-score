@@ -32,9 +32,10 @@ class User(BaseModel):
 class User_ID(BaseModel):
     user_id: int
 
-class User_Song(BaseModel):
+class User_Review(BaseModel):
     user_id: int
-    song_id: str
+    id: str
+    type: str
 
 class Login(BaseModel):
     username: str
@@ -277,40 +278,77 @@ def updateRating(id: str, user_score: int, add: bool, type: str):
             new_score_sum = int(score_sum) - int(user_score)
             new_review_count = int(review_count) - 1
             if new_review_count == 0:
-                 new_num_rating = 0
+                # IF THE REVIEW COUNT HAS REACHED ZERO, DELETE THE ENTRY
+                delete_query = f"DELETE FROM {table} WHERE {id_field} = %s"
+                cursor.execute(delete_query, (id,))
+                db.commit()
             else:
                 new_num_rating = round(new_score_sum / new_review_count, 2)
-
-            query = f"UPDATE {table} SET num_rating = %s, score_sum = %s, review_count = %s WHERE {id_field} = %s"
-            values = (new_num_rating, new_score_sum, new_review_count, id)
-            cursor.execute(query, values)
-            db.commit()
+                query = f"UPDATE {table} SET num_rating = %s, score_sum = %s, review_count = %s WHERE {id_field} = %s"
+                values = (new_num_rating, new_score_sum, new_review_count, id)
+                cursor.execute(query, values)
+                db.commit()
 
     cursor.close()
     db.close()
-
+    
     return
 
 @app.post("/users/getUserReviews")
 async def get_user_reviews(user: User_ID, content_type: str = Header("application/json")):
+
     user_dict = jsonable_encoder(user)
     db = connect_to_database("sql9.freemysqlhosting.net", "sql9614548", "uxn5nljy2g", "sql9614548")
     cursor = db.cursor()
     query = """
-        SELECT sr.user_id, sr.song_id, sr.genre, sr.num_rating, sr.overall_thoughts, sr.style, sr.mood, sr.would_recommend, sr.time_created, sr.last_edited
+        SELECT u.user_id, sr.song_id AS item_id, sr.genre, sr.num_rating, sr.overall_thoughts, sr.style, sr.mood, sr.would_recommend, sr.time_created, sr.last_edited
         FROM users u 
         LEFT JOIN song_reviews sr ON u.user_id = sr.user_id
         WHERE u.user_id = %s AND sr.song_id IS NOT NULL
         UNION ALL
-        SELECT ar.user_id, ar.album_id, ar.genre, ar.num_rating, ar.overall_thoughts, ar.style, ar.mood, ar.would_recommend, ar.time_created, ar.last_edited
-        FROM users u 
+        SELECT u.user_id, ar.album_id AS item_id, ar.genre, ar.num_rating, ar.overall_thoughts, ar.style, ar.mood, ar.would_recommend, ar.time_created, ar.last_edited
+        FROM users u
         LEFT JOIN album_reviews ar ON u.user_id = ar.user_id
         WHERE u.user_id = %s AND ar.album_id IS NOT NULL;
     """
     cursor.execute(query, (user_dict['user_id'], user_dict['user_id'],))
     result = cursor.fetchall()
-    field_names = ['user_id', 'song_id', 'song_genre', 'song_num_rating', 'song_overall_thoughts', 'song_style', 'song_mood', 'song_would_recommend', 'song_time_created', 'song_last_edited', 'album_id', 'album_genre', 'album_num_rating', 'album_overall_thoughts', 'album_style', 'album_mood', 'album_would_recommend', 'album_time_created', 'album_last_edited']
-    review_dicts_with_fields = [dict(zip(field_names, row)) for row in result]
+    review_dicts_with_fields = []
+
+    for row in result:
+        field_names = ['user_id', 'id', 'genre', 'num_rating', 'overall_thoughts', 'style', 'mood', 'would_recommend', 'time_created', 'last_edited'] 
+        review_dict = dict(zip(field_names, row))
+        review_dicts_with_fields.append(review_dict)
+
+    cursor.close()
+    db.close()
+    return review_dicts_with_fields
+
+@app.get("/users/getAllReviews")
+async def get_all_reviews():
+
+    db = connect_to_database("sql9.freemysqlhosting.net", "sql9614548", "uxn5nljy2g", "sql9614548")
+    cursor = db.cursor()
+    query = """
+        SELECT u.user_id, sr.song_id AS item_id, sr.genre, sr.num_rating, sr.overall_thoughts, sr.style, sr.mood, sr.would_recommend, sr.time_created, sr.last_edited
+        FROM users u 
+        LEFT JOIN song_reviews sr ON u.user_id = sr.user_id
+        WHERE sr.song_id IS NOT NULL
+        UNION ALL
+        SELECT u.user_id, ar.album_id AS item_id, ar.genre, ar.num_rating, ar.overall_thoughts, ar.style, ar.mood, ar.would_recommend, ar.time_created, ar.last_edited
+        FROM users u
+        LEFT JOIN album_reviews ar ON u.user_id = ar.user_id
+        WHERE ar.album_id IS NOT NULL;
+    """
+    cursor.execute(query)
+    result = cursor.fetchall()
+    review_dicts_with_fields = []
+
+    for row in result:
+        field_names = ['user_id', 'id', 'genre', 'num_rating', 'overall_thoughts', 'style', 'mood', 'would_recommend', 'time_created', 'last_edited'] 
+        review_dict = dict(zip(field_names, row))
+        review_dicts_with_fields.append(review_dict)
+
     cursor.close()
     db.close()
     return review_dicts_with_fields
@@ -412,3 +450,37 @@ async def delete_user(user: User_ID, content_type: str = Header("application/jso
     db.close()
 
     return {"message": f"User with user_id {user_dict['user_id']} has been deleted."}
+
+# DELETE A REVIEW
+@app.delete("/users/deleteReview")
+async def delete_song_review(user: User_Review, content_type: str = Header("application/json")):
+    db = connect_to_database("sql9.freemysqlhosting.net", "sql9614548", "uxn5nljy2g", "sql9614548")
+
+    cursor = db.cursor()
+
+    user_dict = jsonable_encoder(user)
+
+    # USER_ID CONSTRAINT HAS "ON DELETE CASCADE" SO, WHEN THE USER IS DELETED, IT DELETES ENTRIES IN THE REVIEW TABLES WHERE USER_ID IS A FOREIGN KEY
+    deleteQuery = "DELETE FROM {} WHERE user_id = %s AND {}_id = %s".format(user_dict['type'] + '_reviews', user_dict['type'])
+
+    searchQuery = "SELECT * FROM {} WHERE user_id = %s AND {}_id = %s".format(user_dict['type'] + '_reviews', user_dict['type'])
+    cursor.execute(searchQuery, (user_dict['user_id'], user_dict['id'],))
+    song_reviews = cursor.fetchone()
+
+    # NEED TO ALSO UPDATE OVERALL SONG/ALBUM RATINGS SINCE REVIEWS WILL BE DELETED
+    if user_dict['type'] == 'song':
+         updateRating(song_reviews[1], song_reviews[3], False, "song")
+    elif user_dict['type'] == 'album':
+         updateRating(song_reviews[1], song_reviews[3], False, "album")
+    else:
+        raise HTTPException(status_code=400, detail="Invalid review type.")
+
+    cursor.execute(deleteQuery, (user_dict['user_id'], user_dict['id'],))
+    db.commit()
+    if cursor.rowcount == 0:
+        raise HTTPException(status_code=404, detail="User song review not found.")
+
+    cursor.close()
+    db.close()
+
+    return {"message": f"User with user_id {user_dict['user_id']} and id {user_dict['id']} has been deleted."}
