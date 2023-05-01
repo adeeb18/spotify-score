@@ -11,53 +11,51 @@ import StyledRating from "./components/StyledRating";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { styled } from "@mui/system";
 
+function Review(props){
+    return(
+        <Box className="d-flex" sx={{width:"100%", color:"#C8C7C7",px:"4rem", py:"2rem", alignItems:"center", background:"#4e4f4f", borderRadius:2, my:3}}>
+            <Box sx={{minWidth:"25%"}}>
+                <Typography variant="h4">{props.user}</Typography>
+                <Typography>Style: {props.style}</Typography>
+                <Typography>Mood: {props.mood}</Typography>
+                <Typography>{(props.rec == "Yes")? "Would Recommend" : "Would Not Recommend"}</Typography>
+            </Box>
+            <Box className="mt-2">
+                <Box className="d-flex justify-content-between">
+                    <StyledRating
+                        defaultValue={5}
+                        value={(props.rating)}
+                        precision={0.5}
+                        icon={<FavoriteIcon/>}
+                        emptyIcon={<FavoriteBorderIcon/>}
+                        sx={{mb:"0.5rem"}}
+                        readOnly
+                    />
+                    <Typography className="align-self-end">{props.created}</Typography>
+                </Box>
+                <Typography width="100%">{props.thoughts}</Typography>
+            </Box>
+        </Box>
+    );
+}
+
 const ViewReviews = () => {
-    let body;
+    const [data, setData] = useState([]);
     let count = 0;
 
     useEffect(() => {
         const url = 'http://localhost:8000/users/getAllReviews'
             axios.get(url)
-                .then(response => parseReviews(response.data))
+                .then(response =>  setData(response.data))
                 .catch(error => console.error(error));
     }, []);
 
-    const parseReviews = (data) =>{
-        while(count < data.length){
-            count += 1;
-        }
-    }
-
-    const reviewTemplate = (user, rating, style, mood, created, thoughts) =>{
-        let rate = Number(rating) / 20;
-        return ([
-            <Box key={0} className="d-flex" sx={{width:"100%", color:"#C8C7C7",px:"4rem", py:"2rem", alignItems:"center", background:"#4e4f4f", borderRadius:2}}>
-                <Box sx={{minWidth:"25%"}}>
-                    <Typography variant="h4">{user}</Typography>
-                    <Typography>Style: {style}</Typography>
-                    <Typography>Mood: {mood}</Typography>
-                    <Typography>Would Recommend</Typography>
-                </Box>
-                <Box className="mt-2">
-                    <Box className="d-flex justify-content-between">
-                        <StyledRating
-                            defaultValue={5}
-                            value={(rate)}
-                            precision={0.5}
-                            icon={<FavoriteIcon/>}
-                            emptyIcon={<FavoriteBorderIcon/>}
-                            sx={{mb:"0.5rem"}}
-                            readOnly
-                        />
-                        <Typography>{created}</Typography>
-                    </Box>
-                    <Typography width="100%">{thoughts}</Typography>
-                </Box>
-            </Box>,
-            <Divider key={1} sx={{background:"white", mb:0.5, width:'100%'}}/>
-        ]);
-    }
-
+    // const reviewTemplate = (user, rating, style, mood, created, thoughts, rec, keyVal)
+    const body = data.map((item, index) => (
+    <Review key={index} user={item.user_id} rating={item.num_rating} 
+            style={item.style} mood={item.mood} created = {item.time_created}
+            thoughts = {item.overall_thoughts} rec={item.would_recommend}/>
+    ));
     return (
         <Box className="d-flex">
             <SideBar/>
@@ -90,7 +88,7 @@ const ViewReviews = () => {
                         >
                             Reviews
                     </Typography>
-                        
+                    {body}
                 </Container>
             </Box>
         </Box>

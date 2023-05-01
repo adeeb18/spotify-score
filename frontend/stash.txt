@@ -1,10 +1,48 @@
-(async () => {
-    try {
-        const response = await  axios.get('http://localhost:8000/users/getUsers');
-        const data = response.data;
-        setData(data); // use split if you have to, I dont think you need that.
-    } catch(err) {
-        console.error(err);
+ const parseReviews = () =>{
+        console.log(data);
+        /*while(count < data.length){
+            let keyVal = 0;
+            let uVal = data[count].user_id;
+            let rVal = data[count].num_rating;
+            let sVal = data[count].style;
+            let mVal = data[count].mood;
+            let cVal = data[count].time_created;
+            let tVal = data[count].overall_thoughts;
+            let recVal = data[count].would_recommend;
+            review = reviewTemplate(uVal, rVal, sVal, mVal, cVal, tVal, recVal, keyVal);
+            /*reviews.push(review);
+            keyVal+=1;
+            reviews.push(<Divider key={keyVal}sx={{background:"white", mb:0.5, width:'100%'}}/>);
+            keyVal+=1;
+            count += 1;*/
+        //}
     }
-})()
-console.log(data[0]);
+
+    parseReviews();
+    const reviewTemplate = (user, rating, style, mood, created, thoughts, rec, keyVal) =>{
+        let rate = Number(rating) / 20;
+        return (
+            <Box key={keyVal} className="d-flex" sx={{width:"100%", color:"#C8C7C7",px:"4rem", py:"2rem", alignItems:"center", background:"#4e4f4f", borderRadius:2}}>
+                <Box sx={{minWidth:"25%"}}>
+                    <Typography variant="h4">{user}</Typography>
+                    <Typography>Style: {style}</Typography>
+                    <Typography>Mood: {mood}</Typography>
+                    <Typography>{(rec == "Yes")? "Would Recommend" : "Would Not Recommend"}</Typography>
+                </Box>
+                <Box className="mt-2">
+                    <Box className="d-flex justify-content-between">
+                        <StyledRating
+                            defaultValue={5}
+                            value={(rate)}
+                            precision={0.5}
+                            icon={<FavoriteIcon/>}
+                            emptyIcon={<FavoriteBorderIcon/>}
+                            sx={{mb:"0.5rem"}}
+                            readOnly
+                        />
+                        <Typography>{created}</Typography>
+                    </Box>
+                    <Typography width="100%">{thoughts}</Typography>
+                </Box>
+            </Box>);
+    }
