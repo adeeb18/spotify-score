@@ -11,16 +11,18 @@ import NavBar from "./components/NavBar";
 import axios from "axios";
 
 const CreateReview = () => {
-    let [rating, setRating] = useState(0);
-    let [mood, setMood] = useState("Happy");
+    let [rating, setRating] = useState(Number(0));
+    let [uMood, setMood] = useState("Happy");
     let [rec, setRec] = useState("true");
-    let [style, setStyle] = useState("");
+    let [uStyle, setStyle] = useState("");
     let [reviewText, setReviewText] = useState("");
+    let [reviewID, setReviewID] = useState("");
 
     const handleChange = (event) => {
         switch(event.target.name) {
             case "ratingInput":
                 setRating(event.target.value);
+                console.log(rating);
                 break;
             case "moodInput":
                 setMood(event.target.value);
@@ -39,10 +41,28 @@ const CreateReview = () => {
 
     const handleSubmit = () => {
         const url = 'http://localhost:8000/users/getUserReviews'
-        //const payload = {user_id: null, username: user, password: pass, dob: date, date_created: null}
-        axios.get(url)
-            .then(response => console.log(response))
+        const id = localStorage.getItem("id");
+        const payload = {user_id: id}
+        axios.post(url, payload)
+            .then(response => saveReview(response.data.length, id))
             .catch(error => console.error(error));
+    }
+
+    const saveReview = (response, uid) => {
+        if(response < 1){
+            setReviewID(uid);
+        }
+        else{
+            let val = (Number(uid) + Number(response)).toString();
+            console.log(val);
+            setReviewID(val);
+        }
+        let rate = (rating * 20).toString();
+        const payload = {type:"song", user_id:uid, id:reviewID, genre:"test", num_rating:rate, overall_thoughts:reviewText, style: uStyle, mood: uMood, would_recommend: rec}
+        const url = 'http://localhost:8000/users/createReview'
+        axios.post(url, payload)
+        .then(response => console.log(response))
+        .catch(error => console.error(error));
     }
 
     return (
@@ -91,7 +111,7 @@ const CreateReview = () => {
                                     //error={monthError}
                                     //helperText={monthHelper}
                                     name="moodInput"
-                                    value={mood}
+                                    value={uMood}
                                     onChange={handleChange}
                                     sx={{color:"black", background:"#FFFFFF", mb:1}}
                                 >
@@ -112,7 +132,7 @@ const CreateReview = () => {
                         </Box>
                         <Divider sx={{background:"white", mb:2, width:'100%'}}/>
                         <Box>
-                            <Typography color="#C8C7C7" variant="h6">Would you reccommend this song?</Typography>
+                            <Typography color="#C8C7C7" variant="h6">Would you recommend this song?</Typography>
                             <RadioGroup
                                 row
                                 aria-labelledby="demo-row-radio-buttons-group-label"
