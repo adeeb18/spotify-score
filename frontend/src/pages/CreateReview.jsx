@@ -47,7 +47,7 @@ const CreateReview = () => {
                     <Box 
                         className="d-flex flex-column align-items-start"
                         sx={{
-                            minWidth:"65vw", mb:"3rem"
+                            minWidth:"65vw", mb:"3rem", px:"4rem"
                         }}
                     >
                         <Box className="d-flex align-items-center">
@@ -89,7 +89,6 @@ const CreateReview = () => {
                                 <FormControlLabel value="Angry " control={<Radio />} label="Angry " />
                                 <FormControlLabel value="Bad" control={<Radio />} label="Bad" />
                                 <FormControlLabel value="Annoyed" control={<Radio />} label="Annoyed" />
-                                <FormControlLabel value="Irritated" control={<Radio />} label="Irritated" />
                             </RadioGroup>
                         </Box>
                         <Divider sx={{background:"white", mb:2, width:'100%'}}/>
