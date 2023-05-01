@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Box, Container, Typography, TextField, Button, RadioGroup, FormControlLabel, Radio, Divider } from "@mui/material";
+import { Box, Container, Typography, TextField, Button, RadioGroup, FormControlLabel, 
+         Radio, Divider, Select, MenuItem, FormControl } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import SendIcon from "@mui/icons-material/Send";
@@ -12,6 +13,7 @@ import ArrowForward from '@mui/icons-material/ArrowForwardIos';
 
 const CreateReview = () => {
     let [rating, setRating] = useState(0);
+    let [mood, setMood] = useState("Happy")
     let [reviewText, setReviewText] = useState("");
 
     const handleChange = (event) => {
@@ -47,7 +49,7 @@ const CreateReview = () => {
                     <Box 
                         className="d-flex flex-column align-items-start"
                         sx={{
-                            minWidth:"65vw", mb:"3rem", px:"4rem"
+                            minWidth:"65vw", mb:"3rem", px:"0rem"
                         }}
                     >
                         <Box className="d-flex align-items-center">
@@ -66,6 +68,34 @@ const CreateReview = () => {
                         <Divider sx={{background:"white", mb:0.5, width:'100%'}}/>
                         <Box>
                             <Typography color="#C8C7C7" variant="h6">This song makes me feel...</Typography>
+                            <FormControl sx={{minWidth:250}} variant="outlined">
+                                <Select
+                                    //error={monthError}
+                                    //helperText={monthHelper}
+                                    id="moodInput"
+                                    name="moodInput"
+                                    value={mood}
+                                    onChange={handleChange}
+                                    sx={{color:"black", background:"#FFFFFF", mb:1}}
+                                >
+                                    <MenuItem value={"Happy"}>Happy</MenuItem>
+                                    <MenuItem value={"Frustrated"}>Frustrated</MenuItem>
+                                    <MenuItem value={"Sad"}>Sad</MenuItem>
+                                    <MenuItem value={"Irritated"}>Irritated </MenuItem>
+                                    <MenuItem value={"Excited"}>Excited</MenuItem>
+                                    <MenuItem value={"Good"}>Good</MenuItem>
+                                    <MenuItem value={"Loving"}>Loving</MenuItem>
+                                    <MenuItem value={"Silly"}>Silly</MenuItem>
+                                    <MenuItem value={"Optmisitic"}>Optimistic</MenuItem>
+                                    <MenuItem value={"Angry"}>Angry</MenuItem>
+                                    <MenuItem value={"Annoyed"}>Annoyed</MenuItem>
+                                    <MenuItem value={"Bad"}>Bad</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Box>
+                        <Divider sx={{background:"white", mb:2, width:'100%'}}/>
+                        <Box>
+                            <Typography color="#C8C7C7" variant="h6">Would you reccommend this song?</Typography>
                             <RadioGroup
                                 row
                                 aria-labelledby="demo-row-radio-buttons-group-label"
@@ -80,18 +110,10 @@ const CreateReview = () => {
                                     },
                                 }}
                             >
-                                <FormControlLabel value="Happy" control={<Radio />} label="Happy" />
-                                <FormControlLabel value="Excited" control={<Radio />} label="Excited" />
-                                <FormControlLabel value="Good" control={<Radio />} label="Good" />
-                                <FormControlLabel value="Sad" control={<Radio />} label="Sad" />
-                                <FormControlLabel value="Calm" control={<Radio />} label="Calm" />
-                                <FormControlLabel value="Optimistic" control={<Radio />} label="Optimistic" />
-                                <FormControlLabel value="Angry " control={<Radio />} label="Angry " />
-                                <FormControlLabel value="Bad" control={<Radio />} label="Bad" />
-                                <FormControlLabel value="Annoyed" control={<Radio />} label="Annoyed" />
+                                <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
+                                <FormControlLabel value="No" control={<Radio />} label="No" />
                             </RadioGroup>
                         </Box>
-                        <Divider sx={{background:"white", mb:2, width:'100%'}}/>
                         <TextField
                             name="textInput"
                             onChange={handleChange}
