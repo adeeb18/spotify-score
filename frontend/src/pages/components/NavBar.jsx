@@ -1,6 +1,6 @@
 /* eslint-disable react/react-in-jsx-scope -- Unaware of jsxImportSource */
 /** @jsxImportSource @emotion/react */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AppBar, Toolbar, Typography, Box, Button, Menu, MenuItem} from '@mui/material';
 import { css } from "@emotion/react";
 import {useLocation} from "react-router-dom";
@@ -11,24 +11,20 @@ import SearchBar from './SearchBar';
 const NavBar = () => {
     /*PAGE LOCATION */
     const currPage = useLocation();
-    let [user, setUser] = useState([]);
+    let [user, setUser] = useState("");
     let [check, setCheck] = useState(false);
-    
 
-    const getUser = () => { /*Temp PHP get until server is up*/
-        if(!check){
-            /*const url = 'http://localhost:8000';
-            axios.get(url).then(res => {
-                setUser(res.data.split("\n"));
-            });*/
-            const temp = ["No user","No user"];
-            setUser(temp);
-            setCheck(true);
-        }
-    }
+    useEffect(() => {
+        if(!check || user==""){
+            const loggedInUser = localStorage.getItem("username");
+            if (loggedInUser) {
+                setUser(loggedInUser);
+                setCheck(true);
+            }
+       }
+    }, []);
 
     const initializePage = () =>{
-        getUser();
         if(currPage.pathname === "/"){
             return "Home";
         }
@@ -105,7 +101,7 @@ const NavBar = () => {
                     }
                 `}
             >
-                {user[0]} <ArrowDropDownIcon/>
+                {user} <ArrowDropDownIcon/>
             </Button>
             <Menu
                 sx={{marginTop: "6vh"}}
@@ -131,7 +127,7 @@ const NavBar = () => {
     );
 
     /*DYNAMIC UI FIELDS*/
-    const NavLeft = (user[0] == "No user") ? LoggedOut : LoggedIn;
+    const NavLeft = (user == "") ? LoggedOut : LoggedIn;
     
     return (
         <AppBar 

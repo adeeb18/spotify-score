@@ -20,6 +20,8 @@ const Login = () => {
     let [userHelper, setUserHelper] = useState("");
     let [passwordError, setPasswordError] = useState(false);
     let [passwordHelper, setPasswordHelper] = useState("");
+    /*LOGIN STATES*/
+    const [login, setLogin] = useState()
 
     const handleChange = (event) => {
         switch(event.target.name) {
@@ -47,18 +49,28 @@ const Login = () => {
             }break;
         }
     }
+    
+    const handleLogin = (response) => {
+        const toSend = JSON.stringify(response.data);
+        const splitIt = toSend.split("\"");
+        const val = splitIt[7];
+        localStorage.setItem('username', val);
+        console.log(val);
+    }
 
     const handleSubmit = () => {
         const url = 'http://localhost:8000/users/login'
         const payload = {username: user, password: pass}
         axios.post(url, payload)
-            .then(response => console.log(response))
+            .then(response => {handleLogin(response)})
             .catch(error => console.error(error));
     }
 
     const handleClickShowPassword = () => {
         setShowPassword((show) => !show);
     }
+
+    
 
     return (
         <Box className="d-flex">
