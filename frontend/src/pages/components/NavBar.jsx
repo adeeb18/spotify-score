@@ -24,6 +24,11 @@ const NavBar = () => {
        }
     }, []);
 
+    const handleLogout= () => {
+        localStorage.clear();
+        setUser("");
+    }
+
     const initializePage = () =>{
         if(currPage.pathname === "/"){
             return "Home";
@@ -121,7 +126,7 @@ const NavBar = () => {
               >
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
                 <MenuItem onClick={handleClose}>My Reviews</MenuItem>
-                <MenuItem onClick={handleClose}>Log Out</MenuItem>
+                <MenuItem onClick={handleLogout}>Log Out</MenuItem>
             </Menu>
         </Box>
     );
