@@ -12,8 +12,8 @@ import axios from 'axios';
 
 const Login = () => {
     /*INPUT STATES */
-    let [username, setUsername] = useState("");
-    let [password, setPassword] = useState("");
+    let [user, setUsername] = useState("");
+    let [pass, setPassword] = useState("");
     let [showPassword, setShowPassword] = useState(false);
     /*VALIDATION STATES*/
     let [userError, setUserError] = useState(false);
@@ -48,12 +48,12 @@ const Login = () => {
         }
     }
 
-    const handleSubmit = () => { /*Temp PHP submit until server is up*/
-        const url = 'http://localhost:8000';
-        let fData = new FormData();
-        fData.append('username', username);
-        fData.append('password', password);
-        axios.post(url, fData);
+    const handleSubmit = () => {
+        const url = 'http://localhost:8000/users/login'
+        const payload = {username: user, password: pass}
+        axios.post(url, payload)
+            .then(response => console.log(response))
+            .catch(error => console.error(error));
     }
 
     const handleClickShowPassword = () => {
@@ -144,7 +144,7 @@ const Login = () => {
                                 Log In
                             </Typography>
                         </Button>
-                        <Box class="d-flex">
+                        <Box className="d-flex">
                             <Typography color="#B6B5B5" fontSize={12} marginTop={1.2}>New to SpotifyScore?</Typography>
                             <Button 
                                 href="/register" 

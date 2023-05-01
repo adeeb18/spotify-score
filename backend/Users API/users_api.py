@@ -11,7 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 
 origins = [
-    "http://localhost:3000",
+    "*",
 ]
 
 app.add_middleware(
@@ -114,7 +114,7 @@ async def create_user(user: User, content_type: str = Header("application/json")
     return user_dict_with_fields
 
 # VERIFY LOGIN CREDENTIALS
-@app.get("/users/login")
+@app.post("/users/login")
 async def login(user: Login, content_type: str = Header("application/json")):
     user_dict = jsonable_encoder(user)
 
