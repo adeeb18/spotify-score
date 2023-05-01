@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { Box, Container, Typography, TextField, Button, RadioGroup, FormControlLabel, 
          Radio, Divider, Select, MenuItem, FormControl } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -9,11 +8,13 @@ import SideBar from "./components/SideBar/SideBar";
 import SongCard from "./components/SongCard";
 import StyledRating from "./components/StyledRating";
 import NavBar from "./components/NavBar";
-import ArrowForward from '@mui/icons-material/ArrowForwardIos';
+import axios from "axios";
 
 const CreateReview = () => {
     let [rating, setRating] = useState(0);
-    let [mood, setMood] = useState("Happy")
+    let [mood, setMood] = useState("Happy");
+    let [rec, setRec] = useState("true");
+    let [style, setStyle] = useState("");
     let [reviewText, setReviewText] = useState("");
 
     const handleChange = (event) => {
@@ -21,10 +22,27 @@ const CreateReview = () => {
             case "ratingInput":
                 setRating(event.target.value);
                 break;
-            case "textInput":
+            case "moodInput":
+                setMood(event.target.value);
+                break;
+            case "recInput":
+                setRec(event.target.value);
+                break;
+            case "styleInput":
+                setStyle(event.target.value);
+                break;
+            case "reviewInput":
                 setReviewText(event.target.value);
                 break;
         }
+    }
+
+    const handleSubmit = () => {
+        const url = 'http://localhost:8000/users/getUserReviews'
+        //const payload = {user_id: null, username: user, password: pass, dob: date, date_created: null}
+        axios.get(url)
+            .then(response => console.log(response))
+            .catch(error => console.error(error));
     }
 
     return (
@@ -72,7 +90,6 @@ const CreateReview = () => {
                                 <Select
                                     //error={monthError}
                                     //helperText={monthHelper}
-                                    id="moodInput"
                                     name="moodInput"
                                     value={mood}
                                     onChange={handleChange}
@@ -99,7 +116,8 @@ const CreateReview = () => {
                             <RadioGroup
                                 row
                                 aria-labelledby="demo-row-radio-buttons-group-label"
-                                name="row-radio-buttons-group"
+                                name="recInput"
+                                onChange={handleChange}
                                 sx={{
                                     color:"#C8C7C7",
                                     '& .MuiSvgIcon-root:not(.MuiSvgIcon-root ~ .MuiSvgIcon-root)':{
@@ -110,12 +128,12 @@ const CreateReview = () => {
                                     },
                                 }}
                             >
-                                <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
-                                <FormControlLabel value="No" control={<Radio />} label="No" />
+                                <FormControlLabel value="true" control={<Radio />} label="Yes" />
+                                <FormControlLabel value="false" control={<Radio />} label="No" />
                             </RadioGroup>
                         </Box>
                         <TextField
-                            name="textInput"
+                            name="styleInput"
                             onChange={handleChange}
                             label="What style do you think this song is?"
                             rows={6}
@@ -126,7 +144,7 @@ const CreateReview = () => {
                         />
                         <Divider sx={{background:"white", mb:2, width:'100%'}}/>
                         <TextField
-                            name="textInput"
+                            name="reviewInput"
                             onChange={handleChange}
                             label="What did you think about this song?"
                             rows={6}
@@ -137,8 +155,7 @@ const CreateReview = () => {
                         />
                         <Button
                             variant="contained"
-                            component={Link}
-                            to="/song"
+                            onClick={handleSubmit}
                             startIcon={<SendIcon/>}
                             sx={{marginBottom:"3em", color:"#191414"}}
                             style={{backgroundColor:"#1DB954"}}

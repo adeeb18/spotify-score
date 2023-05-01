@@ -291,7 +291,7 @@ def updateRating(id: str, user_score: int, add: bool, type: str):
 
     return
 
-@app.get("/users/getUserReviews")
+@app.post("/users/getUserReviews")
 async def get_user_reviews(user: User_ID, content_type: str = Header("application/json")):
     user_dict = jsonable_encoder(user)
     db = connect_to_database("sql9.freemysqlhosting.net", "sql9614548", "uxn5nljy2g", "sql9614548")
