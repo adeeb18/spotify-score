@@ -164,7 +164,9 @@ def search_by_query(token, artist_name):
             album = Album(name=name, image_url=url, artist=artist, id=id)
             albums.append(album)
             responses.append(album)
-    
+    print("albums: ")
+    print(albums)
+    print("responses: ")
 
     print(responses)
     return responses
