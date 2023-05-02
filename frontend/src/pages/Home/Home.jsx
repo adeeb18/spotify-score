@@ -31,11 +31,11 @@ const Home = () => {
     const handleSearch = (event) => {
         event.preventDefault(); // prevent the default form submission
         // send the search input to the API endpoint
-        fetch(`http://127.0.0.1:8000/artistid/${searchInput}`)
+        fetch(`http://127.0.0.1:8000/search/${searchInput}`)
             .then((response) => response.json())
             .then((data) => {
                 console.log(data); // do something with the response data
-                setSearchResults(data['artists'])
+                setSearchResults(data['responses'])
             })
             .catch((error) => {
                 console.error(error); // handle errors

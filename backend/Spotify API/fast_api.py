@@ -5,25 +5,28 @@ from dotenv import load_dotenv
 from requests import post, get
 import json
 from pydantic import BaseModel
-from typing import List, Dict
+from typing import List, Dict, Union
 from fastapi.middleware.cors import CORSMiddleware
 
 class Artist(BaseModel):
     name: str
     image_url: str
+    id: str
 
 class Track(BaseModel):
     name: str
     image_url: str
-    artist: str
+    artists: List[str]
+    id: str
 
 class Album(BaseModel):
     name: str
     image_url: str
     artist: str
+    id: str
 
 class QueryResponse(BaseModel):
-    responses: List[Dict[str, str]] = []
+    responses: List[Dict[str, Union[str, List[str]]]] = []
 
     class Config:
         schema_extra = {
@@ -49,6 +52,11 @@ class ArtistListResponse(BaseModel):
             }
         }
 
+class AlbumListResponse(BaseModel):
+    albums: List[Dict[str, str]] = []
+
+
+        
 load_dotenv()
 client_id = os.getenv("CLIENT_ID")
 client_secret = os.getenv("CLIENT_SECRET")
@@ -79,7 +87,6 @@ def get_token():
     return token 
 
 
-
 def search_artist_by_name(token, artist_name):
     url = "https://api.spotify.com/v1/search"
     headers = {"Authorization" : "Bearer " + token}
@@ -90,11 +97,20 @@ def search_artist_by_name(token, artist_name):
     if len(json_result) == 0:
         print("No artist with this name")
         return None
-    print(json_result['artists']['items'])
     return json_result['artists']['items']
     
-
-
+def search_album_by_name(token, album_name):
+    url = "https://api.spotify.com/v1/search"
+    headers = {"Authorization" : "Bearer " + token}
+    query = f"?q={album_name}&type=album&limit=5"
+    query_url = url + query
+    result = get(query_url, headers = headers)
+    json_result = json.loads(result.content)
+    if len(json_result) == 0:
+        print("No album with this name")
+        return None
+    return json_result['albums']['items']
+    
 def search_by_query(token, artist_name):
     url = "https://api.spotify.com/v1/search"
     headers = {"Authorization" : "Bearer " + token}
@@ -109,48 +125,59 @@ def search_by_query(token, artist_name):
     responses = []
     if 'artists' in json_result:
         artist_names = [sub['name'] for sub in json_result['artists']['items']]
+        artist_ids = [sub['id'] for sub in json_result['artists']['items']]
         artist_images = [ sub['images'][0] if len(sub['images']) > 0 else '' for sub in json_result['artists']['items'] ]
-        print("artists: ")
-        print(artist_names)
+        artists = []
 
-        for name, image in zip(artist_names, artist_images):
+        for name, image, id in zip(artist_names, artist_images, artist_ids):
             url = image['url'] if len(image) > 0 else ''
-            artist = Artist(name=name, image_url=url)
+            artist = Artist(name=name, image_url=url, id=id)
+            artists.append(artist)
             responses.append(artist)
+    
     if 'tracks' in json_result:
-        track_names = []
-        track_images = []
-        track_artists = []
+       
+        tracks = []
         for item in json_result['tracks']['items']:
-            track_names.append(item['name'])
+            name = item['name']
+            image = ''
             if 'album' in item:
-                track_images.append(item['album']['images'][0] if len(item['album']['images']) > 0 else '')
-            else:
-                track_images.append('')
+                image = item['album']['images'][0] if len(item['album']['images']) > 0 else ''
 
+            artists = []
             if 'artists' in item:
                 if len(item['artists']) > 0:
-                    track_artists.append([ sub['name'] for sub in item['artists'] ])
-                else:
-                    track_artists.append([])
-            else:
-                track_artists.append([])
+                    artists = [ sub['name'] for sub in item['artists'] ]
 
-        print("tracks: ")
+            track = Track(name=name, image_url=url, id=id, artists=artists)
+            tracks.append(track)
+            responses.append(track)
+            
 
-        print(track_names)
     if 'albums' in json_result:
-        album_names = [sub['name'] for sub in json_result['albums']['items']]
-        album_images = [sub['images'][0]['url'] if len(sub['images']) > 0 else '' for sub in json_result['albums']['items'] ]
-        album_artist = [sub['artists'][0]['name'] if len(sub['artists']) > 0 else '' for sub in json_result['albums']['items'] ]
-        print("albums: ")
+        albums = []
+        for item in json_result['albums']['items']:
+            name = item['name']
+            id = item['id']
+            url = item['images'][0]['url'] if len(item['images']) > 0 else ''
+            artist = item['artists'][0]['name'] if len(item['artists']) > 0 else ''
+            album = Album(name=name, image_url=url, artist=artist, id=id)
+            albums.append(album)
+            responses.append(album)
+    print("albums: ")
+    print(albums)
+    print("responses: ")
 
-        print(album_names)
-
-    return 'not_completed'
+    print(responses)
+    return responses
 
 def get_artists_by_id(token, artist_id):
     return None
+
+
+'''
+API Endpoints
+'''
 
 @app.get("/")
 async def root():
@@ -173,16 +200,17 @@ async def artist_id(artist_name: str):
 
     # Search for artists by query
     artist_list = search_artist_by_name(token, artist_name)
-    artist_names = [ sub['name'] for sub in artist_list ]
-    artist_images = [ sub['images'][0] if len(sub['images']) > 0 else '' for sub in artist_list ]
+    artist_names = [sub['name'] for sub in artist_list ]
+    artist_ids = [sub['id'] for sub in artist_list ]
+    artist_images = [sub['images'][0] if len(sub['images']) > 0 else '' for sub in artist_list ]
     print(artist_names)
     print(artist_images)
 
     # Create artist objects to return
     artists = []
-    for name, image in zip(artist_names, artist_images):
+    for name, image, id in zip(artist_names, artist_images, artist_ids):
         url = image['url'] if len(image) > 0 else ''
-        artist = Artist(name=name, image_url=url)
+        artist = Artist(name=name, image_url=url, id=id)
         artists.append(artist)
 
     # Create a response object using the Pydantic model
@@ -191,6 +219,31 @@ async def artist_id(artist_name: str):
     # Return the response as a JSON
     return response.dict()
 
+@app.get("/albumid/{album_name}")
+async def album_id(album_name : str):
+     # Get access token
+    token = get_token()
+    print(token)
+
+    # Search for artists by query
+    album_list = search_album_by_name(token, album_name)
+    album_names = [sub['name'] for sub in album_list ]
+    album_ids = [sub['id'] for sub in album_list ]
+    album_images = [sub['images'][0] if len(sub['images']) > 0 else '' for sub in album_list ]
+    print(album_names)
+    print(album_images)
+    print(album_ids)
+
+    # Create artist objects to return
+    albums = []
+    for name, image, id in zip(album_names, album_names, album_ids):
+        url = image['url'] if len(image) > 0 else ''
+        album = Album(name=name, image_url=url, id=id, artist='')
+        albums.append(album)
+
+    # Create a response object using the Pydantic model
+    response = AlbumListResponse(albums=albums)
+
 @app.get("/search/{query}")
 async def search(query: str):
     # Get access token
@@ -198,23 +251,7 @@ async def search(query: str):
     print(token)
 
     # Search for artists by query
-    artist_list = search_by_query(token, query)
-    # artist_names = [ sub['name'] for sub in artist_list ]
-    # artist_images = [ sub['images'][0] if len(sub['images']) > 0 else '' for sub in artist_list ]
-    # print(artist_names)
-    # print(artist_images)
+    response_list = search_by_query(token, query)
 
-    # # Create artist objects to return
-    # artists = []
-    # for name, image in zip(artist_names, artist_images):
-    #     url = image['url'] if len(image) > 0 else ''
-    #     artist = Artist(name=name, image_url=url)
-    #     artists.append(artist)
+    return QueryResponse(responses=response_list)
 
-    # # Create a response object using the Pydantic model
-    # response = ArtistListResponse(artists=artists)
-
-    # # Return the response as a JSON
-    # return response.dict()
-
-    return {'responts': 'ok'}
