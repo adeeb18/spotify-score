@@ -9,7 +9,8 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import StyledRating from "./StyledRating";
 
-const SongCard = ({ artist = 'This is the Song Name', song = 'This is the Artist Name', imageUrl = '/logo192.png', renderImage = true }) => {
+
+const SongCard = ({ song = 'Song Name', artist = 'Artist Name', imageUrl = '/logo192.png', renderImage = true, rating = 2.5 }) => {
     return (
         <Container>
             <Card sx={{ m: "1rem 1rem", background: "#2c2c2c" }}>
@@ -19,23 +20,23 @@ const SongCard = ({ artist = 'This is the Song Name', song = 'This is the Artist
                     </CardContent>}
                     <CardContent>
                         <Typography variant="h5" color="#ffffff">
-                            {artist}
+                            {song}
                         </Typography>
                         <Typography variant="body2" color="#bbbbbb">
-                            {song}
+                            {artist}
                         </Typography>
                     </CardContent>
                     <CardContent sx={{ textAlign: "center" }}>
                         <StyledRating
                             defaultValue={5}
-                            value={2.5}
+                            value={rating}
                             precision={0.5}
                             icon={<FavoriteIcon />}
                             emptyIcon={<FavoriteBorderIcon />}
                             readOnly
                         />
                         <Typography variant="body1" color="#ffffff">
-                            (1000)
+                            {"(" + (rating*20).toString() + ")"}
                         </Typography>
                     </CardContent>
                 </CardActionArea>
