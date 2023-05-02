@@ -9,26 +9,14 @@ import axios from "axios";
 import StyledRating from "./components/StyledRating";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
-function Review(props){
-    const [temp, setTemp] = useState("");
-    const getUsername = (id) => {
-        const url = 'http://localhost:8000/users/getSingleUser'
-        const payload = {user_id: id,}
-        axios.post(url, payload)
-            .then(response => {
-                const toSend = JSON.stringify(response.data);
-                const splitIt = toSend.split("\"");
-                const val = splitIt[7];
-                setTemp(val);
-            })
-            .catch(
-                error => console.error(error));
-        return temp;
+function MyReview(props){
+    if(props.user != localStorage.getItem("id")){
+        return(null);
     }
     return(
         <Box className="d-flex" sx={{width:"100%", color:"#C8C7C7",px:"4rem", py:"2rem", alignItems:"center", background:"#4e4f4f", borderRadius:2, my:3}}>
             <Box sx={{minWidth:"25%"}}>
-                <Typography variant="h4">{getUsername(props.user)}</Typography>
+                <Typography variant="h4">{localStorage.getItem("username")}</Typography>
                 <Typography>Style: {props.style}</Typography>
                 <Typography>Mood: {props.mood}</Typography>
                 <Typography>{(props.rec == "Yes")? "Would Recommend" : "Would Not Recommend"}</Typography>
@@ -52,7 +40,7 @@ function Review(props){
     );
 }
 
-const ViewReviews = () => {
+const MyReviews = () => {
     const [data, setData] = useState([]);
     let count = 0;
 
@@ -65,10 +53,11 @@ const ViewReviews = () => {
 
     // const reviewTemplate = (user, rating, style, mood, created, thoughts, rec, keyVal)
     const body = data.map((item, index) => (
-    <Review key={index} user={item.user_id} rating={item.num_rating} 
+    <MyReview key={index} user={item.user_id} rating={item.num_rating} 
             style={item.style} mood={item.mood} created = {item.time_created}
             thoughts = {item.overall_thoughts} rec={item.would_recommend}/>
     ));
+
     return (
         <Box className="d-flex">
             <SideBar/>
@@ -108,4 +97,4 @@ const ViewReviews = () => {
     );
 }
 
-export default ViewReviews;
+export default MyReviews;

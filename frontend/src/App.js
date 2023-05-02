@@ -10,6 +10,7 @@ import Leaderboard from "./pages/Leaderboard";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import './App.css';
+import MyReviews from "./pages/MyReviews";
 
 function App() {
   
@@ -26,6 +27,7 @@ function App() {
             <Route path="/leaderboard" element={<Leaderboard/>}/>
             <Route path="/register" element={<Register/>}/>
             <Route path="/login" element={<Login/>}/>
+            <Route path="/profile/reviews" element={<MyReviews/>}/>
           </Routes>
     </BrowserRouter>
   );

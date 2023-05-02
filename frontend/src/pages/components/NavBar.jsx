@@ -1,10 +1,9 @@
 /* eslint-disable react/react-in-jsx-scope -- Unaware of jsxImportSource */
 /** @jsxImportSource @emotion/react */
 import { useState, useEffect } from 'react';
-import { AppBar, Toolbar, Typography, Box, Button, Menu, MenuItem} from '@mui/material';
+import { AppBar, Toolbar, Typography, Box, Button, Menu, MenuItem, Link} from '@mui/material';
 import { css } from "@emotion/react";
 import {useLocation} from "react-router-dom";
-import axios from 'axios';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import SearchBar from './SearchBar';
 
@@ -125,7 +124,7 @@ const NavBar = () => {
                 onClose={handleClose}
               >
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My Reviews</MenuItem>
+                <MenuItem href={"/profile/reviews"}>My Reviews</MenuItem>
                 <MenuItem onClick={handleLogout}>Log Out</MenuItem>
             </Menu>
         </Box>
