@@ -484,3 +484,30 @@ async def delete_song_review(user: User_Review, content_type: str = Header("appl
     db.close()
 
     return {"message": f"User with user_id {user_dict['user_id']} and id {user_dict['id']} has been deleted."}
+
+#FIND USER INFO BASED OF ID
+@app.get("/users/getSingleUser")
+async def get_single_user(user: User_ID, content_type: str = Header("application/json")):
+    db = connect_to_database("sql9.freemysqlhosting.net", "sql9614548", "uxn5nljy2g", "sql9614548")
+    cursor = db.cursor()
+    user_dict = jsonable_encoder(user)
+
+    #FIND MATCHING ID
+    query = "SELECT * FROM users WHERE user_id=%s"
+    
+    cursor.execute(query, (user_dict['user_id'],))
+
+    #Get USER INFO
+    for user_id, username, password, dob, date_created in cursor:
+        user1 = User(
+            user_id=user_id,
+            username=username,
+            password=password,
+            dob=dob,
+            date_created=date_created
+        )
+
+    cursor.close()
+    db.close()
+
+    return {"User": user1}
