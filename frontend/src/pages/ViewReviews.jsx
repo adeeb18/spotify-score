@@ -38,7 +38,7 @@ function Review(props){
                 <Box className="d-flex justify-content-between">
                     <StyledRating
                         defaultValue={5}
-                        value={(props.rating)}
+                        value={(Number(props.rating)/25)}
                         precision={0.5}
                         icon={<FavoriteIcon/>}
                         emptyIcon={<FavoriteBorderIcon/>}
