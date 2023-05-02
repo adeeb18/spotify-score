@@ -53,6 +53,7 @@ class Review(BaseModel):
     would_recommend: str
     time_created: Optional[datetime]
     last_edited: Optional[datetime]
+
 class Genre(BaseModel):
     genre: str
 
@@ -514,40 +515,32 @@ async def get_single_user(user: User_ID, content_type: str = Header("application
 
     return {"User": user1}
 
-@app.get("/reviews/genre")
+@app.post("/users/getReviewsByGenre")
 async def get_reviews_by_genre(genre: Genre, content_type: str = Header("application/json")):
     db = connect_to_database("sql9.freemysqlhosting.net", "sql9614548", "uxn5nljy2g", "sql9614548")
     genre_dict = jsonable_encoder(genre)
-    #print("Hello",genre_dict)
-    
     cursor = db.cursor()
-    query = "SELECT * FROM song_reviews WHERE genre = %s"
-    cursor.execute(query, (genre_dict['genre'],))
-    #print(genre_dict['genre'])
-    #print(cursor)
+    query = """
+        SELECT u.user_id, sr.song_id AS item_id, sr.genre, sr.num_rating, sr.overall_thoughts, sr.style, sr.mood, sr.would_recommend, sr.time_created, sr.last_edited
+        FROM song_reviews sr 
+        JOIN users u ON sr.user_id = u.user_id
+        WHERE sr.genre = %s
+        UNION ALL
+        SELECT u.user_id, ar.album_id AS item_id, ar.genre, ar.num_rating, ar.overall_thoughts, ar.style, ar.mood, ar.would_recommend, ar.time_created, ar.last_edited
+        FROM album_reviews ar 
+        JOIN users u ON ar.user_id = u.user_id
+        WHERE ar.genre = %s
+    """
 
-    try:
-        reviews = []
-        for row in cursor:
-            #print(type(row))
-            #print(row)
-            review = {
-                "type": row[0],
-                "user_id": row[1],
-                "id": row[2],
-                "genre": row[3],
-                "num_rating": row[4],
-                "overall_thoughts": row[5],
-                "style": row[6],
-                "mood": row[7],
-                "would_recommend": row[8],
-                "time_created": row[9],
-                #"last_edited": row[10]
-            }
-            reviews.append(review)
-        return {"reviews": reviews}
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
-    finally:
-        cursor.close()
-        db.close()
+    cursor.execute(query, (genre_dict['genre'], genre_dict['genre'],))
+    result = cursor.fetchall()
+    review_dicts_with_fields = []
+
+    for row in result:
+        field_names = ['user_id', 'id', 'genre', 'num_rating', 'overall_thoughts', 'style', 'mood', 'would_recommend', 'time_created', 'last_edited'] 
+        review_dict = dict(zip(field_names, row))
+        review_dicts_with_fields.append(review_dict)
+
+    cursor.close()
+    db.close()
+    return review_dicts_with_fields
