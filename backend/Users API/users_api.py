@@ -486,7 +486,7 @@ async def delete_song_review(user: User_Review, content_type: str = Header("appl
     return {"message": f"User with user_id {user_dict['user_id']} and id {user_dict['id']} has been deleted."}
 
 #FIND USER INFO BASED OF ID
-@app.get("/users/getSingleUser")
+@app.post("/users/getSingleUser")
 async def get_single_user(user: User_ID, content_type: str = Header("application/json")):
     db = connect_to_database("sql9.freemysqlhosting.net", "sql9614548", "uxn5nljy2g", "sql9614548")
     cursor = db.cursor()
