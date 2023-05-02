@@ -53,6 +53,8 @@ class Review(BaseModel):
     would_recommend: str
     time_created: Optional[datetime]
     last_edited: Optional[datetime]
+class Genre(BaseModel):
+    genre: str
 
 def connect_to_database(host, user, password, database):
     db = mysql.connector.connect(
@@ -511,3 +513,41 @@ async def get_single_user(user: User_ID, content_type: str = Header("application
     db.close()
 
     return {"User": user1}
+
+@app.get("/reviews/genre")
+async def get_reviews_by_genre(genre: Genre, content_type: str = Header("application/json")):
+    db = connect_to_database("sql9.freemysqlhosting.net", "sql9614548", "uxn5nljy2g", "sql9614548")
+    genre_dict = jsonable_encoder(genre)
+    #print("Hello",genre_dict)
+    
+    cursor = db.cursor()
+    query = "SELECT * FROM song_reviews WHERE genre = %s"
+    cursor.execute(query, (genre_dict['genre'],))
+    #print(genre_dict['genre'])
+    #print(cursor)
+
+    try:
+        reviews = []
+        for row in cursor:
+            #print(type(row))
+            #print(row)
+            review = {
+                "type": row[0],
+                "user_id": row[1],
+                "id": row[2],
+                "genre": row[3],
+                "num_rating": row[4],
+                "overall_thoughts": row[5],
+                "style": row[6],
+                "mood": row[7],
+                "would_recommend": row[8],
+                "time_created": row[9],
+                #"last_edited": row[10]
+            }
+            reviews.append(review)
+        return {"reviews": reviews}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    finally:
+        cursor.close()
+        db.close()
