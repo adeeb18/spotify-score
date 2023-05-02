@@ -10,31 +10,41 @@ import StyledRating from "./components/StyledRating";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 function MyReview(props){
-    if(props.user != localStorage.getItem("id")){
-        return(null);
+    const handleDelete = () => {
+        console.log(props.id);
+        const payload = {"user_id":props.user, "id":props.id, "type":props.type}
+        const url = 'http://localhost:8000/users/deleteReview'
+        axios.delete(url, {data: payload})
+        .then(response => console.log(response))
+        .catch(error => console.error(error));
     }
     return(
-        <Box className="d-flex" sx={{width:"100%", color:"#C8C7C7",px:"4rem", py:"2rem", alignItems:"center", background:"#4e4f4f", borderRadius:2, my:3}}>
-            <Box sx={{minWidth:"25%"}}>
-                <Typography variant="h4">{localStorage.getItem("username")}</Typography>
-                <Typography>Style: {props.style}</Typography>
-                <Typography>Mood: {props.mood}</Typography>
-                <Typography>{(props.rec == "Yes")? "Would Recommend" : "Would Not Recommend"}</Typography>
-            </Box>
-            <Box className="mt-2">
-                <Box className="d-flex justify-content-between">
-                    <StyledRating
-                        defaultValue={5}
-                        value={(Number(props.rating)/25)}
-                        precision={0.5}
-                        icon={<FavoriteIcon/>}
-                        emptyIcon={<FavoriteBorderIcon/>}
-                        sx={{mb:"0.5rem"}}
-                        readOnly
-                    />
-                    <Typography className="align-self-end">{props.created}</Typography>
+        <Box className="d-flex flex-column align-items-start" sx={{width:"100%", color:"#C8C7C7",px:"4rem", py:"2rem", alignItems:"center", background:"#4e4f4f", borderRadius:2, my:3}}>
+            <Box className="d-flex"  sx={{gap:"2rem"}}> 
+                <Box sx={{minWidth:"25%"}}>
+                    <Typography variant="h4">{localStorage.getItem("username")}</Typography>
+                    <Typography marginLeft="3%">Style: {props.style}</Typography>
+                    <Typography marginLeft="3%">Mood: {props.mood}</Typography>
+                    <Typography marginLeft="3%">{(props.rec) ? "Would Recommend" : "Would Not Recommend"}</Typography>
                 </Box>
-                <Typography width="100%">{props.thoughts}</Typography>
+                <Box className="mt-2">
+                    <Box className="d-flex justify-content-between align-items-center" sx={{width:"100%"}}>
+                        <StyledRating
+                            defaultValue={5}
+                            value={(Number(props.rating)/25)}
+                            precision={0.5}
+                            icon={<FavoriteIcon/>}
+                            emptyIcon={<FavoriteBorderIcon/>}
+                            readOnly
+                        />
+                        <Typography marginLeft="25vw"> {(props.created).substring(0, 10)}</Typography>
+                    </Box>
+                    <Typography width="100%">{props.thoughts}</Typography>
+                </Box>
+            </Box>
+            <Box className="d-flex" sx={{gap:"1rem", ml:0.6}}>
+                <Button variant="contained" sx={{color:"#191414", maxWidth:"30%"}} style={{backgroundColor:"#1DB954"}}>Edit</Button>
+                <Button onClick={handleDelete} variant="contained" sx={{color:"#191414", maxWidth:"30%"}} style={{backgroundColor:"#bd2d2d"}}>Delete</Button>
             </Box>
         </Box>
     );
@@ -42,11 +52,12 @@ function MyReview(props){
 
 const MyReviews = () => {
     const [data, setData] = useState([]);
-    let count = 0;
 
     useEffect(() => {
-        const url = 'http://localhost:8000/users/getAllReviews'
-            axios.get(url)
+        const url = 'http://localhost:8000/users/getUserReviews'
+        const id = localStorage.getItem("id");
+        const payload = {user_id: id}
+        axios.post(url, payload)
                 .then(response =>  setData(response.data))
                 .catch(error => console.error(error));
     }, []);
@@ -55,7 +66,8 @@ const MyReviews = () => {
     const body = data.map((item, index) => (
     <MyReview key={index} user={item.user_id} rating={item.num_rating} 
             style={item.style} mood={item.mood} created = {item.time_created}
-            thoughts = {item.overall_thoughts} rec={item.would_recommend}/>
+            thoughts = {item.overall_thoughts} rec={item.would_recommend} 
+            type={"song"} genre = {item.genre} id={item.id}/>
     ));
 
     return (
