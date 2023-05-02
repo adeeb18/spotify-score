@@ -9,13 +9,27 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import StyledRating from "./components/StyledRating";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { styled } from "@mui/system";
 
 function Review(props){
+    const [temp, setTemp] = useState("");
+    const getUsername = (id) => {
+        const url = 'http://localhost:8000/users/getSingleUser'
+        const payload = {user_id: id,}
+        axios.post(url, payload)
+            .then(response => {
+                const toSend = JSON.stringify(response.data);
+                const splitIt = toSend.split("\"");
+                const val = splitIt[7];
+                setTemp(val);
+            })
+            .catch(
+                error => console.error(error));
+        return temp;
+    }
     return(
         <Box className="d-flex" sx={{width:"100%", color:"#C8C7C7",px:"4rem", py:"2rem", alignItems:"center", background:"#4e4f4f", borderRadius:2, my:3}}>
             <Box sx={{minWidth:"25%"}}>
-                <Typography variant="h4">{props.user}</Typography>
+                <Typography variant="h4">{getUsername(props.user)}</Typography>
                 <Typography>Style: {props.style}</Typography>
                 <Typography>Mood: {props.mood}</Typography>
                 <Typography>{(props.rec == "Yes")? "Would Recommend" : "Would Not Recommend"}</Typography>
