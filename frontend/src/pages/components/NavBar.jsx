@@ -3,11 +3,12 @@
 import { useState, useEffect } from 'react';
 import { AppBar, Toolbar, Typography, Box, Button, Menu, MenuItem, Link} from '@mui/material';
 import { css } from "@emotion/react";
-import {useLocation} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import SearchBar from './SearchBar';
 
 const NavBar = () => {
+    const navigate = useNavigate();
     /*PAGE LOCATION */
     const currPage = useLocation();
     let [user, setUser] = useState("");
@@ -123,9 +124,11 @@ const NavBar = () => {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem href={"/profile/reviews"}>My Reviews</MenuItem>
-                <MenuItem onClick={handleLogout}>Log Out</MenuItem>
+                <Box className="d-flex flex-column">
+                    <Button className="menu" onClick={handleClose} >Profile</Button>
+                    <Button href="/profile/reviews" className="menu">My Reviews</Button>
+                    <Button className="menu" onClick={handleLogout}>Log Out</Button>
+                </Box>
             </Menu>
         </Box>
     );
