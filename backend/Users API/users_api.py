@@ -77,7 +77,7 @@ def connect_to_database(host, user, password, database):
 async def create_user(user: User, content_type: str = Header("application/json")):
     user_dict = jsonable_encoder(user)
 
-    db = connect_to_database("sql9.freemysqlhosting.net", "sql9614548", "uxn5nljy2g", "sql9614548")
+    db = connect_to_database("sql9.freemysqlhosting.net", "sql9615826", "uEhDpzEqyf", "sql9615826")
 
     cursor = db.cursor()
 
@@ -122,7 +122,7 @@ async def create_user(user: User, content_type: str = Header("application/json")
 async def login(user: Login, content_type: str = Header("application/json")):
     user_dict = jsonable_encoder(user)
 
-    db = connect_to_database("sql9.freemysqlhosting.net", "sql9614548", "uxn5nljy2g", "sql9614548")
+    db = connect_to_database("sql9.freemysqlhosting.net", "sql9615826", "uEhDpzEqyf", "sql9615826")
 
     cursor = db.cursor()
     query = "SELECT * FROM users WHERE username = %s AND password = %s"
@@ -145,7 +145,7 @@ async def login(user: Login, content_type: str = Header("application/json")):
 # GET ALL USERS (TEST FUNCTION)
 @app.get("/users/getUsers")
 async def get_users():
-    db = connect_to_database("sql9.freemysqlhosting.net", "sql9614548", "uxn5nljy2g", "sql9614548")
+    db = connect_to_database("sql9.freemysqlhosting.net", "sql9615826", "uEhDpzEqyf", "sql9615826")
 
     cursor = db.cursor()
     query = "SELECT * FROM users"
@@ -176,7 +176,7 @@ async def get_users():
 async def create_review(review: Review, content_type: str = Header("application/json")):
     review_dict = jsonable_encoder(review)
 
-    db = connect_to_database("sql9.freemysqlhosting.net", "sql9614548", "uxn5nljy2g", "sql9614548")
+    db = connect_to_database("sql9.freemysqlhosting.net", "sql9615826", "uEhDpzEqyf", "sql9615826")
 
     cursor = db.cursor()
 
@@ -227,7 +227,7 @@ async def create_review(review: Review, content_type: str = Header("application/
     return review_dict_with_fields
 
 def updateRating(id: str, user_score: int, add: bool, type: str):
-    db = connect_to_database("sql9.freemysqlhosting.net", "sql9614548", "uxn5nljy2g", "sql9614548")
+    db = connect_to_database("sql9.freemysqlhosting.net", "sql9615826", "uEhDpzEqyf", "sql9615826")
     cursor = db.cursor()
 
     # SET VALUES BASED ON IF IT IS SONG OR ALBUM
@@ -301,7 +301,7 @@ def updateRating(id: str, user_score: int, add: bool, type: str):
 async def get_user_reviews(user: User_ID, content_type: str = Header("application/json")):
 
     user_dict = jsonable_encoder(user)
-    db = connect_to_database("sql9.freemysqlhosting.net", "sql9614548", "uxn5nljy2g", "sql9614548")
+    db = connect_to_database("sql9.freemysqlhosting.net", "sql9615826", "uEhDpzEqyf", "sql9615826")
     cursor = db.cursor()
     query = """
         SELECT u.user_id, sr.song_id AS item_id, sr.genre, sr.num_rating, sr.overall_thoughts, sr.style, sr.mood, sr.would_recommend, sr.time_created, sr.last_edited
@@ -330,7 +330,7 @@ async def get_user_reviews(user: User_ID, content_type: str = Header("applicatio
 @app.get("/users/getAllReviews")
 async def get_all_reviews():
 
-    db = connect_to_database("sql9.freemysqlhosting.net", "sql9614548", "uxn5nljy2g", "sql9614548")
+    db = connect_to_database("sql9.freemysqlhosting.net", "sql9615826", "uEhDpzEqyf", "sql9615826")
     cursor = db.cursor()
     query = """
         SELECT u.user_id, sr.song_id AS item_id, sr.genre, sr.num_rating, sr.overall_thoughts, sr.style, sr.mood, sr.would_recommend, sr.time_created, sr.last_edited
@@ -362,7 +362,7 @@ async def get_all_reviews():
 async def edit_song_review(review: Review, content_type: str = Header("application/json")):
     review_dict = jsonable_encoder(review)
 
-    db = connect_to_database("sql9.freemysqlhosting.net", "sql9614548", "uxn5nljy2g", "sql9614548")
+    db = connect_to_database("sql9.freemysqlhosting.net", "sql9615826", "uEhDpzEqyf", "sql9615826")
 
     cursor = db.cursor()
     
@@ -421,7 +421,7 @@ async def edit_song_review(review: Review, content_type: str = Header("applicati
 @app.delete("/users/deleteUser")
 async def delete_user(user: User_ID, content_type: str = Header("application/json")):
 
-    db = connect_to_database("sql9.freemysqlhosting.net", "sql9614548", "uxn5nljy2g", "sql9614548")
+    db = connect_to_database("sql9.freemysqlhosting.net", "sql9615826", "uEhDpzEqyf", "sql9615826")
     cursor = db.cursor()
 
     user_dict = jsonable_encoder(user)
@@ -457,7 +457,7 @@ async def delete_user(user: User_ID, content_type: str = Header("application/jso
 # DELETE A REVIEW
 @app.delete("/users/deleteReview")
 async def delete_song_review(user: User_Review, content_type: str = Header("application/json")):
-    db = connect_to_database("sql9.freemysqlhosting.net", "sql9614548", "uxn5nljy2g", "sql9614548")
+    db = connect_to_database("sql9.freemysqlhosting.net", "sql9615826", "uEhDpzEqyf", "sql9615826")
 
     cursor = db.cursor()
 
@@ -491,7 +491,7 @@ async def delete_song_review(user: User_Review, content_type: str = Header("appl
 #FIND USER INFO BASED OF ID
 @app.post("/users/getSingleUser")
 async def get_single_user(user: User_ID, content_type: str = Header("application/json")):
-    db = connect_to_database("sql9.freemysqlhosting.net", "sql9614548", "uxn5nljy2g", "sql9614548")
+    db = connect_to_database("sql9.freemysqlhosting.net", "sql9615826", "uEhDpzEqyf", "sql9615826")
     cursor = db.cursor()
     user_dict = jsonable_encoder(user)
 
@@ -517,7 +517,8 @@ async def get_single_user(user: User_ID, content_type: str = Header("application
 
 @app.post("/users/getReviewsByGenre")
 async def get_reviews_by_genre(genre: Genre, content_type: str = Header("application/json")):
-    db = connect_to_database("sql9.freemysqlhosting.net", "sql9614548", "uxn5nljy2g", "sql9614548")
+    db = connect_to_database("sql9.freemysqlhosting.net", "sql9615826", "uEhDpzEqyf", "sql9615826")
+    
     genre_dict = jsonable_encoder(genre)
     cursor = db.cursor()
     query = """
