@@ -1,4 +1,4 @@
-import { Typography, Button } from "@mui/material"
+import { Typography, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions} from "@mui/material"
 import { Box } from "@mui/system"
 import { useState, useEffect } from "react"
 import NavBar from "./components/NavBar"
@@ -7,6 +7,7 @@ import axios from "axios"
 
 const UserProfile = () => {
     let [reviews, setReviews] = useState(0);
+    let [del, setDel] = useState(false);
 
     useEffect(() => {
         const url = 'http://localhost:8000/users/getUserReviews'
@@ -18,7 +19,28 @@ const UserProfile = () => {
     }, []);
 
     const handleDelete = () => {
+        const uID = localStorage.getItem("id");
+        const payload = {"user_id": uID}
+        const url = 'http://localhost:8000/users/deleteUser'
+        axios.delete(url, {data: payload})
+        .then(response => confirmDelete(response))
+        .catch(error => console.error(error));
+    }
 
+    const confirmDelete = (response) => {
+        localStorage.clear();
+        setDel(false);
+        if(response.status == 200){
+            alert("Account Deleted Successfully");
+        }
+    }
+    
+    const handleClose = () =>{
+        setDel(false);
+    }
+
+    const setDialog = () => {
+        setDel(true);
     }
 
     return (
@@ -41,8 +63,8 @@ const UserProfile = () => {
                             style={{backgroundColor:"#1DB954"}}
                         >View Reviews</Button>
                         <Button 
-                            onClick={handleDelete} 
-                            href="/" variant="contained" 
+                            onClick={setDialog} 
+                            variant="contained" 
                             sx={{ minWidth:"20vw", maxWidth:"30vw", borderRadius:2}} 
                             style={{backgroundColor:"#bd2d2d"}}
                         >Delete Account</Button>
@@ -50,6 +72,34 @@ const UserProfile = () => {
                     </Box>
                 </Box>
             </Box>
+                <Dialog
+                    PaperProps={{
+                        style:{
+                            backgroundColor:"#555",
+                        }
+                    }}
+                    open={del}
+                    onClose={handleDelete}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title" sx={{color:"#C8C7C7"}}>
+                    {"Are You Sure?"}
+                    </DialogTitle>
+                    <DialogContent>
+                    <DialogContentText id="alert-dialog-description" sx={{color:"#C8C7C7"}}>
+                        Deleting your account means you can no longer retrieve it or any of your reviews.
+                    </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button href="/" sx={{color:"#1a9f48"}} onClick={handleDelete} autoFocus>
+                            Yes
+                        </Button>
+                        <Button sx={{color:"#bd2d2d"}}onClick={handleClose} autoFocus>
+                            No
+                        </Button>
+                    </DialogActions>
+                </Dialog>
         </Box>
     )
 }

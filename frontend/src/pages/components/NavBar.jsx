@@ -6,23 +6,39 @@ import { css } from "@emotion/react";
 import {useLocation, useNavigate} from "react-router-dom";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import SearchBar from './SearchBar';
+import axios from 'axios';
 
 const NavBar = () => {
-    const navigate = useNavigate();
     /*PAGE LOCATION */
     const currPage = useLocation();
     let [user, setUser] = useState("");
     let [check, setCheck] = useState(false);
 
     useEffect(() => {
-        if(!check || user==""){
-            const loggedInUser = localStorage.getItem("username");
-            if (loggedInUser != "") {
-                setUser(loggedInUser);
-                setCheck(true);
-            }
-       }
+        const id = localStorage.getItem("id");
+        if(id != undefined){
+            const url = 'http://localhost:8000/users/getUserReviews'
+            const payload = {user_id: id}
+            axios.post(url, payload)
+                    .then(response => handleLogin(response.status))
+                    .catch(error => console.error(error));
+        }
     }, []);
+
+    const handleLogin = (status) => {
+        if(status == 200){
+            if(!check || user==""){
+                const loggedInUser = localStorage.getItem("username");
+                if (loggedInUser != "" && loggedInUser != undefined) {
+                    setUser(loggedInUser);
+                    setCheck(true);
+                }
+            }
+        }
+        else{
+            handleLogout();
+        }
+    }
 
     const handleLogout= () => {
         localStorage.clear();
