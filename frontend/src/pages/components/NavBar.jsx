@@ -20,13 +20,14 @@ const NavBar = () => {
             const url = 'http://localhost:8000/users/getUserReviews'
             const payload = {user_id: id}
             axios.post(url, payload)
-                    .then(response => handleLogin(response.status))
+                    .then(response => handleLogin(response))
                     .catch(error => console.error(error));
         }
     }, []);
 
-    const handleLogin = (status) => {
-        if(status == 200){
+    const handleLogin = (response) => {
+        console.log(response.data);
+        if(response.status == 200){
             if(!check || user==""){
                 const loggedInUser = localStorage.getItem("username");
                 if (loggedInUser != "" && loggedInUser != undefined) {
