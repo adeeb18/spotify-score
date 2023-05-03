@@ -14,6 +14,7 @@ import SideBar from "../components/SideBar/SideBar";
 import FootNote from "../components/FootNote"
 import SongCard from "../components/SongCard";
 import ArtistCard from "../components/ArtistCard";
+import AlbumCard from "../components/AlbumCard";
 import { height } from "@mui/system";
 import NavBar from '../components/NavBar';
 import axios from 'axios';
@@ -41,6 +42,46 @@ const Home = () => {
                 console.error(error); // handle errors
             });
     };
+
+    const renderCards = () => {
+        let cards = [];
+
+        for(let i = 0; i < searchResults.length; ++i) {
+            console.log(searchResults[i]);
+            if (searchResults[i].type == "artist") {
+                cards.push(
+                    <ArtistCard
+                        id={searchResults[i].id}
+                        artist={searchResults[i].name}
+                        imageUrl={searchResults[i].image_url}
+                        song = ''
+                    />
+                );
+            }
+            else if (searchResults[i].type == "track") {
+                cards.push(
+                    <SongCard
+                        id={searchResults[i].id}
+                        song={searchResults[i].name}
+                        artist={searchResults[i].artists[0]}
+                        imageUrl={searchResults[i].image_url}
+                    />
+                );
+            }
+            else if(searchResults[i].type == "album") {
+                cards.push(
+                    <AlbumCard
+                        id={searchResults[i].id}
+                        name={searchResults[i].name}
+                        artist={searchResults[i].artist}
+                        imageUrl={searchResults[i].image_url}
+                    />
+                );
+            }
+        }
+
+        return cards;
+    }
 
     return (
         <Box className="main d-flex">
@@ -92,13 +133,7 @@ const Home = () => {
                                 overflowY: "scroll",
                             }}
                         >
-                            {searchResults.map((result) => (
-                                <ArtistCard
-                                    artist={result.name}
-                                    imageUrl={result.image_url}
-                                    song = ''
-                                />
-                            ))}
+                            {renderCards()}
                         </Container>
                     )}
                     <Container

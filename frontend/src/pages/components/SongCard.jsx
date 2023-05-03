@@ -10,11 +10,11 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import StyledRating from "./StyledRating";
 
 
-const SongCard = ({ song = 'Song Name', artist = 'Artist Name', imageUrl = '/logo192.png', renderImage = true, rating = 2.5 }) => {
+const SongCard = ({ id = "", song = 'Song Name', artist = 'Artist Name', imageUrl = '/logo192.png', renderImage = true, rating = 2.5 }) => {
     return (
         <Container>
             <Card sx={{ m: "1rem 1rem", background: "#2c2c2c" }}>
-                <CardActionArea component={Link} to={{ pathname: "/song" }} sx={{ p: "1rem 2rem", display: "flex" }}>
+                <CardActionArea component={Link} to={{ pathname: "/song", search:"?id=" + id }} sx={{ p: "1rem 2rem", display: "flex" }}>
                     {renderImage && <CardContent>
                         <CardMedia height="100" component="img" image={imageUrl} sx={{ objectFit: "contain" }} />
                     </CardContent>}

@@ -9,20 +9,20 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import StyledRating from "./StyledRating";
 
-const AlbumCard = ({renderImage = true}) => {
+const AlbumCard = ({id = "", name = "This is the Album Name", artist = "This is the Artist", imageUrl = '/logo192.png', renderImage = true, ratingUser = 2.5, ratingSong = 2.5}) => {
     return (
         <Container>
             <Card sx={{m:"1rem 1rem", background:"#2c2c2c"}}>
-                <CardActionArea component={Link} to={{pathname:"/album"}} sx={{p:"1rem 2rem", display:"flex"}}>
+                <CardActionArea component={Link} to={{pathname:"/album", search:"?id=" + id}} sx={{p:"1rem 2rem", display:"flex"}}>
                     {renderImage && <CardContent>
-                        <CardMedia height="100" component="img" image="/logo192.png" sx={{objectFit:"contain"}}/>
+                        <CardMedia height="100" component="img" image={imageUrl} sx={{objectFit:"contain"}}/>
                     </CardContent>}
                     <CardContent>
                         <Typography variant="h5" color="#ffffff">
-                            This is the Album Name
+                            {name}
                         </Typography>
                         <Typography variant="body2" color="#bbbbbb">
-                            This is the Artist
+                            {artist}
                         </Typography>
                     </CardContent>
                     <CardContent sx={{textAlign:"center"}}>
@@ -31,7 +31,7 @@ const AlbumCard = ({renderImage = true}) => {
                         </Typography>
                         <StyledRating
                             defaultValue={5}
-                            value={2.5}
+                            value={ratingUser}
                             precision={0.5}
                             icon={<FavoriteIcon/>}
                             emptyIcon={<FavoriteBorderIcon/>}
@@ -47,7 +47,7 @@ const AlbumCard = ({renderImage = true}) => {
                         </Typography>
                         <StyledRating
                             defaultValue={5}
-                            value={2.5}
+                            value={ratingSong}
                             precision={0.5}
                             icon={<FavoriteIcon/>}
                             emptyIcon={<FavoriteBorderIcon/>}

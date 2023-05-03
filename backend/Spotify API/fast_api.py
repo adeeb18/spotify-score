@@ -12,18 +12,21 @@ class Artist(BaseModel):
     name: str
     image_url: str
     id: str
+    type: str = "artist"
 
 class Track(BaseModel):
     name: str
     image_url: str
     artists: List[str]
     id: str
+    type: str = "track"
 
 class Album(BaseModel):
     name: str
     image_url: str
     artist: str
     id: str
+    type: str = "album"
 
 class QueryResponse(BaseModel):
     responses: List[Dict[str, Union[str, List[str]]]] = []
@@ -136,7 +139,6 @@ def search_by_query(token, artist_name):
             responses.append(artist)
     
     if 'tracks' in json_result:
-       
         tracks = []
         for item in json_result['tracks']['items']:
             name = item['name']
@@ -153,7 +155,6 @@ def search_by_query(token, artist_name):
             tracks.append(track)
             responses.append(track)
             
-
     if 'albums' in json_result:
         albums = []
         for item in json_result['albums']['items']:
@@ -164,6 +165,7 @@ def search_by_query(token, artist_name):
             album = Album(name=name, image_url=url, artist=artist, id=id)
             albums.append(album)
             responses.append(album)
+
     print("albums: ")
     print(albums)
     print("responses: ")
