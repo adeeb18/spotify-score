@@ -7,6 +7,8 @@ import json
 from pydantic import BaseModel
 from typing import List, Dict, Union
 from fastapi.middleware.cors import CORSMiddleware
+from mangum import Mangum
+
 
 class Artist(BaseModel):
     name: str
@@ -173,8 +175,39 @@ def search_by_query(token, artist_name):
     print(responses)
     return responses
 
-def get_artists_by_id(token, artist_id):
-    return None
+def get_artist_by_id(token, artist_id):
+    url = "https://api.spotify.com/v1/artists/"
+    headers = {"Authorization" : "Bearer " + token}
+    query_url = url + artist_id
+    result = get(query_url, headers = headers)
+    json_result = json.loads(result.content)
+    if len(json_result) == 0:
+        print("No artist with this id")
+        return None
+    return json_result
+
+def get_album_by_id(token, album_id):
+    url = "https://api.spotify.com/v1/albums/"
+    headers = {"Authorization" : "Bearer " + token}
+    query_url = url + album_id
+    result = get(query_url, headers = headers)
+    json_result = json.loads(result.content)
+    if len(json_result) == 0:
+        print("No album with this id")
+        return None
+    return json_result
+
+def get_track_by_id(token, track_id):
+    url = "https://api.spotify.com/v1/tracks/"
+    headers = {"Authorization" : "Bearer " + token}
+    query_url = url + track_id
+    result = get(query_url, headers = headers)
+    json_result = json.loads(result.content)
+    if len(json_result) == 0:
+        print("No track with this id")
+        return None
+    return json_result
+
 
 
 '''
@@ -257,3 +290,39 @@ async def search(query: str):
 
     return QueryResponse(responses=response_list)
 
+@app.get("/artist/{id}")
+async def get_artist(id: str):
+    # Get access token
+    token = get_token()
+    print(token)
+
+    # Search for artists by query
+    response = get_artist_by_id(token, id)
+
+    return response
+
+@app.get("/album/{id}")
+async def get_album(id: str):
+    # Get access token
+    token = get_token()
+    print(token)
+
+    # Search for artists by query
+    response = get_album_by_id(token, id)
+
+    return response
+
+@app.get("/track/{id}")
+async def get_track(id: str):
+    # Get access token
+    token = get_token()
+    print(token)
+
+    # Search for artists by query
+    response = get_track_by_id(token, id)
+
+    return response
+
+
+
+handler = Mangum(app)
