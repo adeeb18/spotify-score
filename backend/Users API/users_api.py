@@ -135,7 +135,7 @@ async def login(user: Login, content_type: str = Header("application/json")):
             user = {"user_id": user_id, "username": username, "password": password, "dob": dob, "date_created": date_created}
             return {"User: ": user}
         else:
-            return {"message": "Login failed."}
+            raise HTTPException(status_code=404, detail="Login authentication failed.")
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
     finally:
