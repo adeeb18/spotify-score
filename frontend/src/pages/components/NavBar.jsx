@@ -125,7 +125,7 @@ const NavBar = () => {
                 onClose={handleClose}
               >
                 <Box className="d-flex flex-column">
-                    <Button className="menu" onClick={handleClose} >Profile</Button>
+                    <Button href="/profile" onClick={handleClose} >Profile</Button>
                     <Button href="/profile/reviews" className="menu">My Reviews</Button>
                     <Button className="menu" onClick={handleLogout}>Log Out</Button>
                 </Box>
