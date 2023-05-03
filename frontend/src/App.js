@@ -11,6 +11,7 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import './App.css';
 import MyReviews from "./pages/MyReviews";
+import UpdateReview from "./pages/UpdateReview";
 
 function App() {
   
@@ -28,6 +29,7 @@ function App() {
             <Route path="/register" element={<Register/>}/>
             <Route path="/login" element={<Login/>}/>
             <Route path="/profile/reviews" element={<MyReviews/>}/>
+            <Route path="/song/update-review" element={<UpdateReview/>}/>
           </Routes>
     </BrowserRouter>
   );
