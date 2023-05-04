@@ -17,7 +17,7 @@ const NavBar = () => {
     useEffect(() => {
         const id = localStorage.getItem("id");
         if(id != undefined){
-            const url = 'https://lws3v1re05.execute-api.us-east-1.amazonaws.com/dev/api/v1/users/users/getUserReviews'
+            const url = 'http://localhost:8000/getUserReviews'
             const payload = {user_id: id}
             axios.post(url, payload)
                     .then(response => handleLogin(response))

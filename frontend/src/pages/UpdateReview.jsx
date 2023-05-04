@@ -19,7 +19,7 @@ const UpdateReview = () => {
     let [reviewID, setReviewID] = useState("");
 
     useEffect(() => {
-        const url = 'https://lws3v1re05.execute-api.us-east-1.amazonaws.com/dev/api/v1/users/users/getUserReviews'
+        const url = 'http://localhost:8000/getUserReviews'
         const id = localStorage.getItem("id");
         const payload = {user_id: id}
         axios.post(url, payload)
@@ -65,7 +65,7 @@ const UpdateReview = () => {
         let rate = (rating * 20).toString();
         let uid = localStorage.getItem("id");
         const payload = {type:"song", user_id:uid, id:reviewID, genre:"test", num_rating:rate, overall_thoughts:reviewText, style: uStyle, mood: uMood, would_recommend: rec}
-        const url = 'https://lws3v1re05.execute-api.us-east-1.amazonaws.com/dev/api/v1/users/users/editSongReview'
+        const url = 'http://localhost:8000/editSongReview'
         axios.put(url, payload)
         .then(response => console.log(response))
         .catch(error => console.error(error));
@@ -82,7 +82,7 @@ const UpdateReview = () => {
         }
         let rate = (rating * 20).toString();
         const payload = {type:"song", user_id:uid, id:reviewID, genre:"test", num_rating:rate, overall_thoughts:reviewText, style: uStyle, mood: uMood, would_recommend: rec}
-        const url = 'https://lws3v1re05.execute-api.us-east-1.amazonaws.com/dev/api/v1/users/users/createReview'
+        const url = 'http://localhost:8000/createReview'
         axios.post(url, payload)
         .then(response => console.log(response))
         .catch(error => console.error(error));

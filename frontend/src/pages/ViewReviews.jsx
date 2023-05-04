@@ -13,7 +13,7 @@ function Review(props){
     const [temp, setTemp] = useState("");
     
     const getUsername = (id) => {
-        const url = 'https://lws3v1re05.execute-api.us-east-1.amazonaws.com/dev/api/v1/users/users/getSingleUser'
+        const url = 'http://localhost:8000/getSingleUser'
         const payload = {user_id: id,}
         axios.post(url, payload)
             .then(response => {
@@ -75,7 +75,7 @@ const ViewReviews = () => {
 
     useEffect(() => {
         fetchSongData();
-        const url = 'https://lws3v1re05.execute-api.us-east-1.amazonaws.com/dev/api/v1/users/users/getAllReviews'
+        const url = 'http://localhost:8000/getAllReviews'
             axios.get(url)
                 .then(response =>  setData(response.data))
                 .catch(error => console.error(error));

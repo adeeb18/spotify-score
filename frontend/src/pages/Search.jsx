@@ -25,7 +25,7 @@ const Search = () => {
     const handleSearch = (event) => {
         event.preventDefault(); // prevent the default form submission
         // send the search input to the API endpoint
-        fetch(`https://lws3v1re05.execute-api.us-east-1.amazonaws.com/dev/api/v1/spotify/artistid/${searchInput}`)
+        fetch(`http://localhost:8080/artistid/${searchInput}`)
             .then((response) => response.json())
             .then((data) => {
                 console.log(data); // do something with the response data
