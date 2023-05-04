@@ -53,9 +53,8 @@ const Home = () => {
                 cards.push(
                     <ArtistCard
                         id={searchResults[i].id}
-                        artist={searchResults[i].name}
+                        name={searchResults[i].name}
                         imageUrl={searchResults[i].image_url}
-                        song = ''
                     />
                 );
             }

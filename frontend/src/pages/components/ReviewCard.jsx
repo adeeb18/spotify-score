@@ -12,7 +12,7 @@ const ReviewCard = () => {
     return (
         <Container>
             <Card sx={{m:"1rem 1rem", background:"#2c2c2c"}}>
-                <CardActionArea component={Link} to={{pathname:"/song"}} sx={{p:"1rem 2rem", display:"flex"}}>
+                <CardActionArea component={Link} to={{pathname:"/spotify-score/song"}} sx={{p:"1rem 2rem", display:"flex"}}>
                     <CardContent sx={{textAlign:"center"}}>
                         <StyledRating
                             defaultValue={5}

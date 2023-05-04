@@ -9,20 +9,17 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import StyledRating from "./StyledRating";
 
-const ArtistCard = ({ id = "", artist = 'This is the Song Name', song = 'This is the Artist Name', imageUrl = '/logo192.png', renderImage = true }) => {
+const ArtistCard = ({ id = "", name = 'This is the Artist Name', imageUrl = '/logo192.png', renderImage = true }) => {
     return (
         <Container>
             <Card sx={{ m: "1rem 1rem", background: "#2c2c2c" }}>
-                <CardActionArea component={Link} to={{ pathname: "/song", search: "?id=" + id }} sx={{ p: "1rem 2rem", display: "flex" }}>
+                <CardActionArea component={Link} to={{ pathname: "/spotify-score/artist", search: "?id=" + id }} sx={{ p: "1rem 2rem", display: "flex" }}>
                     {renderImage && <CardContent>
                         <CardMedia height="100" component="img" image={imageUrl} sx={{ objectFit: "contain" }} />
                     </CardContent>}
                     <CardContent>
                         <Typography variant="h5" color="#ffffff">
-                            {artist}
-                        </Typography>
-                        <Typography variant="body2" color="#bbbbbb">
-                            {song}
+                            {name}
                         </Typography>
                     </CardContent>
                     <CardContent sx={{ textAlign: "center" }}>

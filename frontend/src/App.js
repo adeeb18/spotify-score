@@ -3,6 +3,7 @@ import Home from "./pages/Home/Home";
 import Search from "./pages/Search";
 import Song from "./pages/Song";
 import Album from "./pages/Album";
+import Artist from "./pages/Artist";
 import About from "./pages/About";
 import ViewReviews from "./pages/ViewReviews";
 import CreateReview from "./pages/CreateReview";
@@ -25,6 +26,7 @@ function App() {
             <Route path="/spotify-score/song/reviews" element={<ViewReviews/>}/>
             <Route path="/spotify-score/song/create-review" element={<CreateReview/>}/>
             <Route path="/spotify-score/album" element={<Album/>}/>
+            <Route path="/spotify-score/artist" element={<Artist/>}/>
             <Route path="/spotify-score/about" element={<About/>}/>
             <Route path="/spotify-score/leaderboard" element={<Leaderboard/>}/>
             <Route path="/spotify-score/register" element={<Register/>}/>
