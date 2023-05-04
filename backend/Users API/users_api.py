@@ -57,6 +57,9 @@ class Review(BaseModel):
 class Genre(BaseModel):
     genre: str
 
+class ID_Class(BaseModel):
+    id: str
+
 def connect_to_database(host, user, password, database):
     db = mysql.connector.connect(
         host=host,
@@ -545,3 +548,59 @@ async def get_reviews_by_genre(genre: Genre, content_type: str = Header("applica
     cursor.close()
     db.close()
     return review_dicts_with_fields
+
+@app.get("/getReviewAverages")
+async def get_review_averages():
+    db = connect_to_database("sql9.freemysqlhosting.net", "sql9615826", "uEhDpzEqyf", "sql9615826")
+    
+    cursor = db.cursor()
+    query = """
+        SELECT song_id AS item_id, num_rating
+        FROM overall_song_ratings
+        UNION ALL
+        SELECT album_id AS item_id, num_rating
+        FROM overall_album_ratings
+    """
+
+    cursor.execute(query)
+    result = cursor.fetchall()
+    review_dicts_with_fields = []
+
+    for row in result:
+        field_names = ['id', 'num_rating'] 
+        review_dict = dict(zip(field_names, row))
+        review_dicts_with_fields.append(review_dict)
+
+    cursor.close()
+    db.close()
+    return review_dicts_with_fields
+
+@app.post("/getAverageScore")
+async def get_avg_score(id: ID_Class, content_type: str = Header("application/json")):
+    db = connect_to_database("sql9.freemysqlhosting.net", "sql9615826", "uEhDpzEqyf", "sql9615826")
+    
+    id_dict = jsonable_encoder(id)
+
+    cursor = db.cursor()
+    
+    query = """
+        SELECT num_rating
+        FROM overall_song_ratings
+        WHERE song_id = %s
+        UNION ALL
+        SELECT num_rating
+        FROM overall_album_ratings
+        WHERE album_id = %s
+    """
+
+    cursor.execute(query, (id_dict['id'], id_dict['id']))
+    result = cursor.fetchall()
+
+    if result:
+        cursor.close()
+        db.close()
+        return (row[0] for row in result)
+    else:
+        cursor.close()
+        db.close()
+        return JSONResponse(status_code=404, content={'message': 'ID not found.'})
