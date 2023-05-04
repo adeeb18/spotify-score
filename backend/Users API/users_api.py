@@ -73,7 +73,7 @@ def connect_to_database(host, user, password, database):
     return db
 
 # CREATE A USER
-@app.post("/users/createUser")
+@app.post("/createUser")
 async def create_user(user: User, content_type: str = Header("application/json")):
     user_dict = jsonable_encoder(user)
 
@@ -118,7 +118,7 @@ async def create_user(user: User, content_type: str = Header("application/json")
     return user_dict_with_fields
 
 # VERIFY LOGIN CREDENTIALS
-@app.post("/users/login")
+@app.post("/login")
 async def login(user: Login, content_type: str = Header("application/json")):
     user_dict = jsonable_encoder(user)
 
@@ -143,7 +143,7 @@ async def login(user: Login, content_type: str = Header("application/json")):
         db.close()
 
 # GET ALL USERS (TEST FUNCTION)
-@app.get("/users/getUsers")
+@app.get("/getUsers")
 async def get_users():
     db = connect_to_database("sql9.freemysqlhosting.net", "sql9615826", "uEhDpzEqyf", "sql9615826")
 
@@ -171,7 +171,7 @@ async def get_users():
 
     return {"Users": users}
 
-@app.post("/users/createReview")
+@app.post("/createReview")
 # THE TYPE FIELD SHOULD BE EITHER "SONG" OR "ALBUM". THAT WILL DETERMINE WHICH TABLE IT IS PLACED INTO
 async def create_review(review: Review, content_type: str = Header("application/json")):
     review_dict = jsonable_encoder(review)
@@ -297,7 +297,7 @@ def updateRating(id: str, user_score: int, add: bool, type: str):
     
     return
 
-@app.post("/users/getUserReviews")
+@app.post("/getUserReviews")
 async def get_user_reviews(user: User_ID, content_type: str = Header("application/json")):
 
     user_dict = jsonable_encoder(user)
@@ -327,7 +327,7 @@ async def get_user_reviews(user: User_ID, content_type: str = Header("applicatio
     db.close()
     return review_dicts_with_fields
 
-@app.get("/users/getAllReviews")
+@app.get("/getAllReviews")
 async def get_all_reviews():
 
     db = connect_to_database("sql9.freemysqlhosting.net", "sql9615826", "uEhDpzEqyf", "sql9615826")
@@ -358,7 +358,7 @@ async def get_all_reviews():
 
 # EDIT A REVIEW
 # PASS IN THE SONG_ID AND USER_ID ALONG WITH ALL THE FIELDS FROM THE REVIEW FORM
-@app.put("/users/editSongReview")
+@app.put("/editSongReview")
 async def edit_song_review(review: Review, content_type: str = Header("application/json")):
     review_dict = jsonable_encoder(review)
 
@@ -418,7 +418,7 @@ async def edit_song_review(review: Review, content_type: str = Header("applicati
 
     return review_dict_with_fields
 
-@app.delete("/users/deleteUser")
+@app.delete("/deleteUser")
 async def delete_user(user: User_ID, content_type: str = Header("application/json")):
 
     db = connect_to_database("sql9.freemysqlhosting.net", "sql9615826", "uEhDpzEqyf", "sql9615826")
@@ -455,7 +455,7 @@ async def delete_user(user: User_ID, content_type: str = Header("application/jso
     return {"message": f"User with user_id {user_dict['user_id']} has been deleted."}
 
 # DELETE A REVIEW
-@app.delete("/users/deleteReview")
+@app.delete("/deleteReview")
 async def delete_song_review(user: User_Review, content_type: str = Header("application/json")):
     db = connect_to_database("sql9.freemysqlhosting.net", "sql9615826", "uEhDpzEqyf", "sql9615826")
 
@@ -489,7 +489,7 @@ async def delete_song_review(user: User_Review, content_type: str = Header("appl
     return {"message": f"User with user_id {user_dict['user_id']} and id {user_dict['id']} has been deleted."}
 
 #FIND USER INFO BASED OF ID
-@app.post("/users/getSingleUser")
+@app.post("/getSingleUser")
 async def get_single_user(user: User_ID, content_type: str = Header("application/json")):
     db = connect_to_database("sql9.freemysqlhosting.net", "sql9615826", "uEhDpzEqyf", "sql9615826")
     cursor = db.cursor()
@@ -515,7 +515,7 @@ async def get_single_user(user: User_ID, content_type: str = Header("application
 
     return {"User": user1}
 
-@app.post("/users/getReviewsByGenre")
+@app.post("/getReviewsByGenre")
 async def get_reviews_by_genre(genre: Genre, content_type: str = Header("application/json")):
     db = connect_to_database("sql9.freemysqlhosting.net", "sql9615826", "uEhDpzEqyf", "sql9615826")
     
