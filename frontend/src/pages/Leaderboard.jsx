@@ -1,12 +1,5 @@
 import { useState } from "react";
-import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
-import ButtonGroup from "@mui/material/ButtonGroup";
-import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
+import { Container, Typography, ButtonGroup, Button, Box, FormControl, Select, MenuItem } from "@mui/material";
 import SideBar from "./components/SideBar/SideBar";
 import SongCard from "./components/SongCard";
 import AlbumCard from "./components/AlbumCard";
@@ -23,6 +16,7 @@ const Leaderboard = () => {
     const handleChange = (event) => {
         setSort(event.target.value);
     }
+
 
     return (
         <Box className="d-flex">

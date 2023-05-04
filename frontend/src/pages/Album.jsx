@@ -17,6 +17,7 @@ const Album = () => {
             .then((response) => response.json())
             .then((data) => {
                 setAlbumData(data);
+                console.log(data);
             })
             .catch((error) => {
                 console.error(error);
@@ -30,6 +31,7 @@ const Album = () => {
             let song = albumData["tracks"]["items"][i];
             songCards.push(
                 <SongCard
+                    key={i}
                     id={song["id"]}
                     song={song["name"]}
                     artist={song["artists"][0]["name"]}

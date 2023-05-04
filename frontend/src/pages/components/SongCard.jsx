@@ -15,17 +15,15 @@ import axios from "axios";
 const SongCard = (props, {renderImage = true}) => {
     let [sRating, setRating] = useState(0);
     useEffect(() => {
-        const url = 'http://localhost:8000/getAllReviews'
-            axios.get(url)
-                .then(response => parseData(response.data))
+        const url = 'http://localhost:8000/getAverageScore'
+        const payload = {id: props.id}
+            axios.post(url, payload)
+                .then(response => parseData(response))
                 .catch(error => console.error(error));
     }, []);
-    const parseData = (inData) =>{
-        let tryIt = [];
-        for(let i = 0; i < inData.length; i++){
-            if(inData[i].id === props.id){
-                setRating(Number(Number(inData[i].num_rating)/20));
-            }
+    const parseData = (response) =>{
+        if(response.status == 200){
+            setRating(Number(Number(response.data)/20));
         }
     }
     return (

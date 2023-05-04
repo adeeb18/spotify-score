@@ -307,12 +307,12 @@ async def get_user_reviews(user: User_ID, content_type: str = Header("applicatio
     db = connect_to_database("sql9.freemysqlhosting.net", "sql9615826", "uEhDpzEqyf", "sql9615826")
     cursor = db.cursor()
     query = """
-        SELECT u.user_id, sr.song_id AS item_id, sr.genre, sr.num_rating, sr.overall_thoughts, sr.style, sr.mood, sr.would_recommend, sr.time_created, sr.last_edited
+        SELECT u.user_id, sr.song_id AS item_id, sr.genre, sr.num_rating, sr.overall_thoughts, sr.style, sr.mood, sr.would_recommend, sr.time_created, sr.last_edited, 'song' as item_type
         FROM users u 
         LEFT JOIN song_reviews sr ON u.user_id = sr.user_id
         WHERE u.user_id = %s AND sr.song_id IS NOT NULL
         UNION ALL
-        SELECT u.user_id, ar.album_id AS item_id, ar.genre, ar.num_rating, ar.overall_thoughts, ar.style, ar.mood, ar.would_recommend, ar.time_created, ar.last_edited
+        SELECT u.user_id, ar.album_id AS item_id, ar.genre, ar.num_rating, ar.overall_thoughts, ar.style, ar.mood, ar.would_recommend, ar.time_created, ar.last_edited, 'album' as item_type
         FROM users u
         LEFT JOIN album_reviews ar ON u.user_id = ar.user_id
         WHERE u.user_id = %s AND ar.album_id IS NOT NULL;
@@ -322,7 +322,7 @@ async def get_user_reviews(user: User_ID, content_type: str = Header("applicatio
     review_dicts_with_fields = []
 
     for row in result:
-        field_names = ['user_id', 'id', 'genre', 'num_rating', 'overall_thoughts', 'style', 'mood', 'would_recommend', 'time_created', 'last_edited'] 
+        field_names = ['user_id', 'id', 'genre', 'num_rating', 'overall_thoughts', 'style', 'mood', 'would_recommend', 'time_created', 'last_edited', 'item_type'] 
         review_dict = dict(zip(field_names, row))
         review_dicts_with_fields.append(review_dict)
 
@@ -336,12 +336,12 @@ async def get_all_reviews():
     db = connect_to_database("sql9.freemysqlhosting.net", "sql9615826", "uEhDpzEqyf", "sql9615826")
     cursor = db.cursor()
     query = """
-        SELECT u.user_id, sr.song_id AS item_id, sr.genre, sr.num_rating, sr.overall_thoughts, sr.style, sr.mood, sr.would_recommend, sr.time_created, sr.last_edited
+        SELECT u.user_id, sr.song_id AS item_id, sr.genre, sr.num_rating, sr.overall_thoughts, sr.style, sr.mood, sr.would_recommend, sr.time_created, sr.last_edited, 'song' AS item_type
         FROM users u 
         LEFT JOIN song_reviews sr ON u.user_id = sr.user_id
         WHERE sr.song_id IS NOT NULL
         UNION ALL
-        SELECT u.user_id, ar.album_id AS item_id, ar.genre, ar.num_rating, ar.overall_thoughts, ar.style, ar.mood, ar.would_recommend, ar.time_created, ar.last_edited
+        SELECT u.user_id, ar.album_id AS item_id, ar.genre, ar.num_rating, ar.overall_thoughts, ar.style, ar.mood, ar.would_recommend, ar.time_created, ar.last_edited, 'album' AS item_type
         FROM users u
         LEFT JOIN album_reviews ar ON u.user_id = ar.user_id
         WHERE ar.album_id IS NOT NULL;
@@ -351,7 +351,7 @@ async def get_all_reviews():
     review_dicts_with_fields = []
 
     for row in result:
-        field_names = ['user_id', 'id', 'genre', 'num_rating', 'overall_thoughts', 'style', 'mood', 'would_recommend', 'time_created', 'last_edited'] 
+        field_names = ['user_id', 'id', 'genre', 'num_rating', 'overall_thoughts', 'style', 'mood', 'would_recommend', 'time_created', 'last_edited', 'item_type'] 
         review_dict = dict(zip(field_names, row))
         review_dicts_with_fields.append(review_dict)
 

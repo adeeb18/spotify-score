@@ -63,7 +63,6 @@ const ViewReviews = () => {
         fetch(`http://localhost:8080/track/${searchParams.get("id")}`)
             .then((response) => response.json())
             .then((data) => {
-                console.log(searchParams.get("id"));
                 console.log(data);
                 setSongData(data);
             })
