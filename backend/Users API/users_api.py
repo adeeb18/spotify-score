@@ -554,13 +554,16 @@ async def get_review_averages():
     db = connect_to_database("sql9.freemysqlhosting.net", "sql9615826", "uEhDpzEqyf", "sql9615826")
     
     cursor = db.cursor()
+    
     query = """
         SELECT song_id AS item_id, num_rating
         FROM overall_song_ratings
         UNION ALL
         SELECT album_id AS item_id, num_rating
         FROM overall_album_ratings
+        ORDER BY num_rating DESC
     """
+
 
     cursor.execute(query)
     result = cursor.fetchall()
