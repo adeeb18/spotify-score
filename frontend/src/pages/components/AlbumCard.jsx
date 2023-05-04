@@ -8,8 +8,25 @@ import Typography from "@mui/material/Typography";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import StyledRating from "./StyledRating";
+import { useState, useEffect} from "react";
+import axios from "axios";
 
 const AlbumCard = (props, {renderImage = true}) => {
+    let [rating, setRating] = useState(0);
+    useEffect(() => {
+        const url = 'http://localhost:8000/getAllReviews'
+            axios.get(url)
+                .then(response => parseData(response.data))
+                .catch(error => console.error(error));
+    }, []);
+    const parseData = (inData) =>{
+        let tryIt = [];
+        for(let i = 0; i < inData.length; i++){
+            if(inData[i].id === props.id){
+                setRating(Number(Number(inData[i].num_rating)/20));
+            }
+        }
+    }
     return (
         <Container>
             <Card sx={{m:"1rem 1rem", background:"#2c2c2c"}}>
@@ -34,14 +51,14 @@ const AlbumCard = (props, {renderImage = true}) => {
                         </Typography>
                         <StyledRating
                             defaultValue={5}
-                            value={props.rating}
+                            value={rating}
                             precision={0.5}
                             icon={<FavoriteIcon/>}
                             emptyIcon={<FavoriteBorderIcon/>}
                             readOnly
                         />
                         <Typography variant="body1" color="#ffffff">
-                            {"(" + (props.rating*20).toString() + ")"}
+                            {"(" + (rating*20).toString() + ")"}
                         </Typography>
                     </CardContent>
                 </CardActionArea>
