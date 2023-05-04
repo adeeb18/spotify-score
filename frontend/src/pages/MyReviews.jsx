@@ -13,7 +13,6 @@ function MyReview(props){
         fetch(`http://localhost:8080/track/${id}`)
             .then((response) => response.json())
             .then((data) => {
-                console.log(id);
                 console.log(data);
                 return(data);
             })
@@ -49,7 +48,7 @@ function MyReview(props){
                             emptyIcon={<FavoriteBorderIcon/>}
                             readOnly
                         />
-                        <Typography marginLeft="25vw"> {(props.created).substring(0, 10)}</Typography>
+                        <Typography marginLeft="10vw"> {(props.created).substring(0, 10)}</Typography>
                     </Box>
                     <Typography width="100%">{props.thoughts}</Typography>
                 </Box>
@@ -73,8 +72,6 @@ const MyReviews = () => {
                 .then(response =>  setData(response.data))
                 .catch(error => console.error(error));
     }, []);
-
-    console.log(data);
     // const reviewTemplate = (user, rating, style, mood, created, thoughts, rec, keyVal)
     const body = data.map((item, index) => (
     <MyReview key={index} user={item.user_id} rating={item.num_rating} 
