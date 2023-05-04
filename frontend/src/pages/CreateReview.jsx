@@ -27,8 +27,7 @@ const CreateReview = () => {
             .then((response) => response.json())
             .then((data) => {
                 console.log(searchParams.get("id"));
-                setReviewID(searchParams.get("id"))
-                console.log(data);
+                setReviewID(searchParams.get("id"));
                 setSongData(data);
             })
             .catch((error) => {
@@ -60,7 +59,6 @@ const CreateReview = () => {
     const handleSubmit = () => {
         let rate = (rating * 20).toString();
         let uid = Number(localStorage.getItem("id"));
-        console.log()
         const payload = {type:"song", user_id:uid, id:reviewID, genre:"test", num_rating:rate, overall_thoughts:reviewText, style: uStyle, mood: uMood, would_recommend: rec}
         const url = 'http://localhost:8000/createReview'
         axios.post(url, payload)

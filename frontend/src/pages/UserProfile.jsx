@@ -8,6 +8,7 @@ import axios from "axios"
 const UserProfile = () => {
     let [reviews, setReviews] = useState(0);
     let [del, setDel] = useState(false);
+    
 
     useEffect(() => {
         const url = 'http://localhost:8000/getUserReviews'

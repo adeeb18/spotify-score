@@ -9,6 +9,18 @@ import StyledRating from "./components/StyledRating";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 function MyReview(props){
+    const fetchSongData = (id) => {
+        fetch(`http://localhost:8080/track/${id}`)
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(id);
+                console.log(data);
+                return(data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
     const handleDelete = () => {
         console.log(props.id);
         const payload = {"user_id":props.user, "id":props.id, "type":props.type}
@@ -17,11 +29,12 @@ function MyReview(props){
         .then(response => console.log(response))
         .catch(error => console.error(error));
     }
+    console.log(props.id);
     return(
         <Box className="d-flex flex-column align-items-start" sx={{width:"100%", color:"#C8C7C7",px:"4rem", py:"2rem", alignItems:"center", background:"#4e4f4f", borderRadius:2, my:3}}>
-            <Box className="d-flex"  sx={{gap:"2rem"}}> 
+            <Box className="d-flex" sx={{gap:"2rem"}}> 
                 <Box sx={{minWidth:"25%"}}>
-                    <Typography variant="h4">{localStorage.getItem("username")}</Typography>
+                    <Typography variant="h4">Test</Typography>
                     <Typography marginLeft="3%">Style: {props.style}</Typography>
                     <Typography marginLeft="3%">Mood: {props.mood}</Typography>
                     <Typography marginLeft="3%">{(props.rec) ? "Would Recommend" : "Would Not Recommend"}</Typography>
@@ -61,6 +74,7 @@ const MyReviews = () => {
                 .catch(error => console.error(error));
     }, []);
 
+    console.log(data);
     // const reviewTemplate = (user, rating, style, mood, created, thoughts, rec, keyVal)
     const body = data.map((item, index) => (
     <MyReview key={index} user={item.user_id} rating={item.num_rating} 
