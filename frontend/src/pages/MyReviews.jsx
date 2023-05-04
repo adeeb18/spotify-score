@@ -13,7 +13,7 @@ function MyReview(props){
     const handleDelete = () => {
         console.log(props.id);
         const payload = {"user_id":props.user, "id":props.id, "type":props.type}
-        const url = 'http://localhost:8000/users/deleteReview'
+        const url = 'https://lws3v1re05.execute-api.us-east-1.amazonaws.com/dev/api/v1/users/users/deleteReview'
         axios.delete(url, {data: payload})
         .then(response => console.log(response))
         .catch(error => console.error(error));
@@ -54,7 +54,7 @@ const MyReviews = () => {
     const [data, setData] = useState([]);
 
     useEffect(() => {
-        const url = 'http://localhost:8000/users/getUserReviews'
+        const url = 'https://lws3v1re05.execute-api.us-east-1.amazonaws.com/dev/api/v1/users/users/getUserReviews'
         const id = localStorage.getItem("id");
         const payload = {user_id: id}
         axios.post(url, payload)
