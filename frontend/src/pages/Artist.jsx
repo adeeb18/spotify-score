@@ -43,17 +43,23 @@ const Artist = () => {
 
     const renderAlbumCards = () => {
         let albumCards = [];
+        let last = "";
 
         for (let i = 0; i < artistAlbumsData["items"].length; ++i) {
             let album = artistAlbumsData["items"][i];
-            albumCards.push(
-                <AlbumCard
-                    id={album["id"]}
-                    song={album["name"]}
-                    artist={album["artists"][0]["name"]}
-                    imageUrl={album["images"][0]["url"]}
-                />
-            );
+            if(last != album["name"]){
+                albumCards.push(
+                    <AlbumCard
+                        key ={i}
+                        id={album["id"]}
+                        name={album["name"]}
+                        artist={album["artists"][0]["name"]}
+                        imageUrl={album["images"][0]["url"]}
+                    />
+                );
+            }
+            
+            last = album["name"];
         }
 
         return albumCards;
@@ -63,6 +69,7 @@ const Artist = () => {
         fetchArtistData();
         fetchArtistAlbumsData();
     }, []);
+
 
     return (
         <Box className="d-flex">
