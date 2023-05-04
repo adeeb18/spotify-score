@@ -12,7 +12,7 @@ function MyReview(props){
     const handleDelete = () => {
         console.log(props.id);
         const payload = {"user_id":props.user, "id":props.id, "type":props.type}
-        const url = 'https://lws3v1re05.execute-api.us-east-1.amazonaws.com/dev/api/v1/users/users/deleteReview'
+        const url = 'http://localhost:8000/deleteReview'
         axios.delete(url, {data: payload})
         .then(response => console.log(response))
         .catch(error => console.error(error));
@@ -42,7 +42,7 @@ function MyReview(props){
                 </Box>
             </Box>
             <Box className="d-flex" sx={{gap:"1rem", ml:0.6}}>
-                <Button href="/spotify-score/song/update-review" onClick={localStorage.setItem("rID", props.id)}variant="contained" sx={{color:"#191414", maxWidth:"30%"}} style={{backgroundColor:"#1DB954"}}>Edit</Button>
+                <Button href="/song/update-review" onClick={localStorage.setItem("rID", props.id)}variant="contained" sx={{color:"#191414", maxWidth:"30%"}} style={{backgroundColor:"#1DB954"}}>Edit</Button>
                 <Button onClick={handleDelete} variant="contained" sx={{color:"#191414", maxWidth:"30%"}} style={{backgroundColor:"#bd2d2d"}}>Delete</Button>
             </Box>
         </Box>
@@ -53,7 +53,7 @@ const MyReviews = () => {
     const [data, setData] = useState([]);
 
     useEffect(() => {
-        const url = 'https://lws3v1re05.execute-api.us-east-1.amazonaws.com/dev/api/v1/users/users/getUserReviews'
+        const url = 'http://localhost:8000/getUserReviews'
         const id = localStorage.getItem("id");
         const payload = {user_id: id}
         axios.post(url, payload)

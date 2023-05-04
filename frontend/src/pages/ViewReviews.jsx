@@ -11,19 +11,23 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 function Review(props){
     const [temp, setTemp] = useState("");
+    const [check, setCheck] = useState(false);
     
     const getUsername = (id) => {
-        const url = 'http://localhost:8000/getSingleUser'
-        const payload = {user_id: id,}
-        axios.post(url, payload)
-            .then(response => {
-                const toSend = JSON.stringify(response.data);
-                const splitIt = toSend.split("\"");
-                const val = splitIt[7];
-                setTemp(val);
-            })
-            .catch(
-                error => console.error(error));
+        if(!check){
+            const url = 'http://localhost:8000/getSingleUser'
+            const payload = {user_id: id,}
+            axios.post(url, payload)
+                .then(response => {
+                    const toSend = JSON.stringify(response.data);
+                    const splitIt = toSend.split("\"");
+                    const val = splitIt[7];
+                    setTemp(val);
+                })
+                .catch(
+                    error => console.error(error));
+            setCheck(true);
+        }
         return temp;
     }
 
