@@ -14,15 +14,18 @@ const SongCard = ({ id = "", song = 'Song Name', artist = 'Artist Name', imageUr
     return (
         <Container>
             <Card sx={{ m: "1rem 1rem", background: "#2c2c2c" }}>
-                <CardActionArea component={Link} to={{ pathname: "/spotify-score/song", search:"?id=" + id }} sx={{ p: "1rem 2rem", display: "flex" }}>
-                    {renderImage && <CardContent>
+                <CardActionArea component={Link} to={{ pathname: "/spotify-score/song", search:"?id=" + id }} sx={{ p: "1rem 2rem", display: "flex", flexDirection: "row", justifyContent: "flex-start" }}>
+                    {renderImage && <CardContent sx={{ width: "100" }}>
                         <CardMedia height="100" component="img" image={imageUrl} sx={{ objectFit: "contain" }} />
                     </CardContent>}
-                    <CardContent>
+                    <CardContent sx={{width:"50%"}}>
+                        <Typography variant="body1" color="#1DB954">
+                            Song
+                        </Typography>
                         <Typography variant="h5" color="#ffffff">
                             {song}
                         </Typography>
-                        <Typography variant="body2" color="#bbbbbb">
+                        <Typography variant="body1" color="#bbbbbb">
                             {artist}
                         </Typography>
                     </CardContent>

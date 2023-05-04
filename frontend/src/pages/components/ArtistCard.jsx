@@ -10,11 +10,14 @@ const ArtistCard = ({ id = "", name = 'This is the Artist Name', imageUrl = '/lo
     return (
         <Container>
             <Card sx={{ m: "1rem 1rem", background: "#2c2c2c" }}>
-                <CardActionArea component={Link} to={{ pathname: "/spotify-score/artist", search: "?id=" + id }} sx={{ p: "1rem 2rem", display: "flex" }}>
+                <CardActionArea component={Link} to={{ pathname: "/spotify-score/artist", search: "?id=" + id }} sx={{ p: "1rem 2rem", display: "flex", flexDirection:"row", justifyContent:"flex-start" }}>
                     {renderImage && <CardContent>
-                        <CardMedia height="100" component="img" image={imageUrl} sx={{ objectFit: "contain" }} />
+                        <CardMedia height="100px" component="img" image={imageUrl} sx={{ objectFit: "contain" }} />
                     </CardContent>}
                     <CardContent>
+                        <Typography variant="body1" color="#1DB954">
+                            Artist
+                        </Typography>
                         <Typography variant="h5" color="#ffffff">
                             {name}
                         </Typography>
