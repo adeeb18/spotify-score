@@ -8,6 +8,7 @@ import About from "./pages/About";
 import ViewReviews from "./pages/ViewReviews";
 import CreateReview from "./pages/CreateReview";
 import Leaderboard from "./pages/Leaderboard";
+import Explore from "./pages/Explore";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import './App.css';
@@ -28,6 +29,7 @@ function App() {
             <Route path="/album" element={<Album/>}/>
             <Route path="/artist" element={<Artist/>}/>
             <Route path="/about" element={<About/>}/>
+            <Route path="/explore" element={<Explore/>}/>
             <Route path="/leaderboard" element={<Leaderboard/>}/>
             <Route path="/register" element={<Register/>}/>
             <Route path="/login" element={<Login/>}/>
