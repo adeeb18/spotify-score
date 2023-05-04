@@ -1,0 +1,41 @@
+/*Custom Scrollbar from W3Schools*/
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: rgba(41,41,41,1);
+}
+   
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888; 
+}
+  
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+
+/*GENERAL CSS */
+.main{
+    background: rgb(18,18,18);
+    background: linear-gradient(0deg, rgba(18,18,18,1) 52%, rgba(26,26,26,1) 75%, rgba(34,34,34,1) 89%, rgba(41,41,41,1) 100%);
+    color: white;
+    min-height: 100vh;
+}
+
+html{
+    scroll-padding-top: 70px;
+}
+
+.MuiOutlinedInput-notchedOutline {
+    border-width: 1px !important;
+    border-color: #C8C7C7 !important;
+}
+  
+.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: #1DB954 !important;
+}
