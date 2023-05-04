@@ -31,7 +31,7 @@ const SideBar = () => {
                     <ListItemText primary={'Home'} />
                 </ListItemButton>
                 <ListItemButton 
-                    href="/spotify-score/leaderboard"
+                    href="/leaderboard"
                     className="mb-3"
                     css={css`
                         :hover {
@@ -53,7 +53,7 @@ const SideBar = () => {
                     <ListItemText primary={'Explore'} />
                 </ListItemButton>
                 <ListItemButton 
-                    href="/spotify-score/song/reviews"
+                    href="/song/reviews"
                     className="mb-3"
                     css={css`
                         :hover {
@@ -64,7 +64,7 @@ const SideBar = () => {
                     <ListItemText primary={'Reviews'} />
                 </ListItemButton>
                 <ListItemButton 
-                    href="/spotify-score/about"
+                    href="/about"
                     className="mb-3"
                     css={css`
                         :hover {

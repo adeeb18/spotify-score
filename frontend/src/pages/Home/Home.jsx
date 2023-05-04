@@ -85,95 +85,95 @@ const Home = () => {
 
     return (
         <Box className="main d-flex">
-                <SideBar/>
-                <Box sx={{flex:5}}>
-                    <NavBar/>
-                    <Container>
-                        <Typography
-                            variant="h3"
-                            color="#1DB954"
-                            marginBottom="1rem"
-                            fontWeight="700"
-                            marginTop="1rem"
-                            textAlign="center"
-                        >
-                            Search
-                        </Typography>
-                        <Typography
-                            variant="h6"
-                            color="#ffffff"
-                            marginBottom="2rem"
-                            textAlign="center"
-                        >
-                            Enter a song, album, or artist below to share your thoughts about
-                            your favorite music!
-                        </Typography>
-                        <Paper component="form" onSubmit={handleSearch} 
-                            sx={{ p: "0px 4px", display:"flex", alignItems:"center", borderRadius:3}}
-                        >
-                            <InputBase
-                                className="searchBox"
-                                placeholder="What kind of music do you like?"
-                                onChange={handleChange}
-                                sx={{ paddingLeft: "1rem", width: "40rem", height: "4rem" }}
-                            />
-                            <IconButton type="submit">
-                                <SearchIcon/>
-                            </IconButton>
-                        </Paper>
-                    </Container>
-                    {searchResults.length > 0 && (
-                        <Container
-                            sx={{
-                                display: "flex",
-                                flexDirection: "column",
-                                alignItems: "center",
-                                position: "relative",
-                                height: "30rem",
-                                overflowY: "scroll",
-                            }}
-                        >
-                            {renderCards()}
-                        </Container>
-                    )}
+            <SideBar/>
+            <Box sx={{flex:5}}>
+                <NavBar/>
+                <Container>
+                    <Typography
+                        variant="h3"
+                        color="#1DB954"
+                        marginBottom="1rem"
+                        fontWeight="700"
+                        marginTop="1rem"
+                        textAlign="center"
+                    >
+                        Search
+                    </Typography>
+                    <Typography
+                        variant="h6"
+                        color="#ffffff"
+                        marginBottom="2rem"
+                        textAlign="center"
+                    >
+                        Enter a song, album, or artist below to share your thoughts about
+                        your favorite music!
+                    </Typography>
+                    <Paper component="form" onSubmit={handleSearch} 
+                        sx={{ p: "0px 4px", display:"flex", alignItems:"center", borderRadius:3}}
+                    >
+                        <InputBase
+                            className="searchBox"
+                            placeholder="What kind of music do you like?"
+                            onChange={handleChange}
+                            sx={{ paddingLeft: "1rem", width: "40rem", height: "4rem" }}
+                        />
+                        <IconButton type="submit">
+                            <SearchIcon/>
+                        </IconButton>
+                    </Paper>
+                </Container>
+                {searchResults.length > 0 && (
                     <Container
                         sx={{
-                            paddingTop:'4rem'
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            position: "relative",
+                            height: "30rem",
+                            overflowY: "scroll",
                         }}
                     >
-                        <Typography
-                            variant="h3"
-                            color="#1DB954"
-                            textAlign="center"
-                            fontWeight="700"
-                            mb="1rem"
-                        >
-                            Featured
-                        </Typography>
-                        <Typography
-                            variant="h6"
-                            color="#ffffff"
-                            textAlign="center"
-                            mb="1rem"
-                        >
-                            Check Out Some Recent Fan-Favorites
-                        </Typography>
-                        <Carousel
-                            indicatorContainerProps={{ style: { marginTop: "1.5rem" } }}
-                            navButtonsProps={{
-                                style: { marginLeft: "3rem", marginRight: "3rem" },
-                            }}
-                        >
-                            <SongCard />
-                            <SongCard />
-                            <SongCard />
-                            <SongCard />
-                            <SongCard />
-                        </Carousel>
+                        {renderCards()}
                     </Container>
-                    <FootNote/>
-                </Box>
+                )}
+                <Container
+                    sx={{
+                        paddingTop:'4rem'
+                    }}
+                >
+                    <Typography
+                        variant="h3"
+                        color="#1DB954"
+                        textAlign="center"
+                        fontWeight="700"
+                        mb="1rem"
+                    >
+                        Featured
+                    </Typography>
+                    <Typography
+                        variant="h6"
+                        color="#ffffff"
+                        textAlign="center"
+                        mb="1rem"
+                    >
+                        Check Out Some Recent Fan-Favorites
+                    </Typography>
+                    <Carousel
+                        indicatorContainerProps={{ style: { marginTop: "1.5rem" } }}
+                        navButtonsProps={{
+                            style: { marginLeft: "3rem", marginRight: "3rem" },
+                        }}
+                    >
+                        <SongCard />
+                        <SongCard />
+                        <SongCard />
+                        <SongCard />
+                        <SongCard />
+                    </Carousel>
+                </Container>
+                <FootNote/>
             </Box>
+        </Box>
     );
 };
 
