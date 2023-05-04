@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import SideBar from "./components/SideBar/SideBar";
 import NavBar from "./components/NavBar";
-import { Box, Container, Typography, Button, Divider, Dialog, DialogTitle, DialogContentText, DialogContent, DialogActions} from "@mui/material";
+import { Box, Container, Typography, Button, Divider, Dialog, DialogTitle, DialogActions,
+         CardContent, CardMedia} from "@mui/material";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import StyledRating from "./components/StyledRating";
@@ -12,8 +13,21 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { css } from "@emotion/react";
 
 function MyReview(props){
-    let [songData, setSongData] = useState(null);
+    let [data, setData] = useState(null);
     let [del, setDel] = useState(false);
+    let [imgURL, setImgURL] = useState("");
+
+    const fetchAlbumData = () => {
+        fetch(`http://localhost:8080/album/${props.id}`)
+            .then((response) => response.json())
+            .then((data) => {
+                handleData(data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
+    
     const fetchSongData = () => {
         fetch(`http://localhost:8080/track/${props.id}`)
             .then((response) => response.json())
@@ -26,12 +40,24 @@ function MyReview(props){
     }
 
     
-    const handleData = (data) => {
-        setSongData(data);
+    const handleData = (inData) => {
+        setData(inData);
+        if(props.type == "song"){
+            setImgURL(inData.album.images[0].url);
+        }
+        else{
+            setImgURL(inData.images[0].url);
+        }
     }
 
     useEffect(() => {
-        fetchSongData();
+        if(props.type == "song"){
+            fetchSongData();
+        }
+        else{
+            fetchAlbumData();
+        }
+        
     }, []);
 
 
@@ -43,7 +69,6 @@ function MyReview(props){
         .catch(error => console.error(error));
     }
 
-    
     const checkDelete = () => {
         setDel(true);
     }
@@ -51,14 +76,20 @@ function MyReview(props){
     const handleClose = () => {
         setDel(false);
     }
+
+    //let imgURL = albumData["images"][0]["url"];
     return(
         <Box className="d-flex flex-column" sx={{minWidth:"100%", color:"#C8C7C7",px:"2rem", py:"2rem", background:"#4e4f4f", borderRadius:2, my:3}}>
             <Box className="d-flex"  sx={{gap:"2rem"}}> 
-                <Box sx={{minWidth:"25%"}}>
-                    <Typography variant="h4">{(songData != null) ? songData.name : "Review"}</Typography>
-                    <Typography marginLeft="3%">Style: {props.style}</Typography>
-                    <Typography marginLeft="3%">Mood: {props.mood}</Typography>
-                    <Typography marginLeft="3%">{(props.rec) ? "Would Recommend" : "Would Not Recommend"}</Typography>
+                <Box>
+                    <img src={imgURL}></img>
+                </Box>
+                <Box>
+                    <Typography variant="h4">{(data != null) ? data.name : "Review"}</Typography>
+                    
+                    <Typography >Style: {props.style}</Typography>
+                    <Typography >Mood: {props.mood}</Typography>
+                    <Typography >{(props.rec) ? "Would Recommend" : "Would Not Recommend"}</Typography>
                 </Box>
                 <Box className="d-flex flex-column mt-2">
                     <Box className="d-flex justify-content-between" sx={{minWidth:"75%"}}>
@@ -123,7 +154,7 @@ const MyReviews = () => {
     <MyReview key={index} user={item.user_id} rating={item.num_rating} 
             style={item.style} mood={item.mood} created = {item.time_created}
             thoughts = {item.overall_thoughts} rec={item.would_recommend} 
-            type={item.type} genre = {item.genre} id={item.id}/>
+            type={item.item_type} genre = {item.genre} id={item.id}/>
     ));
 
     return (
