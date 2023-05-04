@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import SideBar from "./components/SideBar/SideBar";
 import NavBar from "./components/NavBar";
-import { Box, Container, Typography, Button, Divider} from "@mui/material";
+import { Box, Container, Typography, Button, Divider, Dialog, DialogTitle, DialogContentText, DialogContent, DialogActions} from "@mui/material";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import StyledRating from "./components/StyledRating";
@@ -13,6 +13,7 @@ import { css } from "@emotion/react";
 
 function MyReview(props){
     let [songData, setSongData] = useState(null);
+    let [del, setDel] = useState(false);
     const fetchSongData = () => {
         fetch(`http://localhost:8080/track/${props.id}`)
             .then((response) => response.json())
@@ -33,7 +34,6 @@ function MyReview(props){
         fetchSongData();
     }, []);
 
-    console.log(songData);
 
     const handleDelete = () => {
         const payload = {"user_id":props.user, "id":props.id, "type":props.type}
@@ -41,6 +41,14 @@ function MyReview(props){
         axios.delete(url, {data: payload})
         .then(response => console.log(response))
         .catch(error => console.error(error));
+    }
+
+    const checkDelete = () => {
+        setDel(true);
+    }
+
+    const handleClose = () => {
+        setDel(false);
     }
     return(
         <Box className="d-flex flex-column" sx={{minWidth:"100%", color:"#C8C7C7",px:"2rem", py:"2rem", background:"#4e4f4f", borderRadius:2, my:3}}>
@@ -68,9 +76,31 @@ function MyReview(props){
             <Typography fontSize={12} sx={{ml:"0.5rem", mb:1}}>*Last Updated: {(props.created).substring(0, 10)}</Typography>
             <Box className="d-flex" sx={{gap:"1rem", ml:0.6}}>
                 <Button href="/song/update-review" onClick={localStorage.setItem("rID", props.id)}variant="contained" sx={{color:"#191414", maxWidth:"30%"}} style={{backgroundColor:"#1DB954"}}>Edit</Button>
-                <Button onClick={handleDelete} variant="contained" sx={{color:"#191414", maxWidth:"30%"}} style={{backgroundColor:"#bd2d2d"}}>Delete</Button>
+                <Button onClick={checkDelete} variant="contained" sx={{color:"#191414", maxWidth:"30%"}} style={{backgroundColor:"#bd2d2d"}}>Delete</Button>
             </Box>
-            
+            <Dialog
+                PaperProps={{
+                    style:{
+                        backgroundColor:"#555",
+                    }
+                }}
+                open={del}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title" sx={{color:"#C8C7C7"}}>
+                {"Are you sure you want to delete this song?"}
+                </DialogTitle>
+                <DialogActions>
+                <Button sx={{color:"#1a9f48"}}onClick={handleDelete} href="/profile/reviews" autoFocus>
+                    Yes
+                </Button>
+                <Button sx={{color:"#bf4b4b"}}onClick={handleClose} autoFocus>
+                    No
+                </Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 }
@@ -128,6 +158,7 @@ const MyReviews = () => {
                     </Typography>
                     {body}
                 </Container>
+                
             </Box>
         </Box>
     );

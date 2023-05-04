@@ -255,11 +255,6 @@ const CreateReview = () => {
                         <DialogTitle id="alert-dialog-title" sx={{color:"#C8C7C7"}}>
                         {"You already reviewed this song!"}
                         </DialogTitle>
-                        <DialogContent>
-                        <DialogContentText id="alert-dialog-description" sx={{color:"#C8C7C7"}}>
-                            You already reviewed this song.
-                        </DialogContentText>
-                        </DialogContent>
                         <DialogActions>
                         <Button sx={{color:"#1a9f48"}}onClick={handleExist} href="/profile/reviews" autoFocus>
                             Edit Review
@@ -281,13 +276,8 @@ const CreateReview = () => {
                         aria-describedby="alert-dialog-description"
                     >
                         <DialogTitle id="alert-dialog-title" sx={{color:"#C8C7C7"}}>
-                        {"You already reviewed this song!"}
+                        {"Your review has successfully been created!"}
                         </DialogTitle>
-                        <DialogContent>
-                        <DialogContentText id="alert-dialog-description" sx={{color:"#C8C7C7"}}>
-                            Your review has successfully been created.
-                        </DialogContentText>
-                        </DialogContent>
                         <DialogActions>
                         <Button sx={{color:"#1a9f48"}}onClick={handleExist} href="/profile/reviews" autoFocus>
                             View Review
