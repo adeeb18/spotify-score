@@ -8,38 +8,55 @@ import Typography from "@mui/material/Typography";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import StyledRating from "./StyledRating";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 
-const SongCard = ({ id = "", song = 'Song Name', artist = 'Artist Name', imageUrl = '/logo192.png', renderImage = true, rating = 2.5 }) => {
+const SongCard = (props, {renderImage = true}) => {
+    let [sRating, setRating] = useState(0);
+    useEffect(() => {
+        const url = 'http://localhost:8000/getAllReviews'
+            axios.get(url)
+                .then(response => parseData(response.data))
+                .catch(error => console.error(error));
+    }, []);
+    const parseData = (inData) =>{
+        let tryIt = [];
+        for(let i = 0; i < inData.length; i++){
+            if(inData[i].id === props.id){
+                setRating(Number(Number(inData[i].num_rating)/20));
+            }
+        }
+    }
     return (
         <Container>
             <Card sx={{ m: "1rem 1rem", background: "#2c2c2c" }}>
-                <CardActionArea component={Link} to={{ pathname: "/song", search:"?id=" + id }} sx={{ p: "1rem 2rem", display: "flex", flexDirection: "row", justifyContent: "flex-start" }}>
+                <CardActionArea component={Link} to={{ pathname: "/song", search:"?id=" + props.id }} sx={{ p: "1rem 2rem", display: "flex", flexDirection: "row", justifyContent: "flex-start" }}>
                     {renderImage && <CardContent sx={{ width: "100" }}>
-                        <CardMedia height="100" component="img" image={imageUrl} sx={{ objectFit: "contain" }} />
+                        <CardMedia height="100" component="img" image={props.imageUrl} sx={{ objectFit: "contain" }} />
                     </CardContent>}
                     <CardContent sx={{width:"50%"}}>
                         <Typography variant="body1" color="#1DB954">
                             Song
                         </Typography>
                         <Typography variant="h5" color="#ffffff">
-                            {song}
+                            {props.song}
                         </Typography>
                         <Typography variant="body1" color="#bbbbbb">
-                            {artist}
+                            {props.artist}
                         </Typography>
                     </CardContent>
                     <CardContent sx={{ textAlign: "center" }}>
                         <StyledRating
                             defaultValue={5}
-                            value={rating}
+                            value={sRating}
                             precision={0.5}
                             icon={<FavoriteIcon />}
                             emptyIcon={<FavoriteBorderIcon />}
                             readOnly
                         />
                         <Typography variant="body1" color="#ffffff">
-                            {"(" + (rating*20).toString() + ")"}
+                            {"(" + (sRating*20).toString() + ")"}
                         </Typography>
                     </CardContent>
                 </CardActionArea>
