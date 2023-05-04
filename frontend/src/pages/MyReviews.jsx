@@ -43,6 +43,15 @@ function MyReview(props){
         .catch(error => console.error(error));
     }
 
+    const getName = () =>{
+        
+        if(props.type == "song" && songData.name != undefined && songData.name != null){
+            return songData.name;
+        }
+        else{
+            return "Review"
+        }
+    }
     const checkDelete = () => {
         setDel(true);
     }
@@ -54,7 +63,7 @@ function MyReview(props){
         <Box className="d-flex flex-column" sx={{minWidth:"100%", color:"#C8C7C7",px:"2rem", py:"2rem", background:"#4e4f4f", borderRadius:2, my:3}}>
             <Box className="d-flex"  sx={{gap:"2rem"}}> 
                 <Box sx={{minWidth:"25%"}}>
-                    <Typography variant="h4">{(songData != null) ? songData.name : "Review"}</Typography>
+                    <Typography variant="h4">{getName()}</Typography>
                     <Typography marginLeft="3%">Style: {props.style}</Typography>
                     <Typography marginLeft="3%">Mood: {props.mood}</Typography>
                     <Typography marginLeft="3%">{(props.rec) ? "Would Recommend" : "Would Not Recommend"}</Typography>
@@ -113,15 +122,17 @@ const MyReviews = () => {
         const id = localStorage.getItem("id");
         const payload = {user_id: id}
         axios.post(url, payload)
-                .then(response =>  setData(response.data))
+                .then(response => setData(response.data))
                 .catch(error => console.error(error));
     }, []);
+
+    console.log(data[0]);
 
     // const reviewTemplate = (user, rating, style, mood, created, thoughts, rec, keyVal)
     const body = data.map((item, index) => (
     <MyReview key={index} user={item.user_id} rating={item.num_rating} 
             style={item.style} mood={item.mood} created = {item.time_created}
-            thoughts = {item.overall_thoughts} rec={item.would_recommend} 
+            thoughts={item.overall_thoughts} rec={item.would_recommend} 
             type={item.type} genre = {item.genre} id={item.id}/>
     ));
 
