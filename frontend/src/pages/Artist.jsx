@@ -20,7 +20,7 @@ const Artist = () => {
     let [artistAlbumsData, setArtistAlbumsData] = useState(null);
 
     const fetchArtistData = () => {
-        fetch(`https://lws3v1re05.execute-api.us-east-1.amazonaws.com/dev/api/v1/spotify/artist/${searchParams.get("id")}`)
+        fetch(`http://localhost:8080/artist/${searchParams.get("id")}`)
             .then((response) => response.json())
             .then((data) => {
                 setArtistData(data);
@@ -31,7 +31,7 @@ const Artist = () => {
     }
 
     const fetchArtistAlbumsData = () => {
-        fetch(`https://lws3v1re05.execute-api.us-east-1.amazonaws.com/dev/api/v1/spotify/artists/${searchParams.get("id")}/albums`)
+        fetch(`http://localhost:8080/artists/${searchParams.get("id")}/albums`)
             .then((response) => response.json())
             .then((data) => {
                 setArtistAlbumsData(data);

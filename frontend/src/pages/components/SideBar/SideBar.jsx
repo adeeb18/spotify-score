@@ -53,17 +53,6 @@ const SideBar = () => {
                     <ListItemText primary={'Explore'} />
                 </ListItemButton>
                 <ListItemButton 
-                    href="/spotify-score/song/reviews"
-                    className="mb-3"
-                    css={css`
-                        :hover {
-                        background-color: #2e8b57;
-                        }
-                    `}
-                    sx={{backgroundColor:"#151515", minHeight:"15vh", minWidth:200, textAlign:"center", borderRadius:2, mt:1}}>
-                    <ListItemText primary={'Reviews'} />
-                </ListItemButton>
-                <ListItemButton 
                     href="/spotify-score/about"
                     className="mb-3"
                     css={css`

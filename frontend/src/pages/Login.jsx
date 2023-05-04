@@ -62,7 +62,7 @@ const Login = () => {
     }
 
     const handleSubmit = () => {
-        const url = 'https://lws3v1re05.execute-api.us-east-1.amazonaws.com/dev/api/v1/users/users/login'
+        const url = 'http://localhost:8000/login'
         const payload = {username: user, password: pass}
         axios.post(url, payload)
             .then(response => {handleLogin(response)})
