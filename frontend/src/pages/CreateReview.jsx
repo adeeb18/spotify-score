@@ -10,10 +10,12 @@ import SongCard from "./components/SongCard";
 import StyledRating from "./components/StyledRating";
 import NavBar from "./components/NavBar";
 import axios from "axios";
+import { create } from "@mui/material/styles/createTransitions";
 
 const CreateReview = () => {
     const [searchParams] = useSearchParams();
     const [exist, setExist] = useState(false);
+    const [done, setDone] = useState(false);
 
     let [rating, setRating] = useState(Number(0));
     let [uMood, setMood] = useState("Happy");
@@ -114,6 +116,10 @@ const CreateReview = () => {
 
     const handleExist = () => {
         setExist(false);
+    }
+
+    const handleDone = () => {
+        setDone(false);
     }
 
     return (
@@ -269,8 +275,8 @@ const CreateReview = () => {
                                 backgroundColor:"#555",
                             }
                         }}
-                        open={exist}
-                        onClose={handleExist}
+                        open={done}
+                        onClose={handleDone}
                         aria-labelledby="alert-dialog-title"
                         aria-describedby="alert-dialog-description"
                     >
