@@ -150,7 +150,7 @@ const Login = () => {
                             variant="contained"
                             component={Link}
                             onClick={handleSubmit}
-                            to="/"
+                            to="/spotify-score"
                             startIcon={<LoginIcon/>}
                             sx={{color:"#191414"}}
                             style={{backgroundColor:"#1DB954"}}
@@ -162,7 +162,7 @@ const Login = () => {
                         <Box className="d-flex">
                             <Typography color="#B6B5B5" fontSize={12} marginTop={1.2}>New to SpotifyScore?</Typography>
                             <Button 
-                                href="/register" 
+                                href="/spotify-score/register" 
                                 sx={{textTransform:"none", color:"#1a9f48"}}
                                 css={css`
                                     :hover {

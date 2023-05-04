@@ -20,7 +20,7 @@ const SideBar = () => {
                     </Typography>
                 </Box>
                 <ListItemButton
-                    href="/"
+                    href="/spotify-score"
                     className="mb-3"
                     css={css`
                         :hover {
@@ -31,7 +31,7 @@ const SideBar = () => {
                     <ListItemText primary={'Home'} />
                 </ListItemButton>
                 <ListItemButton 
-                    href="/leaderboard"
+                    href="/spotify-score/leaderboard"
                     className="mb-3"
                     css={css`
                         :hover {
@@ -42,7 +42,7 @@ const SideBar = () => {
                     <ListItemText primary={'Leaderboard'} />
                 </ListItemButton>
                 <ListItemButton 
-                    href="/"
+                    href="/spotify-score"
                     className="mb-3"
                     css={css`
                         :hover {
@@ -53,7 +53,7 @@ const SideBar = () => {
                     <ListItemText primary={'Explore'} />
                 </ListItemButton>
                 <ListItemButton 
-                    href="/song/reviews"
+                    href="/spotify-score/song/reviews"
                     className="mb-3"
                     css={css`
                         :hover {
@@ -64,7 +64,7 @@ const SideBar = () => {
                     <ListItemText primary={'Reviews'} />
                 </ListItemButton>
                 <ListItemButton 
-                    href="/about"
+                    href="/spotify-score/about"
                     className="mb-3"
                     css={css`
                         :hover {

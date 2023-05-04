@@ -47,34 +47,34 @@ const NavBar = () => {
     }
 
     const initializePage = () =>{
-        if(currPage.pathname === "/"){
+        if(currPage.pathname === "/spotify-score/"){
             return "Home";
         }
-        else if(currPage.pathname === "/search"){
+        else if(currPage.pathname === "/spotify-score/search"){
             return "Search";
         }
-        else if(currPage.pathname === "/song"){
+        else if(currPage.pathname === "/spotify-score/song"){
             return "Song";
         }
-        else if(currPage.pathname === "/song/reviews"){
+        else if(currPage.pathname === "/spotify-score/song/reviews"){
             return "Reviews";
         }
-        else if(currPage.pathname === "/song/create-review"){
+        else if(currPage.pathname === "/spotify-score/song/create-review"){
             return "Create Review";
         }
-        else if(currPage.pathname === "/album"){
+        else if(currPage.pathname === "/spotify-score/album"){
             return "Album";
         }
-        else if(currPage.pathname === "/about"){
+        else if(currPage.pathname === "/spotify-score/about"){
             return "About";
         }
-        else if(currPage.pathname === "/leaderboard"){
+        else if(currPage.pathname === "/spotify-score/leaderboard"){
             return "Leaderboard";
         }
-        else if(currPage.pathname === "/register"){
+        else if(currPage.pathname === "/spotify-score/register"){
             return "Register";
         }
-        else if(currPage.pathname === "/login"){
+        else if(currPage.pathname === "/spotify-score/login"){
             return "Log In";
         }
     }
@@ -83,7 +83,7 @@ const NavBar = () => {
 
     const LoggedOut = (
         <Box className="d-flex align-items-center">
-            <Button href="/register" sx={{textTransform:"none", color:"white", marginRight:1}}>Register</Button>
+            <Button href="/spotify-score/register" sx={{textTransform:"none", color:"white", marginRight:1}}>Register</Button>
             <Button 
                 href="/login" 
                 sx={{textTransform:"none", backgroundColor:"white", color:"black", borderRadius:5}} 
@@ -142,8 +142,8 @@ const NavBar = () => {
                 onClose={handleClose}
               >
                 <Box className="d-flex flex-column">
-                    <Button href="/profile" onClick={handleClose} >Profile</Button>
-                    <Button href="/profile/reviews" className="menu">My Reviews</Button>
+                    <Button href="/spotify-score/profile" onClick={handleClose} >Profile</Button>
+                    <Button href="/spotify-score/profile/reviews" className="menu">My Reviews</Button>
                     <Button className="menu" onClick={handleLogout}>Log Out</Button>
                 </Box>
             </Menu>
@@ -160,7 +160,7 @@ const NavBar = () => {
             <Toolbar className="d-flex justify-content-between">
                 <Box>
                     <Typography 
-                        href="/"
+                        href="/spotify-score"
                         css={css`
                             :hover {
                                 cursor:pointer;

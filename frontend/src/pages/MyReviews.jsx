@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import SongCard from "./components/SongCard";
 import SideBar from "./components/SideBar/SideBar";
 import NavBar from "./components/NavBar";
 import { Box, Container, Typography, Button, Divider} from "@mui/material";
@@ -43,7 +42,7 @@ function MyReview(props){
                 </Box>
             </Box>
             <Box className="d-flex" sx={{gap:"1rem", ml:0.6}}>
-                <Button href="/song/update-review" onClick={localStorage.setItem("rID", props.id)}variant="contained" sx={{color:"#191414", maxWidth:"30%"}} style={{backgroundColor:"#1DB954"}}>Edit</Button>
+                <Button href="/spotify-score/song/update-review" onClick={localStorage.setItem("rID", props.id)}variant="contained" sx={{color:"#191414", maxWidth:"30%"}} style={{backgroundColor:"#1DB954"}}>Edit</Button>
                 <Button onClick={handleDelete} variant="contained" sx={{color:"#191414", maxWidth:"30%"}} style={{backgroundColor:"#bd2d2d"}}>Delete</Button>
             </Box>
         </Box>
@@ -77,11 +76,10 @@ const MyReviews = () => {
                 <NavBar/>
                 <Container className="mt-2">
                     <Box className="d-flex flex-column align-items-center" sx={{marginBottom:"1em"}}>
-                        <SongCard/>
                         <Button
                             variant="contained"
                             component={Link}
-                            to="/song/create-review"
+                            to="/spotify-score/song/create-review"
                             startIcon={<FavoriteIcon/>}
                             sx={{color:"#191414", maxWidth:"30%"}}
                             style={{backgroundColor:"#1DB954"}}
