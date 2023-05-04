@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Box, Container, Typography, TextField, Button, RadioGroup, FormControlLabel, 
-         Radio, Divider, Select, MenuItem, FormControl } from "@mui/material";
+         Radio, Divider, Select, MenuItem, FormControl, Dialog, DialogTitle, DialogContentText, DialogContent, DialogActions} from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import SendIcon from "@mui/icons-material/Send";
@@ -13,6 +13,7 @@ import axios from "axios";
 
 const CreateReview = () => {
     const [searchParams] = useSearchParams();
+    const [exist, setExist] = useState(false);
 
     let [rating, setRating] = useState(Number(0));
     let [uMood, setMood] = useState("Happy");
@@ -22,13 +23,18 @@ const CreateReview = () => {
     let [reviewID, setReviewID] = useState("");
     let [songData, setSongData] = useState(null);
 
+    /*VALIDATION STATES*/
+    let [styleError, setStyleError] = useState(false);
+    let [styleHelper, setStyleHelper] = useState("");
+    let [textError, setTextError] = useState(false);
+    let [textHelper, setTextHelper] = useState("");
+
     const fetchSongData = () => {
         fetch(`http://localhost:8080/track/${searchParams.get("id")}`)
             .then((response) => response.json())
             .then((data) => {
-                console.log(searchParams.get("id"));
-                console.log(data);
                 setSongData(data);
+                setReviewID(searchParams.get("id"));
             })
             .catch((error) => {
                 console.error(error);
@@ -47,44 +53,68 @@ const CreateReview = () => {
             case "recInput":
                 setRec(event.target.value);
                 break;
-            case "styleInput":
-                setStyle(event.target.value);
-                break;
-            case "reviewInput":
-                setReviewText(event.target.value);
-                break;
+            case "styleInput":{
+                if((event.target.value) == undefined || (event.target.value) == ""){
+                    setStyleError(true);
+                    setStyleHelper("Style is required");
+                }
+                else{
+                    setStyle(event.target.value);
+                    setStyleError(false);
+                    setStyleHelper("");
+                }
+            }break;
+            case "reviewInput":{
+                if((event.target.value) == undefined || (event.target.value) == ""){
+                    setTextError(true);
+                    setTextHelper("Style is required");
+                }
+                else{
+                    setReviewText(event.target.value);
+                    setTextError(false);
+                    setTextHelper("");
+                }
+            }break;
         }
     }
 
     const handleSubmit = () => {
-        const url = 'http://localhost:8000/getUserReviews'
-        const id = localStorage.getItem("id");
-        const payload = {user_id: id}
-        axios.post(url, payload)
-            .then(response => saveReview(response.data.length, id))
-            .catch(error => console.error(error));
-    }
-
-    const saveReview = (response, uid) => {
-        if(response < 1){
-            setReviewID(uid);
+        if(uStyle != "" && reviewText != "" && reviewID != null){
+            const url = 'http://localhost:8000/getUserReviews'
+            const id = localStorage.getItem("id");
+            const payload = {user_id: id}
+            axios.post(url, payload)
+                .then(response => saveReview(response.data, id))
+                .catch(error => console.error(error));
         }
         else{
-            let val = (Number(uid) + Number(response)).toString();
-            console.log(val);
-            setReviewID(val);
+            alert("Fill out missing fields");
         }
-        let rate = (rating * 20).toString();
-        const payload = {type:"song", user_id:uid, id:reviewID, genre:"test", num_rating:rate, overall_thoughts:reviewText, style: uStyle, mood: uMood, would_recommend: rec}
-        const url = 'http://localhost:8000/createReview'
-        axios.post(url, payload)
-        .then(response => console.log(response))
-        .catch(error => console.error(error));
+    }
+
+    const saveReview = (data, uid) => {
+        for(let i = 0; i < data.length; i++){
+            if(data[i].id == reviewID){
+                setExist(true);
+            }
+        }
+        if(!exist){
+            let rate = (rating * 20).toString();
+            const payload = {type:"song", user_id:Number(uid), id:reviewID, genre:"notGiven", num_rating:rate, overall_thoughts:reviewText, style:uStyle, mood:uMood, would_recommend:rec}
+            const url = 'http://localhost:8000/createReview'
+            axios.post(url, payload)
+            .then(response => console.log(response))
+            .catch(error => console.error(error));
+        }
     }
 
     useEffect(() => {
         fetchSongData();
     }, []);
+
+    const handleExist = () => {
+        setExist(false);
+    }
 
     return (
         <Box className="d-flex">
@@ -170,17 +200,20 @@ const CreateReview = () => {
                             </RadioGroup>
                         </Box>
                         <TextField
+                            error={styleError}
+                            helperText={styleHelper}
                             name="styleInput"
                             onChange={handleChange}
                             label="What style do you think this song is?"
                             rows={6}
                             fullWidth={true}
                             variant="filled"
-                            multiline
-                            sx={{backgroundColor:"#ffffff", mb:"1rem", maxHeight:"3rem"}}
+                            sx={{backgroundColor:"#ffffff", mb:"1rem"}}
                         />
                         <Divider sx={{background:"white", mb:2, width:'100%'}}/>
                         <TextField
+                            error={textError}
+                            helperText={textHelper}
                             name="reviewInput"
                             onChange={handleChange}
                             label="What did you think about this song?"
@@ -202,6 +235,62 @@ const CreateReview = () => {
                             </Typography>
                         </Button>
                     </Box>
+                    <Dialog
+                        PaperProps={{
+                            style:{
+                                backgroundColor:"#555",
+                            }
+                        }}
+                        open={exist}
+                        onClose={handleExist}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                    >
+                        <DialogTitle id="alert-dialog-title" sx={{color:"#C8C7C7"}}>
+                        {"You already reviewed this song!"}
+                        </DialogTitle>
+                        <DialogContent>
+                        <DialogContentText id="alert-dialog-description" sx={{color:"#C8C7C7"}}>
+                            You already reviewed this song.
+                        </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                        <Button sx={{color:"#1a9f48"}}onClick={handleExist} href="/profile/reviews" autoFocus>
+                            Edit Review
+                        </Button>
+                        <Button sx={{color:"#bf4b4b"}}onClick={handleExist} autoFocus>
+                            Cancel
+                        </Button>
+                        </DialogActions>
+                    </Dialog>
+                    <Dialog
+                        PaperProps={{
+                            style:{
+                                backgroundColor:"#555",
+                            }
+                        }}
+                        open={exist}
+                        onClose={handleExist}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                    >
+                        <DialogTitle id="alert-dialog-title" sx={{color:"#C8C7C7"}}>
+                        {"You already reviewed this song!"}
+                        </DialogTitle>
+                        <DialogContent>
+                        <DialogContentText id="alert-dialog-description" sx={{color:"#C8C7C7"}}>
+                            Your review has successfully been created.
+                        </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                        <Button sx={{color:"#1a9f48"}}onClick={handleExist} href="/profile/reviews" autoFocus>
+                            View Review
+                        </Button>
+                        <Button sx={{color:"#1a9f48"}}onClick={handleExist} href="/" autoFocus>
+                            New Review
+                        </Button>
+                        </DialogActions>
+                    </Dialog>
                 </Container>
             </Box>
         </Box>
