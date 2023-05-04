@@ -81,8 +81,8 @@ function MyReview(props){
     return(
         <Box className="d-flex flex-column" sx={{minWidth:"100%", color:"#C8C7C7",px:"2rem", py:"2rem", background:"#4e4f4f", borderRadius:2, my:3}}>
             <Box className="d-flex"  sx={{gap:"2rem"}}> 
-                <Box>
-                    <img src={imgURL}></img>
+                <Box >
+                    <img width="100" src={imgURL} ></img>
                 </Box>
                 <Box>
                     <Typography variant="h4">{(data != null) ? data.name : "Review"}</Typography>
@@ -105,8 +105,7 @@ function MyReview(props){
                     <Typography>{props.thoughts}</Typography>
                 </Box>
             </Box>
-            <Typography fontSize={12} sx={{ml:"0.5rem", mb:1}}>*Last Updated: {(props.created).substring(0, 10)}</Typography>
-            <Box className="d-flex" sx={{gap:"1rem", ml:0.6}}>
+            <Box className="d-flex" sx={{gap:"1rem", mt:0.6}}>
                 <Button href="/song/update-review" onClick={localStorage.setItem("rID", props.id)}variant="contained" sx={{color:"#191414", maxWidth:"30%"}} style={{backgroundColor:"#1DB954"}}>Edit</Button>
                 <Button onClick={checkDelete} variant="contained" sx={{color:"#191414", maxWidth:"30%"}} style={{backgroundColor:"#bd2d2d"}}>Delete</Button>
             </Box>
