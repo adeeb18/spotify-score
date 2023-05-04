@@ -20,20 +20,20 @@ function App() {
   return (
     <BrowserRouter>
           <Routes>
-            <Route exact path="/spotify-score" element={<Home/>}/>
-            <Route path="/spotify-score/search" element={<Search/>}/>
-            <Route exact path="/spotify-score/song" element={<Song/>}/>
-            <Route path="/spotify-score/song/reviews" element={<ViewReviews/>}/>
-            <Route path="/spotify-score/song/create-review" element={<CreateReview/>}/>
-            <Route path="/spotify-score/album" element={<Album/>}/>
-            <Route path="/spotify-score/artist" element={<Artist/>}/>
-            <Route path="/spotify-score/about" element={<About/>}/>
-            <Route path="/spotify-score/leaderboard" element={<Leaderboard/>}/>
-            <Route path="/spotify-score/register" element={<Register/>}/>
-            <Route path="/spotify-score/login" element={<Login/>}/>
-            <Route path="/spotify-score/profile/reviews" element={<MyReviews/>}/>
-            <Route path="/spotify-score/song/update-review" element={<UpdateReview/>}/>
-            <Route path="/spotify-score/profile" element={<UserProfile/>}/>
+            <Route exact path="/" element={<Home/>}/>
+            <Route path="/search" element={<Search/>}/>
+            <Route exact path="/song" element={<Song/>}/>
+            <Route path="/song/reviews" element={<ViewReviews/>}/>
+            <Route path="/song/create-review" element={<CreateReview/>}/>
+            <Route path="/album" element={<Album/>}/>
+            <Route path="/artist" element={<Artist/>}/>
+            <Route path="/about" element={<About/>}/>
+            <Route path="/leaderboard" element={<Leaderboard/>}/>
+            <Route path="/register" element={<Register/>}/>
+            <Route path="/login" element={<Login/>}/>
+            <Route path="/profile/reviews" element={<MyReviews/>}/>
+            <Route path="/song/update-review" element={<UpdateReview/>}/>
+            <Route path="/profile" element={<UserProfile/>}/>
           </Routes>
     </BrowserRouter>
   );

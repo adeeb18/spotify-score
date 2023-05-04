@@ -287,7 +287,7 @@ const SignUp = () => {
                         <Box className="d-flex">
                             <Typography color="#B6B5B5" fontSize={12} marginTop={1.2}>Already have an account?</Typography>
                             <Button 
-                                href="/spotify-score/login" 
+                                href="/login" 
                                 sx={{textTransform:"none", color:"#1a9f48"}}
                                 css={css`
                                     :hover {
@@ -321,7 +321,7 @@ const SignUp = () => {
                         </DialogContentText>
                         </DialogContent>
                         <DialogActions>
-                        <Button sx={{color:"#1a9f48"}}onClick={handleClose} href="/spotify-score/login" autoFocus>
+                        <Button sx={{color:"#1a9f48"}}onClick={handleClose} href="/login" autoFocus>
                             Login
                         </Button>
                         </DialogActions>

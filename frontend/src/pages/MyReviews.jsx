@@ -42,7 +42,7 @@ function MyReview(props){
                 </Box>
             </Box>
             <Box className="d-flex" sx={{gap:"1rem", ml:0.6}}>
-                <Button href="/spotify-score/song/update-review" onClick={localStorage.setItem("rID", props.id)}variant="contained" sx={{color:"#191414", maxWidth:"30%"}} style={{backgroundColor:"#1DB954"}}>Edit</Button>
+                <Button href="/song/update-review" onClick={localStorage.setItem("rID", props.id)}variant="contained" sx={{color:"#191414", maxWidth:"30%"}} style={{backgroundColor:"#1DB954"}}>Edit</Button>
                 <Button onClick={handleDelete} variant="contained" sx={{color:"#191414", maxWidth:"30%"}} style={{backgroundColor:"#bd2d2d"}}>Delete</Button>
             </Box>
         </Box>
@@ -79,7 +79,7 @@ const MyReviews = () => {
                         <Button
                             variant="contained"
                             component={Link}
-                            to="/spotify-score/song/create-review"
+                            to="/song/create-review"
                             startIcon={<FavoriteIcon/>}
                             sx={{color:"#191414", maxWidth:"30%"}}
                             style={{backgroundColor:"#1DB954"}}

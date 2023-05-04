@@ -103,7 +103,7 @@ const ViewReviews = () => {
                         {songData && <Button
                             variant="contained"
                             component={Link}
-                            to={{ pathname: "/spotify-score/song/create-review", search:"?id=" + songData["id"] }}
+                            to={{ pathname: "/song/create-review", search:"?id=" + songData["id"] }}
                             startIcon={<FavoriteIcon/>}
                             sx={{marginBottom:"8rem", color:"#191414"}}
                             style={{backgroundColor:"#1DB954"}}

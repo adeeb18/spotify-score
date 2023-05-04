@@ -92,7 +92,7 @@ const UserProfile = () => {
                     </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button href="/spotify-score" sx={{color:"#1a9f48"}} onClick={handleDelete} autoFocus>
+                        <Button href="/" sx={{color:"#1a9f48"}} onClick={handleDelete} autoFocus>
                             Yes
                         </Button>
                         <Button sx={{color:"#bd2d2d"}}onClick={handleClose} autoFocus>

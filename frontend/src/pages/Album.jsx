@@ -77,7 +77,7 @@ const Album = () => {
                     <Button
                         variant="contained"
                         component={Link}
-                        to="/spotify-score/song/create-review"
+                        to="/song/create-review"
                         startIcon={<FavoriteIcon/>}
                         sx={{marginBottom:"8rem", color:"#191414"}}
                         style={{backgroundColor:"#1DB954"}}
@@ -126,7 +126,7 @@ const Album = () => {
                     <Button
                         variant="contained"
                         component={Link}
-                        to="/spotify-score/song/reviews"
+                        to="/song/reviews"
                         startIcon={<VisibilityIcon/>}
                         sx={{marginBottom:"8rem", color:"#191414"}}
                         style={{backgroundColor:"#1DB954"}}

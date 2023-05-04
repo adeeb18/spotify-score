@@ -58,7 +58,7 @@ const Song = () => {
                     {songData && <Button
                         variant="contained"
                         component={Link}
-                        to={{ pathname: "/spotify-score/song/create-review", search:"?id=" + songData["id"] }}
+                        to={{ pathname: "/song/create-review", search:"?id=" + songData["id"] }}
                         startIcon={<FavoriteIcon/>}
                         sx={{marginBottom:"8rem", color:"#191414"}}
                         style={{backgroundColor:"#1DB954"}}
@@ -112,7 +112,7 @@ const Song = () => {
                     {songData && <Button
                         variant="contained"
                         component={Link}
-                        to={{pathname: "/spotify-score/song/reviews", search:"?id=" + songData["id"]}}
+                        to={{pathname: "/song/reviews", search:"?id=" + songData["id"]}}
                         startIcon={<VisibilityIcon/>}
                         sx={{marginBottom:"8rem", color:"#191414"}}
                         style={{backgroundColor:"#1DB954"}}

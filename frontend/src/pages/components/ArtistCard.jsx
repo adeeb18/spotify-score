@@ -10,7 +10,7 @@ const ArtistCard = ({ id = "", name = 'This is the Artist Name', imageUrl = '/lo
     return (
         <Container>
             <Card sx={{ m: "1rem 1rem", background: "#2c2c2c" }}>
-                <CardActionArea component={Link} to={{ pathname: "/spotify-score/artist", search: "?id=" + id }} sx={{ p: "1rem 2rem", display: "flex", flexDirection:"row", justifyContent:"flex-start" }}>
+                <CardActionArea component={Link} to={{ pathname: "/artist", search: "?id=" + id }} sx={{ p: "1rem 2rem", display: "flex", flexDirection:"row", justifyContent:"flex-start" }}>
                     {renderImage && <CardContent>
                         <CardMedia height="100px" component="img" image={imageUrl} sx={{ objectFit: "contain" }} />
                     </CardContent>}

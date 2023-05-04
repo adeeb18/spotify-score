@@ -14,7 +14,7 @@ const SongCard = ({ id = "", song = 'Song Name', artist = 'Artist Name', imageUr
     return (
         <Container>
             <Card sx={{ m: "1rem 1rem", background: "#2c2c2c" }}>
-                <CardActionArea component={Link} to={{ pathname: "/spotify-score/song", search:"?id=" + id }} sx={{ p: "1rem 2rem", display: "flex", flexDirection: "row", justifyContent: "flex-start" }}>
+                <CardActionArea component={Link} to={{ pathname: "/song", search:"?id=" + id }} sx={{ p: "1rem 2rem", display: "flex", flexDirection: "row", justifyContent: "flex-start" }}>
                     {renderImage && <CardContent sx={{ width: "100" }}>
                         <CardMedia height="100" component="img" image={imageUrl} sx={{ objectFit: "contain" }} />
                     </CardContent>}
