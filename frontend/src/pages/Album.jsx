@@ -82,10 +82,10 @@ const Album = () => {
                                     Leave a Review
                                 </Typography>
                             </Button>}
-                            <Button
+                            {albumData && <Button
                                 variant="contained"
                                 component={Link}
-                                to="/album/reviews"
+                                to={{pathname: "/album/reviews", search:"?id=" + albumData["id"]}}
                                 startIcon={<VisibilityIcon/>}
                                 sx={{color:"#191414"}}
                                 style={{backgroundColor:"#1DB954"}}
@@ -93,7 +93,7 @@ const Album = () => {
                                 <Typography variant="h6" textTransform="none">
                                     View All Reviews
                                 </Typography>
-                            </Button>
+                            </Button>}
                         </Box>
                         <Divider sx={{background:"white", mb:"1rem", width:'100%'}}/>
                         <Container sx={{mb:"8rem"}}>

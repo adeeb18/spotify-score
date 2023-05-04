@@ -35,7 +35,7 @@ function Review(props){
                 <Typography>Mood: {props.mood}</Typography>
                 <Typography>{(props.rec == "Yes")? "Would Recommend" : "Would Not Recommend"}</Typography>
             </Box>
-            <Box className="mt-2">
+            <Box>
                 <Box className="d-flex justify-content-between">
                     <StyledRating
                         defaultValue={5}
@@ -43,10 +43,9 @@ function Review(props){
                         precision={0.5}
                         icon={<FavoriteIcon/>}
                         emptyIcon={<FavoriteBorderIcon/>}
-                        sx={{mb:"0.5rem"}}
                         readOnly
                     />
-                    <Typography className="align-self-end">{props.created}</Typography>
+                    <Typography marginLeft="10vw" className="align-self-end">{props.created}</Typography>
                 </Box>
                 <Typography width="100%">{props.thoughts}</Typography>
             </Box>
@@ -60,12 +59,10 @@ const AlbumReviews = () => {
     let [albumData, setalbumData] = useState(null);
     let count = 0;
 
-    const fetchalbumData = () => {
+    const fetchAlbumData = () => {
         fetch(`http://localhost:8080/album/${searchParams.get("id")}`)
             .then((response) => response.json())
             .then((data) => {
-                console.log(searchParams.get("id"));
-                console.log(data);
                 setalbumData(data);
             })
             .catch((error) => {
@@ -74,7 +71,7 @@ const AlbumReviews = () => {
     }
 
     useEffect(() => {
-        fetchalbumData();
+        fetchAlbumData();
         const url = 'http://localhost:8000/getAllReviews'
             axios.get(url)
                 .then(response => parseData(response.data))
@@ -85,13 +82,11 @@ const AlbumReviews = () => {
         let tryIt = [];
         for(let i = 0; i < inData.length; i++){
             if(inData[i].id === searchParams.get("id")){
-                console.log(inData[i].id);
                 tryIt.push(inData[i]);
            }
         }
         setData(tryIt);
     }
-    console.log(data[0]);
 
     // const reviewTemplate = (user, rating, style, mood, created, thoughts, rec, keyVal)
     const body = data.map((item, index) => (
@@ -110,7 +105,7 @@ const AlbumReviews = () => {
                             id={albumData["id"]}
                             name={albumData["name"]}
                             artist={albumData["artists"][0]["name"]}
-                            imageUrl={albumData["album"]["images"][0]["url"]}
+                            imageUrl={albumData["images"][0]["url"]}
                         />}
                         {albumData && <Button
                             variant="contained"

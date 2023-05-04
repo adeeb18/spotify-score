@@ -35,7 +35,7 @@ function Review(props){
                 <Typography>Mood: {props.mood}</Typography>
                 <Typography>{(props.rec == "Yes")? "Would Recommend" : "Would Not Recommend"}</Typography>
             </Box>
-            <Box className="mt-2">
+            <Box>
                 <Box className="d-flex justify-content-between">
                     <StyledRating
                         defaultValue={5}
@@ -43,10 +43,9 @@ function Review(props){
                         precision={0.5}
                         icon={<FavoriteIcon/>}
                         emptyIcon={<FavoriteBorderIcon/>}
-                        sx={{mb:"0.5rem"}}
                         readOnly
                     />
-                    <Typography className="align-self-end">{props.created}</Typography>
+                    <Typography marginLeft="10vw" className="align-self-end">{props.created}</Typography>
                 </Box>
                 <Typography width="100%">{props.thoughts}</Typography>
             </Box>

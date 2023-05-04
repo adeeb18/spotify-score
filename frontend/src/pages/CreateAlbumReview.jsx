@@ -30,7 +30,7 @@ const CreateAlbumReview = () => {
     let [textError, setTextError] = useState(false);
     let [textHelper, setTextHelper] = useState("");
 
-    const fetchalbumData = () => {
+    const fetchAlbumData = () => {
         fetch(`http://localhost:8080/album/${searchParams.get("id")}`)
             .then((response) => response.json())
             .then((data) => {
@@ -111,7 +111,7 @@ const CreateAlbumReview = () => {
     }
 
     useEffect(() => {
-        fetchalbumData();
+        fetchAlbumData();
     }, []);
 
     const handleExist = () => {

@@ -122,7 +122,7 @@ const MyReviews = () => {
     <MyReview key={index} user={item.user_id} rating={item.num_rating} 
             style={item.style} mood={item.mood} created = {item.time_created}
             thoughts = {item.overall_thoughts} rec={item.would_recommend} 
-            type={"song"} genre = {item.genre} id={item.id}/>
+            type={item.type} genre = {item.genre} id={item.id}/>
     ));
 
     return (
