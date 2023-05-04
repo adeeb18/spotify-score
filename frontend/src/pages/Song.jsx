@@ -101,13 +101,6 @@ const Song = () => {
                             />}
                         </Container>
                     </Box>
-
-                    
-
-                    
-
-                    
-
                 </Container>
             </Box>
         </Box>

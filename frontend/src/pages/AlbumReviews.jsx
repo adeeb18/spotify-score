@@ -54,14 +54,14 @@ function Review(props){
     );
 }
 
-const ViewReviews = () => {
+const AlbumReviews = () => {
     const [searchParams] = useSearchParams();
     const [data, setData] = useState([]);
     let [songData, setSongData] = useState(null);
     let count = 0;
 
     const fetchSongData = () => {
-        fetch(`http://localhost:8080/track/${searchParams.get("id")}`)
+        fetch(`http://localhost:8080/album/${searchParams.get("id")}`)
             .then((response) => response.json())
             .then((data) => {
                 console.log(searchParams.get("id"));
@@ -143,4 +143,4 @@ const ViewReviews = () => {
     );
 }
 
-export default ViewReviews;
+export default AlbumReviews;

@@ -14,6 +14,8 @@ import './App.css';
 import MyReviews from "./pages/MyReviews";
 import UpdateReview from "./pages/UpdateReview";
 import UserProfile from "./pages/UserProfile";
+import AlbumReviews from "./pages/AlbumReviews";
+import CreateAlbumReview from "./pages/CreateAlbumReview";
 
 function App() {
   
@@ -24,7 +26,9 @@ function App() {
             <Route path="/search" element={<Search/>}/>
             <Route exact path="/song" element={<Song/>}/>
             <Route path="/song/reviews" element={<ViewReviews/>}/>
+            <Route path="/album/reviews" element={<AlbumReviews/>}/>
             <Route path="/song/create-review" element={<CreateReview/>}/>
+            <Route path="/album/create-review" element={<CreateAlbumReview/>}/>
             <Route path="/album" element={<Album/>}/>
             <Route path="/artist" element={<Artist/>}/>
             <Route path="/about" element={<About/>}/>
