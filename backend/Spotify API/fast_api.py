@@ -146,14 +146,14 @@ def search_by_query(token, artist_name):
             name = item['name']
             image = ''
             if 'album' in item:
-                image = item['album']['images'][0] if len(item['album']['images']) > 0 else ''
+                image = item['album']['images'][0]["url"] if len(item['album']['images']) > 0 else ''
 
             artists = []
             if 'artists' in item:
                 if len(item['artists']) > 0:
                     artists = [ sub['name'] for sub in item['artists'] ]
 
-            track = Track(name=name, image_url=url, id=id, artists=artists)
+            track = Track(name=name, image_url=image, id=item["id"], artists=artists)
             tracks.append(track)
             responses.append(track)
             
