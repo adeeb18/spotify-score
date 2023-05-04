@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import Carousel from "react-material-ui-carousel";
 import { Box, Container, Button, Typography } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -10,6 +11,26 @@ import ReviewCard from "./components/ReviewCard";
 import NavBar from "./components/NavBar";
 
 const Song = () => {
+    const [searchParams] = useSearchParams();
+    let [songData, setSongData] = useState(null);
+
+    const fetchSongData = () => {
+        fetch(`http://127.0.0.1:8000/track/${searchParams.get("id")}`)
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(searchParams.get("id"));
+                console.log(data);
+                setSongData(data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
+
+    useEffect(() => {
+        fetchSongData();
+    }, []);
+
     return (
         <Box className="d-flex">
             <SideBar/>
@@ -26,7 +47,12 @@ const Song = () => {
                         >
                             Song Score
                         </Typography>
-                        <SongCard/>
+                        {songData && <SongCard
+                            id={songData["id"]}
+                            song={songData["name"]}
+                            artist={songData["artists"][0]["name"]}
+                            imageUrl={songData["album"]["images"][0]["url"]}
+                        />}
                     </Container>
 
                     <Button
@@ -52,7 +78,12 @@ const Song = () => {
                         >
                             Album
                         </Typography>
-                        <AlbumCard renderImage={false}/>
+                        {songData && <AlbumCard
+                            id={songData["album"]["id"]}
+                            name={songData["album"]["name"]}
+                            artist={songData["album"]["artists"][0]["name"]}
+                            renderImage={false}
+                        />}
                     </Container>
 
                     <Container sx={{mb:"1rem"}}>
