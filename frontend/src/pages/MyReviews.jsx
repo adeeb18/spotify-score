@@ -1,3 +1,5 @@
+/* eslint-disable react/react-in-jsx-scope -- Unaware of jsxImportSource */
+/** @jsxImportSource @emotion/react */
 import { Link } from "react-router-dom";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import SideBar from "./components/SideBar/SideBar";
@@ -7,10 +9,33 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import StyledRating from "./components/StyledRating";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { css } from "@emotion/react";
 
 function MyReview(props){
+    let [songData, setSongData] = useState(null);
+    const fetchSongData = () => {
+        fetch(`http://localhost:8080/track/${props.id}`)
+            .then((response) => response.json())
+            .then((data) => {
+                handleData(data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
+
+    
+    const handleData = (data) => {
+        setSongData(data);
+    }
+
+    useEffect(() => {
+        fetchSongData();
+    }, []);
+
+    console.log(songData);
+
     const handleDelete = () => {
-        console.log(props.id);
         const payload = {"user_id":props.user, "id":props.id, "type":props.type}
         const url = 'http://localhost:8000/deleteReview'
         axios.delete(url, {data: payload})
@@ -18,16 +43,16 @@ function MyReview(props){
         .catch(error => console.error(error));
     }
     return(
-        <Box className="d-flex flex-column align-items-start" sx={{width:"100%", color:"#C8C7C7",px:"4rem", py:"2rem", alignItems:"center", background:"#4e4f4f", borderRadius:2, my:3}}>
+        <Box className="d-flex flex-column" sx={{minWidth:"100%", color:"#C8C7C7",px:"2rem", py:"2rem", background:"#4e4f4f", borderRadius:2, my:3}}>
             <Box className="d-flex"  sx={{gap:"2rem"}}> 
                 <Box sx={{minWidth:"25%"}}>
-                    <Typography variant="h4">{localStorage.getItem("username")}</Typography>
+                    <Typography variant="h4">{(songData != null) ? songData.name : "Review"}</Typography>
                     <Typography marginLeft="3%">Style: {props.style}</Typography>
                     <Typography marginLeft="3%">Mood: {props.mood}</Typography>
                     <Typography marginLeft="3%">{(props.rec) ? "Would Recommend" : "Would Not Recommend"}</Typography>
                 </Box>
-                <Box className="mt-2">
-                    <Box className="d-flex justify-content-between align-items-center" sx={{width:"100%"}}>
+                <Box className="d-flex flex-column mt-2">
+                    <Box className="d-flex justify-content-between" sx={{minWidth:"75%"}}>
                         <StyledRating
                             defaultValue={5}
                             value={(Number(props.rating)/25)}
@@ -36,15 +61,16 @@ function MyReview(props){
                             emptyIcon={<FavoriteBorderIcon/>}
                             readOnly
                         />
-                        <Typography marginLeft="25vw"> {(props.created).substring(0, 10)}</Typography>
                     </Box>
-                    <Typography width="100%">{props.thoughts}</Typography>
+                    <Typography>{props.thoughts}</Typography>
                 </Box>
             </Box>
+            <Typography fontSize={12} sx={{ml:"0.5rem", mb:1}}>*Last Updated: {(props.created).substring(0, 10)}</Typography>
             <Box className="d-flex" sx={{gap:"1rem", ml:0.6}}>
                 <Button href="/song/update-review" onClick={localStorage.setItem("rID", props.id)}variant="contained" sx={{color:"#191414", maxWidth:"30%"}} style={{backgroundColor:"#1DB954"}}>Edit</Button>
                 <Button onClick={handleDelete} variant="contained" sx={{color:"#191414", maxWidth:"30%"}} style={{backgroundColor:"#bd2d2d"}}>Delete</Button>
             </Box>
+            
         </Box>
     );
 }
