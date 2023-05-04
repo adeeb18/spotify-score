@@ -28,7 +28,6 @@ const Album = () => {
 
         for (let i = 0; i < albumData["tracks"]["items"].length; ++i) {
             let song = albumData["tracks"]["items"][i];
-            console.log(song);
             songCards.push(
                 <SongCard
                     id={song["id"]}
@@ -71,10 +70,10 @@ const Album = () => {
                     </Container>
                     <Box className="d-flex flex-column align-items-center" sx={{marginBottom:"1em"}}>
                         <Box className="d-flex justify-content-center" sx={{width:"80%", mb:"4rem", gap:"2rem"}}>
-                            <Button
+                            {albumData && <Button
                                 variant="contained"
                                 component={Link}
-                                to="/song/create-review"
+                                to={{ pathname: "/album/create-review", search:"?id=" + albumData["id"] }}
                                 startIcon={<FavoriteIcon/>}
                                 sx={{color:"#191414"}}
                                 style={{backgroundColor:"#1DB954"}}
@@ -82,11 +81,11 @@ const Album = () => {
                                 <Typography variant="h6" textTransform="none">
                                     Leave a Review
                                 </Typography>
-                            </Button>
+                            </Button>}
                             <Button
                                 variant="contained"
                                 component={Link}
-                                to="/song/reviews"
+                                to="/album/reviews"
                                 startIcon={<VisibilityIcon/>}
                                 sx={{color:"#191414"}}
                                 style={{backgroundColor:"#1DB954"}}

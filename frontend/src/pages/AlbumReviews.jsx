@@ -1,6 +1,6 @@
 import { Link, useSearchParams } from "react-router-dom";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import SongCard from "./components/SongCard";
+import AlbumCard from "./components/AlbumCard";
 import SideBar from "./components/SideBar/SideBar";
 import NavBar from "./components/NavBar";
 import { Box, Container, Typography, Button, Divider} from "@mui/material";
@@ -57,16 +57,16 @@ function Review(props){
 const AlbumReviews = () => {
     const [searchParams] = useSearchParams();
     const [data, setData] = useState([]);
-    let [songData, setSongData] = useState(null);
+    let [albumData, setalbumData] = useState(null);
     let count = 0;
 
-    const fetchSongData = () => {
+    const fetchalbumData = () => {
         fetch(`http://localhost:8080/album/${searchParams.get("id")}`)
             .then((response) => response.json())
             .then((data) => {
                 console.log(searchParams.get("id"));
                 console.log(data);
-                setSongData(data);
+                setalbumData(data);
             })
             .catch((error) => {
                 console.error(error);
@@ -74,7 +74,7 @@ const AlbumReviews = () => {
     }
 
     useEffect(() => {
-        fetchSongData();
+        fetchalbumData();
         const url = 'http://localhost:8000/getAllReviews'
             axios.get(url)
                 .then(response => parseData(response.data))
@@ -106,16 +106,16 @@ const AlbumReviews = () => {
                 <NavBar/>
                 <Container className="mt-2">
                     <Box className="d-flex flex-column align-items-center" sx={{marginBottom:"1em"}}>
-                        {songData && <SongCard
-                            id={songData["id"]}
-                            song={songData["name"]}
-                            artist={songData["artists"][0]["name"]}
-                            imageUrl={songData["album"]["images"][0]["url"]}
+                        {albumData && <AlbumCard
+                            id={albumData["id"]}
+                            name={albumData["name"]}
+                            artist={albumData["artists"][0]["name"]}
+                            imageUrl={albumData["album"]["images"][0]["url"]}
                         />}
-                        {songData && <Button
+                        {albumData && <Button
                             variant="contained"
                             component={Link}
-                            to={{ pathname: "/song/create-review", search:"?id=" + songData["id"] }}
+                            to={{ pathname: "/song/create-review", search:"?id=" + albumData["id"] }}
                             startIcon={<FavoriteIcon/>}
                             sx={{marginBottom:"8rem", color:"#191414"}}
                             style={{backgroundColor:"#1DB954"}}

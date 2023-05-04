@@ -9,7 +9,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import StyledRating from "./StyledRating";
 
-const AlbumCard = ({id = "", name = "This is the Album Name", artist = "This is the Artist", imageUrl = '/logo192.png', renderImage = true, ratingUser = 2.5, ratingSong = 2.5}) => {
+const AlbumCard = ({id = "", name = "This is the Album Name", artist = "This is the Artist", imageUrl = '/logo192.png', renderImage = true, ratingUser = 2.5, rating = 2.5}) => {
     return (
         <Container>
             <Card sx={{m:"1rem 1rem", background:"#2c2c2c"}}>
@@ -30,34 +30,18 @@ const AlbumCard = ({id = "", name = "This is the Album Name", artist = "This is 
                     </CardContent>
                     <CardContent sx={{textAlign:"center"}}>
                         <Typography variant="body1" color="#1DB954" fontWeight="700" sx={{mb:"0.25rem"}}>
-                            User Score
-                        </Typography>
-                        <StyledRating
-                            defaultValue={5}
-                            value={ratingUser}
-                            precision={0.5}
-                            icon={<FavoriteIcon/>}
-                            emptyIcon={<FavoriteBorderIcon/>}
-                            readOnly
-                        />
-                        <Typography variant="body1" color="#ffffff">
-                            (1000)
-                        </Typography>
-                    </CardContent>
-                    <CardContent sx={{textAlign:"center"}}>
-                        <Typography variant="body1" color="#1DB954" fontWeight="700" sx={{mb:"0.25rem"}}>
                             Song Score
                         </Typography>
                         <StyledRating
                             defaultValue={5}
-                            value={ratingSong}
+                            value={rating}
                             precision={0.5}
                             icon={<FavoriteIcon/>}
                             emptyIcon={<FavoriteBorderIcon/>}
                             readOnly
                         />
                         <Typography variant="body1" color="#ffffff">
-                            (1000)
+                            {"(" + (rating*20).toString() + ")"}
                         </Typography>
                     </CardContent>
                 </CardActionArea>

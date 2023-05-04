@@ -6,11 +6,10 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import SendIcon from "@mui/icons-material/Send";
 import SideBar from "./components/SideBar/SideBar";
-import SongCard from "./components/SongCard";
+import AlbumCard from "./components/AlbumCard";
 import StyledRating from "./components/StyledRating";
 import NavBar from "./components/NavBar";
 import axios from "axios";
-import { create } from "@mui/material/styles/createTransitions";
 
 const CreateAlbumReview = () => {
     const [searchParams] = useSearchParams();
@@ -23,7 +22,7 @@ const CreateAlbumReview = () => {
     let [uStyle, setStyle] = useState("");
     let [reviewText, setReviewText] = useState("");
     let [reviewID, setReviewID] = useState("");
-    let [songData, setSongData] = useState(null);
+    let [albumData, setalbumData] = useState(null);
 
     /*VALIDATION STATES*/
     let [styleError, setStyleError] = useState(false);
@@ -31,11 +30,11 @@ const CreateAlbumReview = () => {
     let [textError, setTextError] = useState(false);
     let [textHelper, setTextHelper] = useState("");
 
-    const fetchSongData = () => {
+    const fetchalbumData = () => {
         fetch(`http://localhost:8080/album/${searchParams.get("id")}`)
             .then((response) => response.json())
             .then((data) => {
-                setSongData(data);
+                setalbumData(data);
                 setReviewID(searchParams.get("id"));
             })
             .catch((error) => {
@@ -102,7 +101,7 @@ const CreateAlbumReview = () => {
         }
         if(!exist){
             let rate = (rating * 20).toString();
-            const payload = {type:"song", user_id:Number(uid), id:reviewID, genre:"notGiven", num_rating:rate, overall_thoughts:reviewText, style:uStyle, mood:uMood, would_recommend:rec}
+            const payload = {type:"album", user_id:Number(uid), id:reviewID, genre:"notGiven", num_rating:rate, overall_thoughts:reviewText, style:uStyle, mood:uMood, would_recommend:rec}
             const url = 'http://localhost:8000/createReview'
             axios.post(url, payload)
             .then(response => console.log(response))
@@ -112,7 +111,7 @@ const CreateAlbumReview = () => {
     }
 
     useEffect(() => {
-        fetchSongData();
+        fetchalbumData();
     }, []);
 
     const handleExist = () => {
@@ -130,11 +129,11 @@ const CreateAlbumReview = () => {
                 <NavBar/>
                 <Container className="d-flex flex-column align-items-center mt-2">
                     <Container sx={{mb:"2em"}}>
-                        {songData && <SongCard
-                            id={songData["id"]}
-                            song={songData["name"]}
-                            artist={songData["artists"][0]["name"]}
-                            imageUrl={songData["album"]["images"][0]["url"]}
+                        {albumData && <AlbumCard
+                            id={albumData["id"]}
+                            name={albumData["name"]}
+                            artist={albumData["artists"][0]["name"]}
+                            imageUrl={albumData["images"][0]["url"]}
                         />}
                     </Container>
                     
@@ -159,7 +158,7 @@ const CreateAlbumReview = () => {
                         </Box>
                         <Divider sx={{background:"white", mb:0.5, width:'100%'}}/>
                         <Box>
-                            <Typography color="#C8C7C7" variant="h6">This song makes me feel...</Typography>
+                            <Typography color="#C8C7C7" variant="h6">This album makes me feel...</Typography>
                             <FormControl sx={{minWidth:250}} variant="outlined">
                                 <Select
                                     //error={monthError}
@@ -186,7 +185,7 @@ const CreateAlbumReview = () => {
                         </Box>
                         <Divider sx={{background:"white", mb:2, width:'100%'}}/>
                         <Box>
-                            <Typography color="#C8C7C7" variant="h6">Would you recommend this song?</Typography>
+                            <Typography color="#C8C7C7" variant="h6">Would you recommend this album?</Typography>
                             <RadioGroup
                                 row
                                 aria-labelledby="demo-row-radio-buttons-group-label"
@@ -211,7 +210,7 @@ const CreateAlbumReview = () => {
                             helperText={styleHelper}
                             name="styleInput"
                             onChange={handleChange}
-                            label="What style do you think this song is?"
+                            label="What style do you think this album is?"
                             rows={6}
                             fullWidth={true}
                             variant="filled"
@@ -223,7 +222,7 @@ const CreateAlbumReview = () => {
                             helperText={textHelper}
                             name="reviewInput"
                             onChange={handleChange}
-                            label="What did you think about this song?"
+                            label="What did you think about this album?"
                             rows={6}
                             fullWidth={true}
                             variant="filled"
@@ -254,7 +253,7 @@ const CreateAlbumReview = () => {
                         aria-describedby="alert-dialog-description"
                     >
                         <DialogTitle id="alert-dialog-title" sx={{color:"#C8C7C7"}}>
-                        {"You already reviewed this song!"}
+                        {"You already reviewed this album!"}
                         </DialogTitle>
                         <DialogActions>
                         <Button sx={{color:"#1a9f48"}}onClick={handleExist} href="/profile/reviews" autoFocus>
