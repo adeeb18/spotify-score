@@ -11,6 +11,18 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 function Review(props){
     const [temp, setTemp] = useState("");
+    let [songData, setSongData] = useState(null);
+    const [searchParams] = useSearchParams();
+    const fetchSongData = () => {
+        fetch(`http://localhost:8080/track/${props.id}`)
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
     
     const getUsername = (id) => {
         const url = 'http://localhost:8000/getSingleUser'
@@ -61,7 +73,7 @@ const ViewReviews = () => {
     let count = 0;
 
     const fetchSongData = () => {
-        fetch(`https://lws3v1re05.execute-api.us-east-1.amazonaws.com/dev/api/v1/spotify/track/${searchParams.get("id")}`)
+        fetch(`http://localhost:8080/track/${searchParams.get("id")}`)
             .then((response) => response.json())
             .then((data) => {
                 console.log(searchParams.get("id"));
@@ -77,9 +89,21 @@ const ViewReviews = () => {
         fetchSongData();
         const url = 'http://localhost:8000/getAllReviews'
             axios.get(url)
-                .then(response =>  setData(response.data))
+                .then(response => parseData(response.data))
                 .catch(error => console.error(error));
     }, []);
+
+    const parseData = (inData) =>{
+        let tryIt = [];
+        for(let i = 0; i < inData.length; i++){
+            if(inData[i].id === searchParams.get("id")){
+                console.log(inData[i].id);
+                tryIt.push(inData[i]);
+           }
+        }
+        setData(tryIt);
+    }
+    console.log(data[0]);
 
     // const reviewTemplate = (user, rating, style, mood, created, thoughts, rec, keyVal)
     const body = data.map((item, index) => (

@@ -100,29 +100,6 @@ const Song = () => {
                                 renderImage={false}
                             />}
                         </Container>
-                        <Divider sx={{background:"white", mb:"1rem", width:'100%'}}/>
-                        <Container sx={{mb:"1rem"}}>
-                            <Typography
-                                variant="h3"
-                                color="#1DB954"
-                                marginBottom="1rem"
-                                fontWeight="700"
-                                textAlign="center"
-                            >
-                                Featured Reviews
-                            </Typography>
-                            <Carousel
-                                indicatorContainerProps={{style:{marginTop:"1.5rem"}}}
-                                navButtonsProps={{style:{marginLeft:"3rem", marginRight:"3rem"}}}
-                                sx={{mb:"1rem"}}
-                            >
-                                <ReviewCard/>
-                                <ReviewCard/>
-                                <ReviewCard/>
-                                <ReviewCard/>
-                                <ReviewCard/>
-                            </Carousel>
-                        </Container>
                     </Box>
 
                     
