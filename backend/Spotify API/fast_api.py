@@ -219,6 +219,16 @@ def get_artist_albums_by_id(token, artist_id):
         return None
     return json_result
 
+def get_artist_toptracks_by_id(token, artist_id):
+    url = "https://api.spotify.com/v1/artists/"
+    headers = {"Authorization" : "Bearer " + token}
+    query_url = url + artist_id + "/top-tracks?market=US"
+    result = get(query_url, headers = headers)
+    json_result = json.loads(result.content)
+    if len(json_result) == 0:
+        print("No artist with this id")
+        return None
+    return json_result
 
 '''
 API Endpoints
@@ -341,6 +351,17 @@ async def get_artist_albums(id: str):
 
     # Search for artists by query
     response = get_artist_albums_by_id(token, id)
+
+    return response
+
+@app.get("/artists/{id}/toptracks")
+async def get_artist_toptracks(id: str):
+    # Get access token
+    token = get_token()
+    print(token)
+
+    # Search for artists by query
+    response = get_artist_toptracks_by_id(token, id)
 
     return response
 

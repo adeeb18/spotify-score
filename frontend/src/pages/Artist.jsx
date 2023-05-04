@@ -18,6 +18,8 @@ const Artist = () => {
     const [searchParams] = useSearchParams();
     let [artistData, setArtistData] = useState(null);
     let [artistAlbumsData, setArtistAlbumsData] = useState(null);
+    let [topTracks, setTopTracks] = useState(null);
+
 
     const fetchArtistData = () => {
         fetch(`http://localhost:8080/artist/${searchParams.get("id")}`)
@@ -47,10 +49,10 @@ const Artist = () => {
 
         for (let i = 0; i < artistAlbumsData["items"].length; ++i) {
             let album = artistAlbumsData["items"][i];
-            if(last != album["name"]){
+            if (last != album["name"]) {
                 albumCards.push(
                     <AlbumCard
-                        key ={i}
+                        key={i}
                         id={album["id"]}
                         name={album["name"]}
                         artist={album["artists"][0]["name"]}
@@ -58,26 +60,61 @@ const Artist = () => {
                     />
                 );
             }
-            
+
             last = album["name"];
         }
 
         return albumCards;
     }
+    const renderTopTrackCards = () => {
+        let trackCards = [];
+        let last = "";
+
+        for (let i = 0; i < Math.min(topTracks["tracks"].length, 5); ++i) {
+            let track = topTracks["tracks"][i];
+            if (last != track["name"]) {
+                trackCards.push(
+                    <SongCard
+                        key={i}
+                        id={track["id"]}
+                        song={track["name"]}
+                        artist={track["artists"][0]["name"]}
+                        imageUrl={track["album"]["images"][0]["url"]}
+                    />
+                );
+            }
+
+            last = track["name"];
+        }
+
+        return trackCards;
+    }
+    const fetchTopTracks = () => {
+        fetch(`http://localhost:8080/artists/${searchParams.get("id")}/toptracks`)
+            .then((response) => response.json())
+            .then((data) => {
+                setTopTracks(data);
+                console.log(data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
 
     useEffect(() => {
         fetchArtistData();
         fetchArtistAlbumsData();
+        fetchTopTracks();
     }, []);
 
 
     return (
         <Box className="d-flex">
-            <SideBar/>
-            <Box className="main" sx={{flex:5}}>
-                <NavBar/>
+            <SideBar />
+            <Box className="main" sx={{ flex: 5 }}>
+                <NavBar />
                 <Container className="mt-2">
-                    <Container sx={{marginBottom:"1em"}}>
+                    <Container sx={{ marginBottom: "1em" }}>
                         <Typography
                             variant="h3"
                             color="#1DB954"
@@ -90,10 +127,10 @@ const Artist = () => {
                         {artistData && <ArtistCard
                             id={artistData["id"]}
                             name={artistData["name"]}
-                            imageUrl={artistData["images"][0]["url"]} 
+                            imageUrl={artistData["images"][0]["url"]}
                         />}
                     </Container>
-                    <Container sx={{mb:"8rem"}}>
+                    <Container sx={{ mb: "8rem" }}>
                         <Typography
                             variant="h3"
                             color="#1DB954"
@@ -104,6 +141,18 @@ const Artist = () => {
                             Albums
                         </Typography>
                         {artistAlbumsData && renderAlbumCards()}
+                    </Container>
+                    <Container sx={{ mb: "8rem" }}>
+                        <Typography
+                            variant="h3"
+                            color="#1DB954"
+                            marginBottom="2rem"
+                            fontWeight="700"
+                            textAlign="center"
+                        >
+                            Top Tracks
+                        </Typography>
+                        {topTracks && renderTopTrackCards()}
                     </Container>
                 </Container>
             </Box>
