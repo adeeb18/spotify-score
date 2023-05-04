@@ -23,9 +23,10 @@ import axios from 'axios';
 const Home = () => {
     let [searchInput, setSearchInput] = useState("");
     const [searchResults, setSearchResults] = useState([]);
+    
     const handleChange = (event) => {
         setSearchInput(event.target.value);
-    };
+    }
 
     let [data, setData] = useState([]);
 
@@ -41,7 +42,7 @@ const Home = () => {
             .catch((error) => {
                 console.error(error); // handle errors
             });
-    };
+    }
 
     const renderCards = () => {
         let cards = [];

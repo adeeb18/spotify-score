@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import SongCard from "./components/SongCard";
 import SideBar from "./components/SideBar/SideBar";
@@ -11,6 +11,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 function Review(props){
     const [temp, setTemp] = useState("");
+    
     const getUsername = (id) => {
         const url = 'http://localhost:8000/users/getSingleUser'
         const payload = {user_id: id,}
@@ -25,6 +26,7 @@ function Review(props){
                 error => console.error(error));
         return temp;
     }
+
     return(
         <Box className="d-flex" sx={{width:"100%", color:"#C8C7C7",px:"4rem", py:"2rem", alignItems:"center", background:"#4e4f4f", borderRadius:2, my:3}}>
             <Box sx={{minWidth:"25%"}}>
@@ -53,10 +55,26 @@ function Review(props){
 }
 
 const ViewReviews = () => {
+    const [searchParams] = useSearchParams();
     const [data, setData] = useState([]);
+    let [songData, setSongData] = useState(null);
     let count = 0;
 
+    const fetchSongData = () => {
+        fetch(`http://127.0.0.1:8000/track/${searchParams.get("id")}`)
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(searchParams.get("id"));
+                console.log(data);
+                setSongData(data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
+
     useEffect(() => {
+        fetchSongData();
         const url = 'http://localhost:8000/users/getAllReviews'
             axios.get(url)
                 .then(response =>  setData(response.data))
@@ -76,19 +94,24 @@ const ViewReviews = () => {
                 <NavBar/>
                 <Container className="mt-2">
                     <Box className="d-flex flex-column align-items-center" sx={{marginBottom:"1em"}}>
-                        <SongCard/>
-                        <Button
+                        {songData && <SongCard
+                            id={songData["id"]}
+                            song={songData["name"]}
+                            artist={songData["artists"][0]["name"]}
+                            imageUrl={songData["album"]["images"][0]["url"]}
+                        />}
+                        {songData && <Button
                             variant="contained"
                             component={Link}
-                            to="/song/create-review"
+                            to={{ pathname: "/song/create-review", search:"?id=" + songData["id"] }}
                             startIcon={<FavoriteIcon/>}
-                            sx={{color:"#191414", maxWidth:"30%"}}
+                            sx={{marginBottom:"8rem", color:"#191414"}}
                             style={{backgroundColor:"#1DB954"}}
                         >
                             <Typography variant="h6" textTransform="none">
                                 Leave a Review
                             </Typography>
-                        </Button>
+                        </Button>}
                     </Box>
                     <Divider sx={{background:"white", mb:0.5, width:'100%'}}/>
                     <Typography

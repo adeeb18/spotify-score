@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Box, Container, Typography, TextField, Button, RadioGroup, FormControlLabel, 
          Radio, Divider, Select, MenuItem, FormControl } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -11,12 +12,28 @@ import NavBar from "./components/NavBar";
 import axios from "axios";
 
 const CreateReview = () => {
+    const [searchParams] = useSearchParams();
+
     let [rating, setRating] = useState(Number(0));
     let [uMood, setMood] = useState("Happy");
     let [rec, setRec] = useState("true");
     let [uStyle, setStyle] = useState("");
     let [reviewText, setReviewText] = useState("");
     let [reviewID, setReviewID] = useState("");
+    let [songData, setSongData] = useState(null);
+
+    const fetchSongData = () => {
+        fetch(`http://127.0.0.1:8000/track/${searchParams.get("id")}`)
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(searchParams.get("id"));
+                console.log(data);
+                setSongData(data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
 
     const handleChange = (event) => {
         switch(event.target.name) {
@@ -65,6 +82,10 @@ const CreateReview = () => {
         .catch(error => console.error(error));
     }
 
+    useEffect(() => {
+        fetchSongData();
+    }, []);
+
     return (
         <Box className="d-flex">
             <SideBar/>
@@ -72,16 +93,12 @@ const CreateReview = () => {
                 <NavBar/>
                 <Container className="d-flex flex-column align-items-center mt-2">
                     <Container sx={{mb:"2em"}}>
-                        <Typography
-                            variant="h5"
-                            color="#1DB954"
-                            marginBottom="2rem"
-                            marginLeft="3.3vw"
-                            fontWeight="700"
-                        >
-                            Song/Album Name - Artist Name -- Review
-                        </Typography>
-                        <SongCard/>
+                        {songData && <SongCard
+                            id={songData["id"]}
+                            song={songData["name"]}
+                            artist={songData["artists"][0]["name"]}
+                            imageUrl={songData["album"]["images"][0]["url"]}
+                        />}
                     </Container>
                     
                     <Box 

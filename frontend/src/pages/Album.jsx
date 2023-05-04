@@ -26,7 +26,7 @@ const Album = () => {
             .catch((error) => {
                 console.error(error);
             });
-    };
+    }
 
     const renderSongCards = () => {
         let songCards = [];

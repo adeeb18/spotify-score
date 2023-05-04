@@ -25,7 +25,7 @@ const Song = () => {
             .catch((error) => {
                 console.error(error);
             });
-    };
+    }
 
     useEffect(() => {
         fetchSongData();
@@ -55,10 +55,10 @@ const Song = () => {
                         />}
                     </Container>
 
-                    <Button
+                    {songData && <Button
                         variant="contained"
                         component={Link}
-                        to="/song/create-review"
+                        to={{ pathname: "/song/create-review", search:"?id=" + songData["id"] }}
                         startIcon={<FavoriteIcon/>}
                         sx={{marginBottom:"8rem", color:"#191414"}}
                         style={{backgroundColor:"#1DB954"}}
@@ -66,7 +66,7 @@ const Song = () => {
                         <Typography variant="h6" textTransform="none">
                             Leave a Review
                         </Typography>
-                    </Button>
+                    </Button>}
 
                     <Container sx={{mb:"8rem"}}>
                         <Typography
@@ -109,10 +109,10 @@ const Song = () => {
                         </Carousel>
                     </Container>
 
-                    <Button
+                    {songData && <Button
                         variant="contained"
                         component={Link}
-                        to="/song/reviews"
+                        to={{pathname: "/song/reviews", search:"?id=" + songData["id"]}}
                         startIcon={<VisibilityIcon/>}
                         sx={{marginBottom:"8rem", color:"#191414"}}
                         style={{backgroundColor:"#1DB954"}}
@@ -120,7 +120,7 @@ const Song = () => {
                         <Typography variant="h6" textTransform="none">
                             View All Reviews
                         </Typography>
-                    </Button>
+                    </Button>}
 
                 </Container>
             </Box>
