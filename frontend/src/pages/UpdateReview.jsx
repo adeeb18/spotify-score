@@ -19,7 +19,7 @@ const UpdateReview = () => {
     let [uStyle, setStyle] = useState("");
     let [reviewText, setReviewText] = useState("");
     let [reviewID, setReviewID] = useState("");
-    let [type, setType] = useState("");
+    let [uType, setType] = useState("");
     let [songData, setSongData] = useState(null);
     let [albumData, setAlbumData] = useState(null);
     let [songVal, setSongVal] = useState(null);
@@ -89,7 +89,7 @@ const UpdateReview = () => {
                 setType(curr.item_type);
             }
         }
-        if(type == "song"){
+        if(uType == "song"){
             fetchSongData();
         }
         else{
@@ -120,7 +120,7 @@ const UpdateReview = () => {
     const handleSubmit = () => {
         let rate = (rating * 20).toString();
         let uid = localStorage.getItem("id");
-        const payload = {type:"song", user_id:uid, id:reviewID, genre:"test", num_rating:rate, overall_thoughts:reviewText, style: uStyle, mood: uMood, would_recommend: rec}
+        const payload = {type:uType, user_id:uid, id:reviewID, genre:"test", num_rating:rate, overall_thoughts:reviewText, style: uStyle, mood: uMood, would_recommend: rec}
         const url = 'http://localhost:8000/editSongReview'
         axios.put(url, payload)
         .then(response => console.log(response))
@@ -137,14 +137,14 @@ const UpdateReview = () => {
             setReviewID(val);
         }
         let rate = (rating * 20).toString();
-        const payload = {type:"song", user_id:uid, id:reviewID, genre:"test", num_rating:rate, overall_thoughts:reviewText, style: uStyle, mood: uMood, would_recommend: rec}
+        const payload = {type:uType, user_id:uid, id:reviewID, genre:"test", num_rating:rate, overall_thoughts:reviewText, style: uStyle, mood: uMood, would_recommend: rec}
         const url = 'http://localhost:8000/createReview'
         axios.post(url, payload)
         .then(response => console.log(response))
         .catch(error => console.error(error));
     }
 
-    const val = ({type} === "song") ? songVal : albumVal;
+    const val = ({uType} === "song") ? songVal : albumVal;
 
     return (
         <Box className="d-flex">

@@ -62,6 +62,7 @@ function MyReview(props){
 
 
     const handleDelete = () => {
+        console.log(props.type);
         const payload = {"user_id":props.user, "id":props.id, "type":props.type}
         const url = 'http://localhost:8000/deleteReview'
         axios.delete(url, {data: payload})
