@@ -164,11 +164,6 @@ const Home = () => {
                                 style: { marginLeft: "3rem", marginRight: "3rem" },
                             }}
                         >
-                            <SongCard />
-                            <SongCard />
-                            <SongCard />
-                            <SongCard />
-                            <SongCard />
                         </Carousel>
                     </Container>
                     <FootNote/>

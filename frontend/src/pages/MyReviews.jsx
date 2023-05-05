@@ -106,7 +106,15 @@ function MyReview(props){
                 </Box>
             </Box>
             <Box className="d-flex" sx={{gap:"1rem", mt:0.6}}>
-                <Button href="/song/update-review" onClick={localStorage.setItem("rID", props.id)}variant="contained" sx={{color:"#191414", maxWidth:"30%"}} style={{backgroundColor:"#1DB954"}}>Edit</Button>
+                <Button 
+                    component={Link}
+                    to={{ pathname: "/song/update-review", search:"?id=" + props.id}}
+                    onClick={localStorage.setItem("rID", props.id)}
+                    variant="contained" sx={{color:"#191414", maxWidth:"30%"}} 
+                    style={{backgroundColor:"#1DB954"}}
+                >
+                    Edit
+                </Button>
                 <Button onClick={checkDelete} variant="contained" sx={{color:"#191414", maxWidth:"30%"}} style={{backgroundColor:"#bd2d2d"}}>Delete</Button>
             </Box>
             <Dialog
@@ -162,20 +170,6 @@ const MyReviews = () => {
             <Box className="main" sx={{flex:5}}>
                 <NavBar/>
                 <Container className="mt-2">
-                    <Box className="d-flex flex-column align-items-center" sx={{marginBottom:"1em"}}>
-                        <Button
-                            variant="contained"
-                            component={Link}
-                            to="/song/create-review"
-                            startIcon={<FavoriteIcon/>}
-                            sx={{color:"#191414", maxWidth:"30%"}}
-                            style={{backgroundColor:"#1DB954"}}
-                        >
-                            <Typography variant="h6" textTransform="none">
-                                Leave a Review
-                            </Typography>
-                        </Button>
-                    </Box>
                     <Divider sx={{background:"white", mb:0.5, width:'100%'}}/>
                     <Typography
                             variant="h3"
@@ -185,7 +179,7 @@ const MyReviews = () => {
                             textAlign="center"
                             fontStyle={"italic"}
                         >
-                            Reviews
+                            {localStorage.getItem("username")}'s Reviews
                     </Typography>
                     {body}
                 </Container>

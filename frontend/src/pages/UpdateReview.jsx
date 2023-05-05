@@ -6,9 +6,11 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import SendIcon from "@mui/icons-material/Send";
 import SideBar from "./components/SideBar/SideBar";
 import SongCard from "./components/SongCard";
+import AlbumCard from "./components/AlbumCard";
 import StyledRating from "./components/StyledRating";
 import NavBar from "./components/NavBar";
 import axios from "axios";
+import { Link, useSearchParams } from "react-router-dom";
 
 const UpdateReview = () => {
     let [rating, setRating] = useState(Number(0));
@@ -17,6 +19,53 @@ const UpdateReview = () => {
     let [uStyle, setStyle] = useState("");
     let [reviewText, setReviewText] = useState("");
     let [reviewID, setReviewID] = useState("");
+    let [type, setType] = useState("");
+    let [songData, setSongData] = useState(null);
+    let [albumData, setAlbumData] = useState(null);
+    let [songVal, setSongVal] = useState(null);
+    let [albumVal, setAlbumVal] = useState(null);
+    const [searchParams] = useSearchParams();
+
+    const fetchAlbumData = () => {
+        fetch(`http://localhost:8080/album/${searchParams.get("id")}`)
+            .then((response) => response.json())
+            .then((data) => {
+                handleData(data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
+    
+    const fetchSongData = () => {
+        fetch(`http://localhost:8080/track/${searchParams.get("id")}`)
+            .then((response) => response.json())
+            .then((data) => {
+                handleSData(data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
+
+    const handleData = (inVal) => {
+        setAlbumData(inVal);
+        setAlbumVal(<AlbumCard
+            id={inVal.id}
+            name={inVal.name}
+            artist={inVal.artists[0].name}
+            imageUrl={inVal.images[0].url}
+        />);
+    }
+    const handleSData = (inVal) => {
+        setSongData(inVal);
+        setSongVal(<SongCard
+            id={inVal["id"]}
+            song={inVal["name"]}
+            artist={inVal["artists"][0]["name"]}
+            imageUrl={inVal["album"]["images"][0]["url"]}
+        />);
+    }
 
     useEffect(() => {
         const url = 'http://localhost:8000/getUserReviews'
@@ -37,7 +86,14 @@ const UpdateReview = () => {
                 setRec(curr.would_recommend);
                 setStyle(curr.style);
                 setReviewText(curr.overall_thoughts);
+                setType(curr.item_type);
             }
+        }
+        if(type == "song"){
+            fetchSongData();
+        }
+        else{
+            fetchAlbumData();
         }
     }
     const handleChange = (event) => {
@@ -88,6 +144,8 @@ const UpdateReview = () => {
         .catch(error => console.error(error));
     }
 
+    const val = ({type} === "song") ? songVal : albumVal;
+
     return (
         <Box className="d-flex">
             <SideBar/>
@@ -96,17 +154,18 @@ const UpdateReview = () => {
                 <Container className="d-flex flex-column align-items-center mt-2">
                     <Container sx={{mb:"2em"}}>
                         <Typography
-                            variant="h5"
+                            variant="h3"
                             color="#1DB954"
-                            marginBottom="2rem"
+                            marginY="1rem"
                             marginLeft="3.3vw"
                             fontWeight="700"
+                            textAlign="center"
                         >
-                            Song/Album Name - Artist Name -- Edit Review {localStorage.getItem("rID")}
+                            Edit Review
                         </Typography>
-                        <SongCard/>
+                        
                     </Container>
-                    
+                    {val}
                     <Box 
                         className="d-flex flex-column align-items-start"
                         sx={{
