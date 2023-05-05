@@ -15,7 +15,7 @@ import axios from "axios";
 const SongCard = (props, {renderImage = true}) => {
     let [sRating, setRating] = useState(0);
     useEffect(() => {
-        const url = 'http://localhost:8000/getAverageScore'
+        const url = 'https://lws3v1re05.execute-api.us-east-1.amazonaws.com/dev/api/v1/users/getAverageScore'
         const payload = {id: props.id}
             axios.post(url, payload)
                 .then(response => parseData(response))

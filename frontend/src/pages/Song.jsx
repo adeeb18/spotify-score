@@ -15,7 +15,7 @@ const Song = () => {
     let [songData, setSongData] = useState(null);
 
     const fetchSongData = () => {
-        fetch(`http://localhost:8080/track/${searchParams.get("id")}`)
+        fetch(`https://lws3v1re05.execute-api.us-east-1.amazonaws.com/dev/api/v1/spotify/track/${searchParams.get("id")}`)
             .then((response) => response.json())
             .then((data) => {
                 console.log(searchParams.get("id"));

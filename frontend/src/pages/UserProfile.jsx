@@ -10,7 +10,7 @@ const UserProfile = () => {
     let [del, setDel] = useState(false);
 
     useEffect(() => {
-        const url = 'http://localhost:8000/getUserReviews'
+        const url = 'https://lws3v1re05.execute-api.us-east-1.amazonaws.com/dev/api/v1/users/getUserReviews'
         const id = localStorage.getItem("id");
         const payload = {user_id: id}
         axios.post(url, payload)
@@ -21,7 +21,7 @@ const UserProfile = () => {
     const handleDelete = () => {
         const uID = localStorage.getItem("id");
         const payload = {"user_id": uID}
-        const url = 'http://localhost:8000/deleteUser'
+        const url = 'https://lws3v1re05.execute-api.us-east-1.amazonaws.com/dev/api/v1/users/deleteUser'
         axios.delete(url, {data: payload})
         .then(response => confirmDelete(response))
         .catch(error => console.error(error));

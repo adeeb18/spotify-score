@@ -14,7 +14,7 @@ import axios from "axios";
 const AlbumCard = (props, {renderImage = true}) => {
     let [rating, setRating] = useState(0);
     useEffect(() => {
-        const url = 'http://localhost:8000/getAllReviews'
+        const url = 'https://lws3v1re05.execute-api.us-east-1.amazonaws.com/dev/api/v1/users/getAllReviews'
             axios.get(url)
                 .then(response => parseData(response.data))
                 .catch(error => console.error(error));

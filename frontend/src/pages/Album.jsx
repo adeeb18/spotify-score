@@ -13,7 +13,7 @@ const Album = () => {
     let [albumData, setAlbumData] = useState(null);
 
     const fetchAlbumData = () => {
-        fetch(`http://localhost:8080/album/${searchParams.get("id")}`)
+        fetch(`https://lws3v1re05.execute-api.us-east-1.amazonaws.com/dev/api/v1/spotify/album/${searchParams.get("id")}`)
             .then((response) => response.json())
             .then((data) => {
                 setAlbumData(data);

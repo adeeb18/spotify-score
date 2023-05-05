@@ -32,7 +32,7 @@ const CreateReview = () => {
     let [textHelper, setTextHelper] = useState("");
 
     const fetchSongData = () => {
-        fetch(`http://localhost:8080/track/${searchParams.get("id")}`)
+        fetch(`https://lws3v1re05.execute-api.us-east-1.amazonaws.com/dev/api/v1/spotify/track/${searchParams.get("id")}`)
             .then((response) => response.json())
             .then((data) => {
                 setSongData(data);
@@ -82,7 +82,7 @@ const CreateReview = () => {
 
     const handleSubmit = () => {
         if(uStyle != "" && reviewText != "" && reviewID != null){
-            const url = 'http://localhost:8000/getUserReviews'
+            const url = 'https://lws3v1re05.execute-api.us-east-1.amazonaws.com/dev/api/v1/users/getUserReviews'
             const id = localStorage.getItem("id");
             const payload = {user_id: id}
             axios.post(url, payload)
@@ -103,7 +103,7 @@ const CreateReview = () => {
         if(!exist){
             let rate = (rating * 20).toString();
             const payload = {type:"song", user_id:Number(uid), id:reviewID, genre:"notGiven", num_rating:rate, overall_thoughts:reviewText, style:uStyle, mood:uMood, would_recommend:rec}
-            const url = 'http://localhost:8000/createReview'
+            const url = 'https://lws3v1re05.execute-api.us-east-1.amazonaws.com/dev/api/v1/users/createReview'
             axios.post(url, payload)
             .then(response => console.log(response))
             .catch(error => console.error(error));
