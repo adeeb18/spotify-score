@@ -125,7 +125,7 @@ const SignUp = () => {
     const handleSubmit = () => {
         //set dob
         let date = getDOB();
-        const url = 'http://localhost:8000/createUser'
+        const url = 'https://lws3v1re05.execute-api.us-east-1.amazonaws.com/dev/api/v1/users/createUser'
         const payload = {user_id: null, username: user, password: pass, dob: date, date_created: null}
         axios.post(url, payload)
             .then(response => setDialog(response))

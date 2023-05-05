@@ -18,7 +18,7 @@ function MyReview(props){
     let [imgURL, setImgURL] = useState("");
 
     const fetchAlbumData = () => {
-        fetch(`http://localhost:8080/album/${props.id}`)
+        fetch(`https://lws3v1re05.execute-api.us-east-1.amazonaws.com/dev/api/v1/spotify/album/${props.id}`)
             .then((response) => response.json())
             .then((data) => {
                 handleData(data);
@@ -29,7 +29,7 @@ function MyReview(props){
     }
     
     const fetchSongData = () => {
-        fetch(`http://localhost:8080/track/${props.id}`)
+        fetch(`https://lws3v1re05.execute-api.us-east-1.amazonaws.com/dev/api/v1/spotify/track/${props.id}`)
             .then((response) => response.json())
             .then((data) => {
                 handleData(data);
@@ -64,7 +64,7 @@ function MyReview(props){
     const handleDelete = () => {
         console.log(props.type);
         const payload = {"user_id":props.user, "id":props.id, "type":props.type}
-        const url = 'http://localhost:8000/deleteReview'
+        const url = 'https://lws3v1re05.execute-api.us-east-1.amazonaws.com/dev/api/v1/users/deleteReview'
         axios.delete(url, {data: payload})
         .then(response => console.log(response))
         .catch(error => console.error(error));
@@ -149,7 +149,7 @@ const MyReviews = () => {
     const [data, setData] = useState([]);
 
     useEffect(() => {
-        const url = 'http://localhost:8000/getUserReviews'
+        const url = 'https://lws3v1re05.execute-api.us-east-1.amazonaws.com/dev/api/v1/users/getUserReviews'
         const id = localStorage.getItem("id");
         const payload = {user_id: id}
         axios.post(url, payload)

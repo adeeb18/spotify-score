@@ -13,7 +13,7 @@ function Review(props){
     const [temp, setTemp] = useState("");
     
     const getUsername = (id) => {
-        const url = 'http://localhost:8000/getSingleUser'
+        const url = 'https://lws3v1re05.execute-api.us-east-1.amazonaws.com/dev/api/v1/users/getSingleUser'
         const payload = {user_id: id,}
         axios.post(url, payload)
             .then(response => {
@@ -60,7 +60,7 @@ const AlbumReviews = () => {
     let count = 0;
 
     const fetchAlbumData = () => {
-        fetch(`http://localhost:8080/album/${searchParams.get("id")}`)
+        fetch(`https://lws3v1re05.execute-api.us-east-1.amazonaws.com/dev/api/v1/spotify/album/${searchParams.get("id")}`)
             .then((response) => response.json())
             .then((data) => {
                 setalbumData(data);
@@ -72,7 +72,7 @@ const AlbumReviews = () => {
 
     useEffect(() => {
         fetchAlbumData();
-        const url = 'http://localhost:8000/getAllReviews'
+        const url = 'https://lws3v1re05.execute-api.us-east-1.amazonaws.com/dev/api/v1/users/getAllReviews'
             axios.get(url)
                 .then(response => parseData(response.data))
                 .catch(error => console.error(error));
