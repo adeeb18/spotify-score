@@ -115,7 +115,7 @@ const Artist = () => {
                 <NavBar />
                 <Container className="mt-2">
                     <Container sx={{ marginBottom: "1em" }}>
-                        <Typography
+                        {/* <Typography
                             variant="h3"
                             color="#1DB954"
                             marginBottom="2rem"
@@ -123,7 +123,7 @@ const Artist = () => {
                             textAlign="center"
                         >
                             Artist
-                        </Typography>
+                        </Typography> */}
                         {artistData && <ArtistCard
                             id={artistData["id"]}
                             name={artistData["name"]}

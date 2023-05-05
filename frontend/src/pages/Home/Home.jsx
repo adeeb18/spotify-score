@@ -33,7 +33,7 @@ const Home = () => {
     const handleSearch = (event) => {
         event.preventDefault(); // prevent the default form submission
         // send the search input to the API endpoint
-        fetch(`http://localhost:8080/search/${searchInput}`)
+        fetch(`https://lws3v1re05.execute-api.us-east-1.amazonaws.com/dev/api/v1/spotify/search/${searchInput}`)
             .then((response) => response.json())
             .then((data) => {
                 console.log(data); // do something with the response data
